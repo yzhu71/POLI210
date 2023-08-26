@@ -1,0 +1,31 @@
+---
+title: "4.4 exercise"
+author: "Yuhang Zhu"
+date: "2023-08-26"
+output: github_document
+---
+
+# 4.4 Exercise from R for Datascience
+## 1. Why does this code not work?
+The second line of code incorrectly typed "i" as "ı", and there is not a variable named my_varıable.
+
+```{r}
+my_variable <- 10
+my_variable
+```
+
+## 2. Tweak each of the following R commands so that they run correctly:
+
+```{r}
+library(tidyverse)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+filter(mpg, mpg$cyl == 8)
+filter(diamonds, diamonds$carat > 3)
+```
+
+## 3. Press Alt + Shift + K. What happens? How can you get to the same place using the menus?
+By pressing Option + Shift + K on a Mac, we can access the shortcuts. Click on "Tool" or "Help" in the menu to find "Keyboard Shortcuts Help".
+
