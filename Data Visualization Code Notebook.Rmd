@@ -1,9 +1,0 @@
----
-title: "Data Visualization Code Notebook"
-author: "Yuhang Zhu"
-date: "2023-08-27"
-output: github_document
----
-
-# 2 Get Started
-## 2.1 Work in Plain Text, Using RMarkdown
