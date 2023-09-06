@@ -66,9 +66,25 @@ experiment.
 
 ### 2.4.1 Randomized Experiments and the Difference-in-means Estimator
 
-**randomized experiment** / **randomized controlled trial (RCT)** to
+**Randomized experiment** / **randomized controlled trial (RCT)** to
 make two groups are comparable to each other, *on average*, in all
 respects other than whether or not they received the treatment.
 
 **Pre-treatment characteristics** are the characteristics of the
 individuals in a study before the treatment is administered.
+
+average_effect = ${\overline{Y(X=1) - Y(=0)}}$ = ${\overline{Y(X=1)}}$ -
+${\overline{Y(X=0)}}$
+
+If the treatment and control groups were comparable before the treatment
+was administered, we can estimate the average causal effect of treatment
+X on outcome Y with formula as following, which is known as the
+difference-in-means estimator:
+
+$\hat{\mathit{individual\_effects}}$ =
+${\overline{Y}}$<sub>treatment group</sub> -
+${\overline{Y}}$<sub>control group</sub>
+
+experimental data and observational data
+
+## 2.5 Do Small Classes Improve Student Performance?

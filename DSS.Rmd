@@ -63,6 +63,14 @@ We must find or create a situation in which the treated observations and the unt
 
 average_effect = ${\overline{Y(X=1) - Y(=0)}}$ = ${\overline{Y(X=1)}}$ - ${\overline{Y(X=0)}}$
 
+If the treatment and control groups were comparable before the treatment was administered, we can estimate the average causal effect of treatment X on outcome Y with formula as following, which is known as the difference-in-means estimator:
+
+$\hat{\mathit{individual\_effects}}$ = ${\overline{Y}}$~treatment\ group~ - ${\overline{Y}}$~control\ group~
+
+experimental data and observational data
+
+## 2.5 Do Small Classes Improve Student Performance?
+
 ```{r}
 
 ```
