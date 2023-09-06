@@ -88,3 +88,79 @@ ${\overline{Y}}$<sub>control group</sub>
 experimental data and observational data
 
 ## 2.5 Do Small Classes Improve Student Performance?
+
+``` r
+star <- read.csv("DSS/STAR.csv")
+```
+
+``` r
+head(star)
+```
+
+    ##   classtype reading math graduated
+    ## 1     small     578  610         1
+    ## 2   regular     612  612         1
+    ## 3   regular     583  606         1
+    ## 4     small     661  648         1
+    ## 5     small     614  636         1
+    ## 6   regular     610  603         0
+
+### 2.5.1 Relational Operators in R
+
+``` r
+star$classtype == "small"
+```
+
+### 2.5.3 Creating New Variables
+
+``` r
+star$small <- ifelse(star$classtype=="small", 1, 0)
+
+head(star)
+```
+
+    ##   classtype reading math graduated small
+    ## 1     small     578  610         1     1
+    ## 2   regular     612  612         1     0
+    ## 3   regular     583  606         1     0
+    ## 4     small     661  648         1     1
+    ## 5     small     614  636         1     1
+    ## 6   regular     610  603         0     0
+
+### 2.5.3 Subsetting Vriables
+
+``` r
+mean(star$reading)
+```
+
+    ## [1] 628.803
+
+``` r
+mean(star$reading[star$small==1])
+```
+
+    ## [1] 632.7026
+
+``` r
+mean(star$reading[star$small==0])
+```
+
+    ## [1] 625.492
+
+``` r
+mean(star$reading[star$small==1]) - mean(star$reading[star$small==0])
+```
+
+    ## [1] 7.210547
+
+``` r
+mean(star$math[star$small==1]) - mean(star$math[star$small==0])
+```
+
+    ## [1] 5.989905
+
+``` r
+mean(star$graduated[star$small==1]) - mean(star$graduated[star$small==0])
+```
+
+    ## [1] 0.007031124

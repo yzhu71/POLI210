@@ -67,6 +67,50 @@ experimental data and observational data
 ## 2.5 Do Small Classes Improve Student Performance?
 
 ```{r}
-star <- read.csv("STAR.csv")
+star <- read.csv("DSS/STAR.csv")
 ```
+
+```{r}
+head(star)
+```
+
+### 2.5.1 Relational Operators in R
+
+```{r, results='hide'}
+star$classtype == "small"
+```
+
+### 2.5.3 Creating New Variables
+
+```{r}
+star$small <- ifelse(star$classtype=="small", 1, 0)
+
+head(star)
+```
+
+### 2.5.3 Subsetting Vriables
+
+```{r}
+mean(star$reading)
+```
+
+```{r}
+mean(star$reading[star$small==1])
+```
+
+```{r}
+mean(star$reading[star$small==0])
+```
+```{r}
+mean(star$reading[star$small==1]) - mean(star$reading[star$small==0])
+```
+
+```{r}
+mean(star$math[star$small==1]) - mean(star$math[star$small==0])
+```
+
+```{r}
+mean(star$graduated[star$small==1]) - mean(star$graduated[star$small==0])
+```
+
 
