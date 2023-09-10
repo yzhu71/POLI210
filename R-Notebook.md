@@ -5,13 +5,13 @@ Yuhang Zhu
 
 # R Symbols, Operators, and Functions
 
-## Working Directory
+## working directory
 
 `getwd()`查看当前工作目录
 
 `setwd("your/directory/path")`改变当前工作目录
 
-## Define Function
+## define function
 
 myfunction为函数名称，function(参数，参数), {函数语句}。
 
@@ -22,43 +22,17 @@ myfunction <- function(arg1, arg2, ...) {
 }
 ```
 
-## Pipes
+## pipes
 
 管道操作符 `%>%`
 是R语言中用于简化数据处理和转换代码的一个非常有用的工具。这个操作符来自于
 `magrittr` 包，并且在 `tidyverse` 生态系统中被广泛使用。
-
-### Exercise 1
-
-你的任务是：  
-筛选出数学成绩大于80的学生。  
-计算这些学生的英语成绩的平均分。  
-将结果存储在一个变量中。
-
-请使用%\>%管道操作符完成这个任务。
-
-### Exercise 2
-
-你的任务是：
-
-筛选出订单金额大于50的订单。  
-对这些订单按customer_id进行分组。  
-计算每个客户的平均订单金额。  
-筛选出平均订单金额大于100的客户。  
-将结果存储在一个变量中。
 
 ## mutate
 
 `mutate()` 是R语言中 `dplyr`
 包提供的一个非常有用的函数，用于在数据框（data
 frame）中添加新的列或修改现有的列。
-
-### Exercise 1
-
-你的任务是：
-添加一个新列average，该列是每个学生数学和英语成绩的平均分。  
-添加一个新列status，如果average大于或等于60，则status为”Pass”，否则为”Fail”。  
-将结果存储在一个新的数据框中。
 
 ## summarise
 
@@ -257,13 +231,53 @@ result
 
 ## dim
 
+在R中，dim函数用于获取或设置数据对象（如矩阵或数组）的维度，通过dim(object)可以获取维度，而通过dim(object)
+\<- c(rows, columns)可以设置维度。
+
 ## table
+
+在R中，table函数用于创建因子水平的各种组合的计数的列联表，通过table(variable1,
+variable2, …)可以生成单变量或多变量的频率表。
 
 ## prop.table
 
+在R中，prop.table函数用于计算表格中各单元格的相对频率（或比例），通过prop.table(table_object,
+margin = NULL)可以针对整个表或特定边缘（行或列）计算比例。
+
 ## na.omit
 
-------------------------------------------------------------------------
+na.omit:
+在R中，na.omit(object)函数用于删除包含缺失值（NA）的观察行，返回一个没有缺失值的新对象。
+
+## hist
+
+hist: 在R中，hist(x)函数用于创建数值变量x的直方图，以可视化其分布。
+
+## plot
+
+plot: 在R中，plot(x,
+y)函数用于绘制两个变量x和y之间的散点图或其他类型的图形。
+
+## abline
+
+abline: 在R中，abline(a,
+b)函数用于在现有图形上添加一条斜率为b和截距为a的直线。
+
+## median
+
+median: 在R中，median(x)函数用于计算数值向量x的中位数。
+
+## sd
+
+sd: 在R中，sd(x)函数用于计算数值向量x的样本标准差。
+
+## var
+
+var: 在R中，var(x)函数用于计算数值向量x的样本方差。
+
+## cor
+
+cor: 在R中，cor(x, y)函数用于计算两个数值向量x和y之间的Pearson相关系数。
 
 # RMarkdown
 
@@ -322,7 +336,7 @@ plot(cars)
 ```
 
 <figure>
-<img src="R-Notebook_files/figure-gfm/unnamed-chunk-24-1.png"
+<img src="R-Notebook_files/figure-gfm/unnamed-chunk-18-1.png"
 alt="这是一个图的标题" />
 <figcaption aria-hidden="true">这是一个图的标题</figcaption>
 </figure>

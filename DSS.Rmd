@@ -216,13 +216,56 @@ hist(bes1$age[bes1$leave == 1],
      freq= F)
 ```
 
+```{r}
+mean(bes1$age[bes1$leave == 0])
+mean(bes1$age[bes1$leave == 1])
+```
 
+```{r}
+median(bes1$age[bes1$leave == 0])
+median(bes1$age[bes1$leave == 1])
+```
 
+```{r}
+sd(bes1$age[bes1$leave == 0])
+sd(bes1$age[bes1$leave == 1])
+```
 
+```{r}
+var(bes1$age[bes1$leave == 0])
+var(bes1$age[bes1$leave == 1])
 
+sd(bes1$age[bes1$leave == 0]) ^ 2
+sd(bes1$age[bes1$leave == 1]) ^ 2
 
+sqrt(var(bes1$age[bes1$leave == 0]))
+sqrt(var(bes1$age[bes1$leave == 1]))
+```
+```{r}
+dis <- read.csv("DSS/UK_districts.csv")
+```
 
+```{r}
+head(dis)
 
+dim(dis)
+```
+
+```{r}
+dis1 <- na.omit(dis)
+
+dim(dis1)
+```
+
+```{r}
+plot(dis1$high_education, dis1$leave)
+abline(v=mean(dis1$high_education), lty="dashed")
+abline(h=mean(dis1$leave), lty="dashed")
+```
+
+```{r}
+cor(dis1$high_education, dis1$leave)
+```
 
 
 
