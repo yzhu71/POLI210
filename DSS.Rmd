@@ -4,7 +4,7 @@ author: "Yuhang Zhu"
 date: "2023-09-06"
 output: github_document
 ---
-# Introduction
+# 1. Introduction
 
 ```{r install, eval = FALSE}
 library(tidyverse)
@@ -113,4 +113,29 @@ mean(star$math[star$small==1]) - mean(star$math[star$small==0])
 mean(star$graduated[star$small==1]) - mean(star$graduated[star$small==0])
 ```
 
+# 3. Inferring Population Characteristics via Survey Research
+
+```{r}
+bes <- read.csv("DSS/BES.csv")
+```
+
+```{r}
+head(bes)
+```
+
+```{r}
+dim(bes)
+```
+
+```{r}
+bes_exercise <- bes %>% 
+  mutate(leave_test = ifelse(vote=="leave", 1,
+                             ifelse(vote=="stay", 0,
+                             ifelse(vote=="don't know", NA, NA))))
+head(bes_exercise)
+```
+
+```{r}
+table(bes$vote)
+```
 
