@@ -1,0 +1,143 @@
+---
+title: "HW_A2"
+author: "Yuhang Zhu"
+date: "2023-09-10"
+output: github_document
+---
+
+```{r setup,include = FALSE}
+setwd("/Users/zhuyuhang/Desktop/Git/POLI210")
+
+library(tidyverse)
+```
+
+# Does Having a Criminal Record Aﬀect the Chances of Receiving A Call Back for a Job Interview?
+
+## Part I: Loading and Making Sense of Data
+
+### 1. Use the function read.csv() to read the CSV ﬁle “applications.csv” and use the assignment operator <- to store the data in an object called applications. (Do not forget to set the working directory ﬁrst.) Provide the R code you used (without the output). (10 points)
+
+```{r applications_input, results = 'hide'}
+applications <- read.csv("Homeworks/A2/applications.csv")
+```
+
+### 2. Use the function head() to view the ﬁrst few observations of the dataset. Provide the R code you used (without the output). (10 points)
+
+```{r applications_head, results = 'hide'}
+head(applications)
+```
+
+### 3. What does each observation in this dataset represent? (5 points)
+
+Each observation is a job application.
+
+### 4. Please substantively interpret the ﬁrst observation in the dataset. (5 points)
+
+The first observation represents a white applicant who had no criminal record at the time of application for the "1" position and received a call back.
+
+### 5. For each variable in the dataset, please identify the type of variable (character vs. numeric binary vs. numeric non-binary) (10 points)
+
+`job_id` is numeric non-binary variable.
+
+`criminal` and `call` is numeric binary variable.
+
+`race` is character variable.
+
+```{r applications_var_type, results = 'hide'}
+mode(applications$job_id)
+mode(applications$criminal)
+mode(applications$race)
+mode(applications$call)
+```
+
+### 6. How many observations are in the dataset? In other words, how many job applications were part of this experiment? (Hint: the function dim() might be helpful here.) Provide the R code you used (without the output) and provide the substantive answer. (10 points)
+
+There are 696 observations/job applications in the dataset. 
+
+```{r applications_dim, results = 'hide'}
+dim(applications)
+```
+
+## Part II: Computing and Interpreting Means
+
+```{r white_creat, results = 'hide'}
+applications_white <- applications[applications$race == "white",]
+```
+
+
+### 1. Use the function dim() to ﬁnd how many observations are in the original dataframe applications and how many observations are in the new dataframe applications_white. Provide a full sentence with what you learn from computing these two numbers. (10 points)
+
+Of the 696 applications, 300 are from whites and 396 are from blacks.
+
+```{r applications_white_dim}
+dim(applications)
+dim(applications_white)
+```
+
+### 2. Use the function mean() to calculate the average of the variable criminal in the dataframe applications_white. Please provide a full substantive interpretation of what this average means. Make sure to provide the unit of measurement. (10 points)
+
+The average of the variable `criminal` is 0.5, which means 50% of the applications in the dataset `application_white` were submitted by applicants with criminal records.
+
+```{r white_mean_criminal}
+mean(applications_white$criminal)
+```
+
+### 3. Use the function mean() to calculate the average of the variable call in the dataframe applications_white. Please provide a full substantive interpretation of what this average means. Make sure to provide the unit of measurement. (10 points)
+
+The average of the variable `call` is 0.25, which means only 25% of the applications in the dataset `application_white` received the call back.
+
+```{r white_mean_call}
+mean(applications_white$call)
+```
+
+### 4. If we wanted to estimate the average causal eﬀect of having a criminal record on the probability of getting a call back for a job interview for the white applicants: (10 points)
+
+#### a. What would be the treatment variable? Please just provide the name of the variable in the applications_white dataframe
+
+`criminal`.
+
+#### b. What would be the outcome variable? Please just provide the name of the variable in the applications_white dataframe
+
+`call`.
+
+### 5. In this analysis: (10 points)
+
+#### a. What would be the treatment group?
+
+Applications submitted by applicants with a criminal record (`criminal` == 1).
+
+#### b. What would be the control group?
+
+Applications submitted by applicants without a criminal record (`criminal` == 0).
+
+## Part III: Estimating an Average Causal Eﬀect
+
+### 1. Considering that the dataset we are analyzing comes from a randomized experiment, what can we compute to estimate the average causal eﬀect of having a criminal record on the number of new (or repaired) drinking call facilities? Please provide the name of the estimator. (5 points)
+
+difference-in-means estimator
+
+### 2. In the dataset about the white applicants, what is the probability of receiving a call back for a job interview among the job applications with a criminal record? Please answer with a full sentence. (10 points)
+
+If an application submitted by an white applicant with criminal record, the probability of receiving a call back for a job interview is 16.7%.
+
+```{r white_mean_call_criminal_1}
+mean(applications_white$call[applications_white$criminal == 1])
+```
+
+### 3. In the dataset about the white applicants, what is the probability of receiving a call back for a job interview among the job applications without a criminal record? Please answer with a full sentence. (10 points)
+
+If an application submitted by an white applicant without criminal record, the probability of receiving a call back for a job interview is 34%.
+
+```{r white_mean_call_criminal_0}
+mean(applications_white$call[applications_white$criminal == 0])
+```
+
+### 4. What is the estimated average causal eﬀect of having a criminal record on the probability of receiving a call back for a job interview? Please provide a full substantive answer (make sure to include the assumption, why the assumption is reasonable, the treatment, the outcome, as well as the direction, size, and unit of measurement of the average treatment eﬀect) (25 points)
+
+Since the dataset comes from a randomized experiment, the treatment and control groups are comparable based on pre-treatment characteristics; in this case, applications submitted by applicants with criminal records were comparable to those without criminal records. Having a criminal record decreased the proportion of applications receiving a call back by about 17.3 percentage point, on average.
+
+```{r white_ACE}
+mean(applications_white$call[applications_white$criminal == 1]) - 
+  mean(applications_white$call[applications_white$criminal == 0])
+```
+
