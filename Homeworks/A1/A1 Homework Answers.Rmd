@@ -1,0 +1,60 @@
+---
+title: "Excercises from 4.4 of R 4 Data Science"
+output:
+  pdf_document: default
+  word_document: default
+  html_document:
+    df_print: paged
+  html_notebook:
+    keep-md: yes
+---
+
+# A1 Homework 4.4 R4DS exercises
+
+## 1. Why Does this code not work.
+
+The following code
+
+``` r
+my_variable <- 10 
+my_varıable 
+```
+
+Throws an error because the variable referenced in the second line `my_varıable` is not the same as the variable `my_variable`. The i is a different symbol. If we were to change the code to the code below, it will run correctly and return 10.
+
+```{r}
+my_variable <- 10 
+my_variable 
+```
+
+## 2. Tweak each of the following R commands so that they run correctly
+
+To fix the code below, you need to fix a number of typos
+
+``` r
+library(tidyverse)
+
+ggplot(dota = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+fliter(mpg, cyl = 8)
+filter(diamond, carat > 3)
+```
+
+I've noted the correction as a comment on each line
+
+```{r}
+library(tidyverse)
+
+ggplot(data = mpg) + # change dota to data
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+filter(mpg, cyl == 8) # change fliter to filter and = to ==
+                      # = is used for assignment, but we want == to filter based on the logical condition:
+                      # "does cyl equal 8?"
+filter(diamonds, carat > 3) # changed diamond to diamonds. diamonds is a dataset that comes with R. diamond is not.
+```
+
+## Press Alt + Shift + K. What happens? How can you get to the same place using the menus?
+
+A shortcut menu pops up. You can find the same command by going to the `Tools` menu in RStudio
