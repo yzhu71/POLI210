@@ -1,4 +1,4 @@
-R语言中的filter函数
+Yuhang’s R Notebook
 ================
 Yuhang Zhu
 2023-09-10
@@ -47,7 +47,7 @@ myfunction <- function(arg1, arg2, ...) {
 筛选出平均订单金额大于100的客户。  
 将结果存储在一个变量中。
 
-## Mutate
+## mutate
 
 `mutate()` 是R语言中 `dplyr`
 包提供的一个非常有用的函数，用于在数据框（data
@@ -60,20 +60,13 @@ frame）中添加新的列或修改现有的列。
 添加一个新列status，如果average大于或等于60，则status为”Pass”，否则为”Fail”。  
 将结果存储在一个新的数据框中。
 
-## Summarise
-
-### `summarize()` 函数的介绍
-
-`summarize()` 是R语言中 `dplyr`
-包提供的一个非常有用的函数，用于对数据框（data frame）进行汇总或聚合。
+## summarise
 
 ### 基本用法
 
 `summarize()` 函数的基本用法是对一个数据框的列进行汇总或聚合操作。
 
 ``` r
-library(dplyr)
-
 # 创建一个数据框
 df <- data.frame(
   x = c(1, 2, 3, 4),
@@ -130,20 +123,13 @@ grouped_result
     ## 1 FALSE      3.5
     ## 2 TRUE       1.5
 
-## Filter
-
-## `filter()` 函数的介绍
-
-`filter()` 是R语言中 `dplyr`
-包提供的一个非常有用的函数，用于对数据框（data frame）进行筛选或过滤。
+## filter
 
 ### 基本用法
 
 `filter()` 函数的基本用法是根据一定的条件来筛选数据框的行。
 
 ``` r
-library(dplyr)
-
 # 创建一个数据框
 df <- data.frame(
   x = c(1, 2, 3, 4),
@@ -195,6 +181,89 @@ result
     ##   x y
     ## 1 3 2
     ## 2 4 1
+
+## group_by
+
+### 基本用法
+
+`group_by()` 函数的基本用法是根据一个或多个列的值来分组数据框。
+
+``` r
+# 创建一个数据框
+df <- data.frame(
+  category = c("A", "A", "B", "B"),
+  value = c(10, 20, 30, 40)
+)
+
+# 使用 group_by 对 category 列进行分组
+grouped_df <- df %>%
+  group_by(category)
+
+grouped_df
+```
+
+    ## # A tibble: 4 × 2
+    ## # Groups:   category [2]
+    ##   category value
+    ##   <chr>    <dbl>
+    ## 1 A           10
+    ## 2 A           20
+    ## 3 B           30
+    ## 4 B           40
+
+### 在管道中使用
+
+`group_by()` 函数通常与管道操作符 `%>%`
+一起使用，以便进行更复杂的数据处理。
+
+``` r
+# 使用管道和 group_by
+result <- df %>%
+  group_by(category) %>%
+  summarize(mean_value = mean(value))
+
+result
+```
+
+    ## # A tibble: 2 × 2
+    ##   category mean_value
+    ##   <chr>         <dbl>
+    ## 1 A                15
+    ## 2 B                35
+
+### 注意事项
+
+- `group_by()` 会返回一个分组的数据框，该数据框可以用于后续的
+  `summarize()` 或其他 `dplyr` 函数。
+- 分组后的数据框在可视化时看起来与原数据框相似，但它们在进行汇总或其他操作时的行为是不同的。
+
+``` r
+# 分组后使用 summarize
+result <- df %>%
+  group_by(category) %>%
+  summarize(
+    mean_value = mean(value),
+    sum_value = sum(value)
+  )
+
+result
+```
+
+    ## # A tibble: 2 × 3
+    ##   category mean_value sum_value
+    ##   <chr>         <dbl>     <dbl>
+    ## 1 A                15        30
+    ## 2 B                35        70
+
+## dim
+
+## table
+
+## prop.table
+
+## na.omit
+
+------------------------------------------------------------------------
 
 # RMarkdown
 
@@ -253,7 +322,7 @@ plot(cars)
 ```
 
 <figure>
-<img src="R-Notebook_files/figure-gfm/unnamed-chunk-21-1.png"
+<img src="R-Notebook_files/figure-gfm/unnamed-chunk-24-1.png"
 alt="这是一个图的标题" />
 <figcaption aria-hidden="true">这是一个图的标题</figcaption>
 </figure>

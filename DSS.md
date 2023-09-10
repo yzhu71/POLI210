@@ -3,12 +3,7 @@ DSS
 Yuhang Zhu
 2023-09-06
 
-# Introduction
-
-``` r
-library(tidyverse)
-library(socviz)
-```
+# 1. Introduction
 
 # 2.Estimating Casual Effects with Randomized Experiments
 
@@ -164,3 +159,97 @@ mean(star$graduated[star$small==1]) - mean(star$graduated[star$small==0])
 ```
 
     ## [1] 0.007031124
+
+# 3. Inferring Population Characteristics via Survey Research
+
+``` r
+bes <- read.csv("DSS/BES.csv")
+```
+
+``` r
+head(bes)
+```
+
+    ##         vote leave education age
+    ## 1      leave     1         3  60
+    ## 2      leave     1        NA  56
+    ## 3       stay     0         5  73
+    ## 4      leave     1         4  64
+    ## 5 don't know    NA         2  68
+    ## 6       stay     0         4  85
+
+``` r
+dim(bes)
+```
+
+    ## [1] 30895     4
+
+``` r
+bes_test <- bes %>% 
+  mutate(leave_test = ifelse(vote=="leave", 1,
+                             ifelse(vote=="stay", 0, NA)))
+head(bes_test)
+```
+
+    ##         vote leave education age leave_test
+    ## 1      leave     1         3  60          1
+    ## 2      leave     1        NA  56          1
+    ## 3       stay     0         5  73          0
+    ## 4      leave     1         4  64          1
+    ## 5 don't know    NA         2  68         NA
+    ## 6       stay     0         4  85          0
+
+``` r
+table(bes$vote)
+```
+
+    ## 
+    ## don't know      leave       stay won't vote 
+    ##       2314      13692      14352        537
+
+``` r
+freq_table <- table(bes$vote)
+prop.table(freq_table)
+```
+
+    ## 
+    ## don't know      leave       stay won't vote 
+    ## 0.07489885 0.44317851 0.46454119 0.01738145
+
+``` r
+# or
+
+prop.table(table(bes$vote))
+```
+
+    ## 
+    ## don't know      leave       stay won't vote 
+    ## 0.07489885 0.44317851 0.46454119 0.01738145
+
+``` r
+table(bes$education, exclude = NULL)
+```
+
+    ## 
+    ##     1     2     3     4     5  <NA> 
+    ##  2045  5781  6272 10676  2696  3425
+
+``` r
+mean(bes$leave)
+```
+
+    ## [1] NA
+
+``` r
+mean(bes$leave, na.rm=T)
+```
+
+    ## [1] 0.4882328
+
+``` r
+bes1 <- na.omit(bes)
+```
+
+``` r
+reduced_data <- original_data[c("var1", "var2")]
+```

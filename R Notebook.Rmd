@@ -262,6 +262,11 @@ result
 
 ## table
 
+## prop.table
+
+## na.omit
+
+
 
 # RMarkdown
 

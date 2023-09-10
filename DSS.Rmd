@@ -6,8 +6,9 @@ output: github_document
 ---
 # 1. Introduction
 
-```{r install, eval = FALSE}
+```{r install, include=FALSE, warning = F}
 library(tidyverse)
+library(dplyr)
 library(socviz)
 ```
 
@@ -128,14 +129,100 @@ dim(bes)
 ```
 
 ```{r}
-bes_exercise <- bes %>% 
+bes_test <- bes %>% 
   mutate(leave_test = ifelse(vote=="leave", 1,
-                             ifelse(vote=="stay", 0,
-                             ifelse(vote=="don't know", NA, NA))))
-head(bes_exercise)
+                             ifelse(vote=="stay", 0, NA)))
+head(bes_test)
 ```
 
 ```{r}
 table(bes$vote)
 ```
+
+```{r}
+freq_table <- table(bes$vote)
+prop.table(freq_table)
+
+# or
+
+prop.table(table(bes$vote))
+```
+
+```{r}
+table(bes$education, exclude = NULL)
+```
+
+```{r}
+mean(bes$leave)
+```
+```{r}
+mean(bes$leave, na.rm=T)
+```
+
+```{r}
+bes1 <- na.omit(bes)
+```
+
+```r
+reduced_data <- original_data[c("var1", "var2")]
+```
+
+```{r}
+table(bes1$leave, bes1$education)
+```
+```{r}
+prop.table(table(bes1$leave, bes1$education))
+```
+
+```{r}
+prop.table(table(bes1$leave, bes1$education), margin=1) #row为1
+```
+```{r}
+prop.table(table(bes1$leave, bes1$education), margin=2) # column为1
+```
+
+```{r}
+hist(bes1$age)
+```
+
+```{r}
+hist(bes1$age[bes1$leave == 0])
+hist(bes1$age[bes1$leave == 1])
+```
+
+```{r}
+bes1 %>% 
+  filter(leave == 1) %>% 
+  ggplot(aes(x = age)) +
+  geom_histogram(binwidth = 5)
+```
+
+```{r}
+hist(bes1$age[bes1$education == 1])
+hist(bes1$age[bes1$education == 4])
+```
+
+```{r}
+hist(bes1$age[bes1$education == 1], 
+     freq = F)
+hist(bes1$age[bes1$education == 4],
+     freq= F)
+```
+
+```{r}
+hist(bes1$age[bes1$leave == 0], 
+     freq = F)
+hist(bes1$age[bes1$leave == 1],
+     freq= F)
+```
+
+
+
+
+
+
+
+
+
+
 
