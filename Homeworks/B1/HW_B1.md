@@ -123,6 +123,16 @@ diff_attack_fire
 
 ## Question 6: Compute the mean difference in the diffattack variable between villages shelled and villages not shelled. Does this analysis support the claim that indiscriminate violence reduces insurgency attacks? Is the validity of this analysis improved over the analyses you conducted in the previous questions? Why or why not? Specifically, explain what additional factor this analysis addresses when compared to the analyses conducted in the previous questions.
 
+This identification strategy **supports** the claim that indiscriminate
+violence reduces insurgency attacks, and its validity is improved
+relative to prior strategies. By using the strategy ($T_{2}$ -
+$T_{1}$) - ($C_{2}$ - $C_{1}$), this paper isolates the net treatment
+effect of `indiscriminate violenc` on the `number of insurgency attacks`
+(-0.516). $T_{2}$ - $T_{1}$ determines the treatment effect
+(`indiscriminate violenc`) on the `number of insurgency attacks`
+(-0.616), whereas $C_{2}$ - $C_{1}$ represents the original trend
+without treatment effect (-0.101).
+
 | Variables   | Pre-attack             | post-attack            |                        |
 |:------------|:-----------------------|:-----------------------|:-----------------------|
 | `fire == 1` | $T_{1}$                | $T_{2}$                | $T_{2}$ - $T_{1}$ (Q5) |
