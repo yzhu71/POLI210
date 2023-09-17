@@ -303,7 +303,339 @@ p + geom_point()
 
 ## Make a Plot
 
+``` r
+library(gapminder)
+```
+
+``` r
+gapminder
+```
+
+    ## # A tibble: 1,704 × 6
+    ##    country     continent  year lifeExp      pop gdpPercap
+    ##    <fct>       <fct>     <int>   <dbl>    <int>     <dbl>
+    ##  1 Afghanistan Asia       1952    28.8  8425333      779.
+    ##  2 Afghanistan Asia       1957    30.3  9240934      821.
+    ##  3 Afghanistan Asia       1962    32.0 10267083      853.
+    ##  4 Afghanistan Asia       1967    34.0 11537966      836.
+    ##  5 Afghanistan Asia       1972    36.1 13079460      740.
+    ##  6 Afghanistan Asia       1977    38.4 14880372      786.
+    ##  7 Afghanistan Asia       1982    39.9 12881816      978.
+    ##  8 Afghanistan Asia       1987    40.8 13867957      852.
+    ##  9 Afghanistan Asia       1992    41.7 16317921      649.
+    ## 10 Afghanistan Asia       1997    41.8 22227415      635.
+    ## # ℹ 1,694 more rows
+
+``` r
+p <- ggplot(gapminder, aes(gdpPercap, lifeExp))
+
+p
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+``` r
+p + geom_point()
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
+
+``` r
+p + geom_smooth()
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+``` r
+p + geom_point() + geom_smooth()
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+
+``` r
+p + geom_point() + geom_smooth(method = "lm")
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
+
+``` r
+p + geom_point() + geom_smooth(method = "gam") + scale_x_log10()
+```
+
+    ## `geom_smooth()` using formula = 'y ~ s(x, bs = "cs")'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-13-4.png)<!-- -->
+
+``` r
+p + geom_point() +
+  geom_smooth(method = "gam") +
+  scale_x_log10(labels = scales::dollar)
+```
+
+    ## `geom_smooth()` using formula = 'y ~ s(x, bs = "cs")'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-13-5.png)<!-- -->
+
+``` r
+ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent)) + 
+  geom_point() +
+  geom_smooth(method = "loess") +
+  scale_x_log10()
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+``` r
+p + 
+  geom_point(color = "purple") +
+  geom_smooth(method= "loess") +
+  scale_x_log10()
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
+
+``` r
+p +
+  geom_point(position = "jitter", alpha = 0.3) +
+  geom_smooth(color = "orange", se= F, linewidth = 2, method = "lm") +
+  scale_x_log10()
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-14-3.png)<!-- -->
+
+``` r
+p + geom_point(alpha = 0.3) +
+  geom_smooth(method = "gam") +
+  scale_x_log10(labels = scales::dollar) +
+  labs(x = "GDP Per Capita", y = "Life Expectancy in Years",
+       title = "Economic Growth and Life Expectancy",
+       subtitle = "Data points are country-years",
+       caption = "Source: Gapminder.")
+```
+
+    ## `geom_smooth()` using formula = 'y ~ s(x, bs = "cs")'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-14-4.png)<!-- -->
+
+``` r
+ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent, fill = continent)) + 
+  geom_point() +
+  geom_smooth(method = "loess") +
+  scale_x_log10()
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-14-5.png)<!-- -->
+
+``` r
+ggplot(gapminder, aes(gdpPercap, lifeExp)) + 
+  geom_point(aes(color = continent)) +
+  geom_smooth(method = "loess") +
+  scale_x_log10()
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+``` r
+p +
+  geom_point(aes(color = log(pop))) +
+  scale_x_log10()
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->
+
+``` r
+knitr::opts_chunk$set(fig.width = 8, fig.highlight = 5)
+```
+
+``` r
+p +
+  geom_point(aes(color = log(pop))) +
+  scale_x_log10()
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+``` r
+# ggsave(filename = "save_example.png")
+
+# ggsave(filename = "save_example.pdf")
+
+p_out <- p +
+  geom_point(aes(color = log(pop))) +
+  scale_x_log10()
+
+# ggsave("my_figure.pdf", plot = p_out)
+
+ggsave(here("figure", "lifexp_vs_gdp_gradient.pdf"), plot = p_out)
+```
+
+    ## Saving 12 x 9 in image
+
+``` r
+ggplot(gapminder, aes(gdpPercap, lifeExp)) + 
+  geom_smooth(method = "loess") +
+  geom_point(aes(color = continent)) +
+  scale_x_log10()
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+``` r
+ggplot(gapminder, aes(lifeExp, pop, color = continent, fill = continent)) + 
+  geom_point(alpha = 0.5) +
+  geom_smooth(se=F) +
+  scale_y_log10()
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
+
+``` r
+ggplot(gapminder, aes(lifeExp, pop, color = year)) + 
+  geom_point(alpha = 0.5) +
+  geom_smooth(se=F) +
+  scale_y_log10()
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+    ## Warning: The following aesthetics were dropped during statistical transformation: colour
+    ## ℹ This can happen when ggplot fails to infer the correct grouping structure in
+    ##   the data.
+    ## ℹ Did you forget to specify a `group` aesthetic or to convert a numerical
+    ##   variable into a factor?
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-17-3.png)<!-- -->
+
+``` r
+ggplot(gapminder, aes(lifeExp, pop, color = factor(year))) + 
+  geom_point(alpha = 0.5) +
+  geom_smooth(se=F) +
+  scale_y_log10()
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-17-4.png)<!-- -->
+
 ## Show the Right Numbers
+
+``` r
+p <- ggplot(gapminder, aes(year, gdpPercap))
+
+p + geom_line()
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+``` r
+p + geom_line(aes(group = country))
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->
+
+``` r
+p + 
+  geom_line(aes(group = country)) +
+  facet_wrap(~ continent)
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-18-3.png)<!-- -->
+
+``` r
+p + 
+  geom_line(linetype = "dashed", color = "gray75", aes(group = country)) +
+  geom_smooth(color = "#8696a7",size = 1.2, method = "loess", se = F) +
+  scale_y_log10(labels = scales::dollar) +
+  facet_wrap(~ continent, nrow = 1) +
+  labs(x = "Year",
+       y = "GDP per capita",
+       title = "GDP per capita on Five Continents")
+```
+
+    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `linewidth` instead.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-18-4.png)<!-- -->
+
+``` r
+glimpse(gss_sm)
+```
+
+    ## Rows: 2,867
+    ## Columns: 32
+    ## $ year        <dbl> 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016…
+    ## $ id          <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,…
+    ## $ ballot      <labelled> 1, 2, 3, 1, 3, 2, 1, 3, 1, 3, 2, 1, 2, 3, 2, 3, 3, 2,…
+    ## $ age         <dbl> 47, 61, 72, 43, 55, 53, 50, 23, 45, 71, 33, 86, 32, 60, 76…
+    ## $ childs      <dbl> 3, 0, 2, 4, 2, 2, 2, 3, 3, 4, 5, 4, 3, 5, 7, 2, 6, 5, 0, 2…
+    ## $ sibs        <labelled> 2, 3, 3, 3, 2, 2, 2, 6, 5, 1, 4, 4, 3, 6, 0, 1, 3, 8,…
+    ## $ degree      <fct> Bachelor, High School, Bachelor, High School, Graduate, Ju…
+    ## $ race        <fct> White, White, White, White, White, White, White, Other, Bl…
+    ## $ sex         <fct> Male, Male, Male, Female, Female, Female, Male, Female, Ma…
+    ## $ region      <fct> New England, New England, New England, New England, New En…
+    ## $ income16    <fct> $170000 or over, $50000 to 59999, $75000 to $89999, $17000…
+    ## $ relig       <fct> None, None, Catholic, Catholic, None, None, None, Catholic…
+    ## $ marital     <fct> Married, Never Married, Married, Married, Married, Married…
+    ## $ padeg       <fct> Graduate, Lt High School, High School, NA, Bachelor, NA, H…
+    ## $ madeg       <fct> High School, High School, Lt High School, High School, Hig…
+    ## $ partyid     <fct> "Independent", "Ind,near Dem", "Not Str Republican", "Not …
+    ## $ polviews    <fct> Moderate, Liberal, Conservative, Moderate, Slightly Libera…
+    ## $ happy       <fct> Pretty Happy, Pretty Happy, Very Happy, Pretty Happy, Very…
+    ## $ partners    <fct> NA, "1 Partner", "1 Partner", NA, "1 Partner", "1 Partner"…
+    ## $ grass       <fct> NA, Legal, Not Legal, NA, Legal, Legal, NA, Not Legal, NA,…
+    ## $ zodiac      <fct> Aquarius, Scorpio, Pisces, Cancer, Scorpio, Scorpio, Capri…
+    ## $ pres12      <labelled> 3, 1, 2, 2, 1, 1, NA, NA, NA, 2, NA, NA, 1, 1, 2, 1, …
+    ## $ wtssall     <dbl> 0.9569935, 0.4784968, 0.9569935, 1.9139870, 1.4354903, 0.9…
+    ## $ income_rc   <fct> Gt $170000, Gt $50000, Gt $75000, Gt $170000, Gt $170000, …
+    ## $ agegrp      <fct> Age 45-55, Age 55-65, Age 65+, Age 35-45, Age 45-55, Age 4…
+    ## $ ageq        <fct> Age 34-49, Age 49-62, Age 62+, Age 34-49, Age 49-62, Age 4…
+    ## $ siblings    <fct> 2, 3, 3, 3, 2, 2, 2, 6+, 5, 1, 4, 4, 3, 6+, 0, 1, 3, 6+, 2…
+    ## $ kids        <fct> 3, 0, 2, 4+, 2, 2, 2, 3, 3, 4+, 4+, 4+, 3, 4+, 4+, 2, 4+, …
+    ## $ religion    <fct> None, None, Catholic, Catholic, None, None, None, Catholic…
+    ## $ bigregion   <fct> Northeast, Northeast, Northeast, Northeast, Northeast, Nor…
+    ## $ partners_rc <fct> NA, 1, 1, NA, 1, 1, NA, 1, NA, 3, 1, NA, 1, NA, 0, 1, 0, N…
+    ## $ obama       <dbl> 0, 1, 0, 0, 1, 1, NA, NA, NA, 0, NA, NA, 1, 1, 0, 1, 0, 1,…
+
+``` r
+p <- ggplot(gss_sm, aes(age, childs))
+
+p + geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_grid(sex ~ race)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 18 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 18 rows containing missing values (`geom_point()`).
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ## Graph Tables, Make Labels, Add Notes
 

@@ -283,6 +283,37 @@ ggplot(gapminder, aes(lifeExp, pop, color = factor(year))) +
 
 ## Show the Right Numbers
 
+```{r fig.width=12, fig.height=6}
+p <- ggplot(gapminder, aes(year, gdpPercap))
+
+p + geom_line()
+
+p + geom_line(aes(group = country))
+
+p + 
+  geom_line(aes(group = country)) +
+  facet_wrap(~ continent)
+
+p + 
+  geom_line(linetype = "dashed", color = "gray75", aes(group = country)) +
+  geom_smooth(color = "#8696a7",size = 1.2, method = "loess", se = F) +
+  scale_y_log10(labels = scales::dollar) +
+  facet_wrap(~ continent, nrow = 1) +
+  labs(x = "Year",
+       y = "GDP per capita",
+       title = "GDP per capita on Five Continents")
+```
+
+```{r}
+glimpse(gss_sm)
+
+p <- ggplot(gss_sm, aes(age, childs))
+
+p + geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_grid(sex ~ race)
+```
+
 ```{r}
 
 ```
