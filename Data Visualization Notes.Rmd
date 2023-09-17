@@ -61,7 +61,7 @@ library(gapminder)
 library(here)
 library(socviz)
 library(tidyverse)
-
+library(scales)
 ```
 
 Notice that here, the braces at the start of the code chunk have some additional options set in them. There is the language, `r`, as before. This is required. Then there is the word `setup`, which is a label for your code chunk. Labels are useful to briefly say what the chunk does. Label names must be unique (no two chunks in the same document can have the same label) and cannot contain spaces. Then, after the comma, an option is set: `include=FALSE`. This tells R to run this code but not to include the output in the final document. 
@@ -167,8 +167,87 @@ p + geom_point()
 ## Make a Plot
 
 ```{r}
-
+library(gapminder)
 ```
+
+
+```{r}
+gapminder
+
+p <- ggplot(gapminder, aes(gdpPercap, lifeExp))
+
+p
+
+p + geom_point()
+```
+
+```{r}
+p + geom_smooth()
+
+p + geom_point() + geom_smooth()
+
+p + geom_point() + geom_smooth(method = "lm")
+
+p + geom_point() + geom_smooth(method = "gam") + scale_x_log10()
+
+p + geom_point() +
+  geom_smooth(method = "gam") +
+  scale_x_log10(labels = scales::dollar)
+```
+
+```{r}
+ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent)) + 
+  geom_point() +
+  geom_smooth(method = "loess") +
+  scale_x_log10()
+
+p + 
+  geom_point(color = "purple") +
+  geom_smooth(method= "loess") +
+  scale_x_log10()
+  
+p +
+  geom_point(position = "jitter", alpha = 0.3) +
+  geom_smooth(color = "orange", se= F, linewidth = 2, method = "lm") +
+  scale_x_log10()
+
+p + geom_point(alpha = 0.3) +
+  geom_smooth(method = "gam") +
+  scale_x_log10(labels = scales::dollar) +
+  labs(x = "GDP Per Capita", y = "Life Expectancy in Years",
+       title = "Economic Growth and Life Expectancy",
+       subtitle = "Data points are country-years",
+       caption = "Source: Gapminder.")
+
+ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent, fill = continent)) + 
+  geom_point() +
+  geom_smooth(method = "loess") +
+  scale_x_log10()
+```
+
+```{r}
+ggplot(gapminder, aes(gdpPercap, lifeExp)) + 
+  geom_point(aes(color = continent)) +
+  geom_smooth(method = "loess") +
+  scale_x_log10()
+
+p +
+  geom_point(aes(color = log(pop))) +
+  scale_x_log10()
+```
+
+```{r save the plot}
+knitr::opts_chunk$set(fig.width = 8, fig.highlight = 5)
+```
+
+```{r fig.width=12, fig.height=9}
+p +
+  geom_point(aes(color = log(pop))) +
+  scale_x_log10()
+
+ggsave(filename = "example.png")
+```
+
 
 
 ## Show the Right Numbers
