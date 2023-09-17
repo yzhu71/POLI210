@@ -258,6 +258,10 @@ p_out <- p +
 ggsave(here("figure", "lifexp_vs_gdp_gradient.pdf"), plot = p_out)
 ```
 
+```{r}
+
+```
+
 
 
 ## Show the Right Numbers
