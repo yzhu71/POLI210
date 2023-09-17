@@ -5,7 +5,7 @@ date: "2023-09-10"
 output: github_document
 ---
 
-```{r setup,include = FALSE}
+```{r setup, include = FALSE}
 setwd("/Users/zhuyuhang/Desktop/Git/POLI210")
 
 library(tidyverse)

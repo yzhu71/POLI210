@@ -1,0 +1,13 @@
+---
+title: "HW_B1"
+author: "Yuhang Zhu"
+date: "2023-09-17"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+getwd()
+
+library(tidyverse)
+```
+

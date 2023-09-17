@@ -1,0 +1,76 @@
+---
+title: "Indiscriminate Violence and Insurgency"
+output: pdf_document
+---
+
+In this exercise, we analyze the relationship between indiscriminate
+violence and insurgent attacks using data about Russian artillery fire
+in Chechnya from 2000 to 2005. 
+
+This exercise is based on: Lyall, J. 2009. “[Does Indiscriminate Violence 
+Incite Insurgent Attacks?: Evidence from 
+Chechnya.](http://dx.doi.org/10.1177/0022002708330881)” 
+ *Journal of Conflict Resolution* 53(3): 331–62.
+    
+Some believe that
+indiscriminate violence increases insurgent attacks by creating more
+cooperative relationships between citizens and insurgents.  Others
+believe that indiscriminate violence can be effective in suppressing
+insurgents' activities.  The names and
+descriptions of variables in the data file `chechen.csv` are
+
+ Name                 Description
+ -------------------- ----------------------------------------------------------
+ `village`            Name of Chechnya village
+ `groznyy`            Variable indicating whether a village is in
+                      Groznyy (equal to 1) or not (equal to 0) 
+ `fire`               Whether Russians struck a village with artillery fire 
+                      (equal to 1) or not (equal to 0)
+ `deaths`             Estimated number of individuals killed during Russian artillery fire 
+ `preattack`          The number of insurgent attacks before Russian artillery fire 
+ `postattack`         The number of insurgent attacks after Russian artillery fire 
+
+## Question 1
+  
+How many villages were and were not attacked by Russians?  Give the overall breakdown.
+  
+## Question 2
+
+Did Russian artillery result in a greater number of deaths in
+  Groznyy compared to the villages outside of Groznyy?  Conduct the
+  comparison in terms of the mean and median.
+
+## Question 3
+    
+Compare the average number of insurgent attacks after Russian
+  fire for villages hit by artillery fire and those that were not hit.
+  Also, compare the quartiles. Would you conclude that indiscriminate
+  violence reduces insurgent attacks?  Why or why not?
+    
+## Question 4
+
+What is the difference in the average number of insurgent
+  attacks before Russian artillery fire between the villages that were
+  hit by artillery fire and those that were not?  What does this tell
+  you about the validity of comparison behind the identification
+  strategy used for the previous question?
+
+## Question 5   
+    
+Create a new variable called `diffattack` by calculating
+  the difference in the number of insurgent attacks before and after
+  the Russian artillery fire.  Among the villages shelled by Russians,
+  did the number of insurgent attacks increase after the artillery
+  fire?  Give a substantive interpretation of the result.
+
+## Question 6
+
+Compute the mean difference in the `diffattack` variable
+  between villages shelled and villages not shelled.  Does this
+  analysis support the claim that indiscriminate violence reduces
+  insurgency attacks?  Is the validity of this analysis improved over
+  the analyses you conducted in the previous questions?  Why or why
+  not?  Specifically, explain what additional factor this analysis
+  addresses when compared to the analyses conducted in the previous
+  questions.
+
