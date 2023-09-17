@@ -315,7 +315,124 @@ p + geom_point(alpha = 0.2) +
 ```
 
 ```{r}
+ggplot(gss_sm, aes(bigregion)) +
+  geom_bar()
 
+ggplot(gss_sm, aes(bigregion)) +
+  geom_bar(aes(y = ..prop.., group = 1))
+```
+
+```{r}
+table(gss_sm$religion)
+
+ggplot(gss_sm, aes(religion, color = religion)) +
+  geom_bar()
+
+ggplot(gss_sm, aes(religion, fill = religion)) +
+  geom_bar() +
+  guides(fill = FALSE)
+
+```
+
+```{r}
+ggplot(gss_sm, aes(bigregion, fill = religion)) +
+  geom_bar()
+
+ggplot(gss_sm, aes(bigregion, fill = religion)) +
+  geom_bar(position = "fill")
+
+ggplot(gss_sm, aes(bigregion, fill = religion)) +
+  geom_bar(position = "dodge", aes(y = ..prop..))
+
+ggplot(gss_sm, aes(bigregion, fill = religion)) +
+  geom_bar(position = "dodge", aes(y = ..prop.., group = religion))
+
+ggplot(gss_sm, aes(religion)) +
+  geom_bar(position = "dodge", aes(y = ..prop.., group = bigregion)) +
+  facet_wrap(~ bigregion, ncol = 2)
+```
+
+```{r}
+ggplot(midwest, aes(area)) +
+  geom_histogram()
+
+ggplot(midwest, aes(area)) +
+  geom_histogram(bins =10)
+
+oh_wi <- c("OH", "WI")
+ggplot(subset(midwest, subset = state %in% oh_wi),
+       aes(percollege, fill = state)) +
+  geom_histogram(alpha = 0.4, bins = 20)
+
+ggplot(midwest, aes(area)) +
+  geom_density()
+
+ggplot(midwest, aes(area, fill = state, color = state)) +
+  geom_density(alpha = 0.3)
+
+ggplot(subset(midwest, subset = state %in% oh_wi),
+       aes(area, fill = state, color = state)) +
+  geom_density(alpha = 0.3, aes(y = ..scaled..))
+```
+
+```{r}
+ggplot(titanic, aes(fate, percent, fill = sex)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  theme(legend.position = "top")
+```
+
+```{r fig.width=12}
+oecd_sum
+
+ggplot(oecd_sum, aes(year, diff, fill = hi_lo)) +
+  geom_col() +
+  guides(fill = FALSE) +
+  labs(x = NULL, y = "Difference in Years",
+       title = "The US Life Expectancy Gap",
+       subtitle = "Difference between US and OECD average life expectancies, 1960-2015",
+       caption = "Data: OECD. After a chart by Christopher Ingraham, Washington Post, December 27th 2017.")
+```
+
+```{r fig.width = 12, fig.height = 6}
+ggplot(gapminder, aes(pop, gdpPercap)) +
+  geom_line(color = "gray75") +
+  geom_smooth(color = "#01847F", se = F) +
+  scale_x_log10(labels = scales::unit_format(unit = "M", scale = 1e-6)) +
+  scale_y_log10(labels = scales::unit_format(unit = "K", scale = 1e-3)) +
+  facet_wrap(~ year) +
+  labs(x = "Population",
+       y = "GDP per Capita")
+
+ggsave(here("figure", "pop_gdppercap.png"), width = 12)
+
+ggplot(gss_sm, aes(age, childs)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_grid(sex ~ race)
+
+ggplot(gss_sm, aes(age, childs)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_grid(~ sex + race)
+
+ggplot(gss_sm, aes(age, childs)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_wrap(~ sex + race)
+
+ggplot(gapminder, aes(gdpPercap, lifeExp)) +
+  geom_smooth(method = "gam", se =F) +
+  geom_bin2d(alpha = 0.7, bins = c(100, 50)) +
+  labs(title = "2D Histogram using geom_bin2d()",
+       x = "GDP per Capita",
+       y = "Life Expectancy")
+
+ggplot(midwest, aes(percbelowpoverty, percollege)) +
+  geom_point(aes(color = state), alpha = 0.5) +
+  geom_density_2d() +
+  labs(title = "Density Estimates with Points",
+       x = "Percent Below Poverty Line",
+       y = "Percent College Educated")
 ```
 
 

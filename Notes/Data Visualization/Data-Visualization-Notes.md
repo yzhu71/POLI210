@@ -637,6 +637,269 @@ p + geom_point(alpha = 0.2) +
 
 ![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
+``` r
+ggplot(gss_sm, aes(bigregion)) +
+  geom_bar()
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(bigregion)) +
+  geom_bar(aes(y = ..prop.., group = 1))
+```
+
+    ## Warning: The dot-dot notation (`..prop..`) was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `after_stat(prop)` instead.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->
+
+``` r
+table(gss_sm$religion)
+```
+
+    ## 
+    ## Protestant   Catholic     Jewish       None      Other 
+    ##       1371        649         51        619        159
+
+``` r
+ggplot(gss_sm, aes(religion, color = religion)) +
+  geom_bar()
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(religion, fill = religion)) +
+  geom_bar() +
+  guides(fill = FALSE)
+```
+
+    ## Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as
+    ## of ggplot2 3.3.4.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-21-2.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(bigregion, fill = religion)) +
+  geom_bar()
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(bigregion, fill = religion)) +
+  geom_bar(position = "fill")
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-22-2.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(bigregion, fill = religion)) +
+  geom_bar(position = "dodge", aes(y = ..prop..))
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-22-3.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(bigregion, fill = religion)) +
+  geom_bar(position = "dodge", aes(y = ..prop.., group = religion))
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-22-4.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(religion)) +
+  geom_bar(position = "dodge", aes(y = ..prop.., group = bigregion)) +
+  facet_wrap(~ bigregion, ncol = 2)
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-22-5.png)<!-- -->
+
+``` r
+ggplot(midwest, aes(area)) +
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+``` r
+ggplot(midwest, aes(area)) +
+  geom_histogram(bins =10)
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
+
+``` r
+oh_wi <- c("OH", "WI")
+ggplot(subset(midwest, subset = state %in% oh_wi),
+       aes(percollege, fill = state)) +
+  geom_histogram(alpha = 0.4, bins = 20)
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-23-3.png)<!-- -->
+
+``` r
+ggplot(midwest, aes(area)) +
+  geom_density()
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-23-4.png)<!-- -->
+
+``` r
+ggplot(midwest, aes(area, fill = state, color = state)) +
+  geom_density(alpha = 0.3)
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-23-5.png)<!-- -->
+
+``` r
+ggplot(subset(midwest, subset = state %in% oh_wi),
+       aes(area, fill = state, color = state)) +
+  geom_density(alpha = 0.3, aes(y = ..scaled..))
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-23-6.png)<!-- -->
+
+``` r
+ggplot(titanic, aes(fate, percent, fill = sex)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  theme(legend.position = "top")
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+
+``` r
+oecd_sum
+```
+
+    ## # A tibble: 57 × 5
+    ## # Groups:   year [57]
+    ##     year other   usa  diff hi_lo
+    ##    <int> <dbl> <dbl> <dbl> <chr>
+    ##  1  1960  68.6  69.9 1.30  Below
+    ##  2  1961  69.2  70.4 1.20  Below
+    ##  3  1962  68.9  70.2 1.30  Below
+    ##  4  1963  69.1  70   0.900 Below
+    ##  5  1964  69.5  70.3 0.800 Below
+    ##  6  1965  69.6  70.3 0.700 Below
+    ##  7  1966  69.9  70.3 0.400 Below
+    ##  8  1967  70.1  70.7 0.600 Below
+    ##  9  1968  70.1  70.4 0.300 Below
+    ## 10  1969  70.1  70.6 0.5   Below
+    ## # ℹ 47 more rows
+
+``` r
+ggplot(oecd_sum, aes(year, diff, fill = hi_lo)) +
+  geom_col() +
+  guides(fill = FALSE) +
+  labs(x = NULL, y = "Difference in Years",
+       title = "The US Life Expectancy Gap",
+       subtitle = "Difference between US and OECD average life expectancies, 1960-2015",
+       caption = "Data: OECD. After a chart by Christopher Ingraham, Washington Post, December 27th 2017.")
+```
+
+    ## Warning: Removed 1 rows containing missing values (`position_stack()`).
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+
+``` r
+ggplot(gapminder, aes(pop, gdpPercap)) +
+  geom_line(color = "gray75") +
+  geom_smooth(color = "#01847F", se = F) +
+  scale_x_log10(labels = scales::unit_format(unit = "M", scale = 1e-6)) +
+  scale_y_log10(labels = scales::unit_format(unit = "K", scale = 1e-3)) +
+  facet_wrap(~ year) +
+  labs(x = "Population",
+       y = "GDP per Capita")
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+
+``` r
+ggsave(here("figure", "pop_gdppercap.png"), width = 12)
+```
+
+    ## Saving 12 x 6 in image
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+``` r
+ggplot(gss_sm, aes(age, childs)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_grid(sex ~ race)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 18 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 18 rows containing missing values (`geom_point()`).
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-26-2.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(age, childs)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_grid(~ sex + race)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 18 rows containing non-finite values (`stat_smooth()`).
+    ## Removed 18 rows containing missing values (`geom_point()`).
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-26-3.png)<!-- -->
+
+``` r
+ggplot(gss_sm, aes(age, childs)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_wrap(~ sex + race)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 18 rows containing non-finite values (`stat_smooth()`).
+    ## Removed 18 rows containing missing values (`geom_point()`).
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-26-4.png)<!-- -->
+
+``` r
+ggplot(gapminder, aes(gdpPercap, lifeExp)) +
+  geom_smooth(method = "gam", se =F) +
+  geom_bin2d(alpha = 0.7, bins = c(100, 50)) +
+  labs(title = "2D Histogram using geom_bin2d()",
+       x = "GDP per Capita",
+       y = "Life Expectancy")
+```
+
+    ## `geom_smooth()` using formula = 'y ~ s(x, bs = "cs")'
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-26-5.png)<!-- -->
+
+``` r
+ggplot(midwest, aes(percbelowpoverty, percollege)) +
+  geom_point(aes(color = state), alpha = 0.5) +
+  geom_density_2d() +
+  labs(title = "Density Estimates with Points",
+       x = "Percent Below Poverty Line",
+       y = "Percent College Educated")
+```
+
+![](Data-Visualization-Notes_files/figure-gfm/unnamed-chunk-26-6.png)<!-- -->
+
 ## Graph Tables, Make Labels, Add Notes
 
 ## Work with Models
