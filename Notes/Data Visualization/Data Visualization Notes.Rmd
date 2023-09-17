@@ -245,9 +245,18 @@ p +
   geom_point(aes(color = log(pop))) +
   scale_x_log10()
 
-ggsave(filename = "example.png")
-```
+# ggsave(filename = "save_example.png")
 
+# ggsave(filename = "save_example.pdf")
+
+p_out <- p +
+  geom_point(aes(color = log(pop))) +
+  scale_x_log10()
+
+# ggsave("my_figure.pdf", plot = p_out)
+
+ggsave(here("figure", "lifexp_vs_gdp_gradient.pdf"), plot = p_out)
+```
 
 
 ## Show the Right Numbers
