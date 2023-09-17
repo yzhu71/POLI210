@@ -164,9 +164,9 @@ print(round(p_exp2, 2))
 ```
 ## Question 2
 
-In **Experiment 1**, the average number of downloads per user in the treatment group (*Social Influence*) is `r 1.1-0.94` lower than control group (*Independent*), while the average number of listens per user is `3.51-1.71` higher. These results suggest that users under *Social influence* have a lower average number of downloads compared to those in the *Independent* group. Conversely, the average number of songs listened to is higher than that for users in the *Independent* group. In **Experiment 2**, the results remain.
+In **Experiment 1**, the average number of downloads per user in the treatment group (*Social Influence*) is `r 1.1-0.94` lower than control group (*Independent*), while the average number of listens per user is `r 3.51-1.71` higher. These results suggest that users under *Social influence* have a lower average number of downloads compared to those in the *Independent* group. Conversely, the average number of songs listened to is higher than that for users in the *Independent* group. In **Experiment 2**, the results remain.
 
-```{r q2_music}
+```{r q2_music_1}
 
 table(users1$world_id)
 
@@ -213,6 +213,25 @@ m_exp2_lis_indep <- sum(songs2$listen_soc) / 1446
 print(round(m_exp2_lis_indep, 2))
 ```
 
+```{r q2_music_1}
+# I am not sure, because this method cannot repeat the `listens`.
+
+# exp1
+m_exp1_down <- users1 %>% 
+  group_by(world_id) %>% 
+  summarise(mean_down = mean(download)) %>% 
+  round(2)
+
+m_exp1_down
+
+# exp2
+m_exp2_down <- users2 %>% 
+  group_by(world_id) %>% 
+  summarise(mean_down = mean(download)) %>% 
+  round(2)
+
+m_exp2_down
+```
 
 ## Question 3
 
