@@ -1,6 +1,8 @@
 ---
 title: "Inequality of Success in Online Music Markets"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 The Music Lab Project is a web based randomized experiment designed to investigate the role of social influence in the market success of songs. This project examines whether songs becomes "hits" not only because of their inherent *musical* qualities but also because of a *social* process: when people hear that a song is popular, they become more inclined to like the song themselves. This exercise is in part based on:
@@ -39,7 +41,7 @@ The researchers hypothesize that the existence of social influence contributes t
 
 Within each experminent, compute the proportion of users assigned separately for the *Social Influence* and *Independent* condition. Summarize the results as a table of proportions for each experiment.
 
-In **Experiment 1**, the proportion of users assigned to the *Social Influence* condition was `r round(p_exp1[2], digits=3)`, while `r round(p_exp1[1], digits=3)` where assigned to the *Independent* condition. Similarly, in **Experiment 2**, the proportion of users assigned to the *Social Influence* condition where `r round(p_exp2[2], digits=3)`, while `r round(p_exp2[1], digits=3)` where assigned to the *Independent* condition. In both experiments, about 2/3 are assigned to the *Social Influence* condition.
+In **Experiment 1**, the proportion of users assigned to the *Social Influence* condition was r round(p_exp1[2], digits=3)`, while r round(p_exp1[1], digits=3)` where assigned to the *Independent* condition. Similarly, in **Experiment 2**, the proportion of users assigned to the *Social Influence* condition where r round(p_exp2[2], digits=3)`, while r round(p_exp2[1], digits=3)` where assigned to the *Independent* condition. In both experiments, about 2/3 are assigned to the *Social Influence* condition.
 
 ## Question 2
 
