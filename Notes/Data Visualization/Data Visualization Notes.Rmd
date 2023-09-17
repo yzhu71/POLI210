@@ -258,6 +258,28 @@ p_out <- p +
 ggsave(here("figure", "lifexp_vs_gdp_gradient.pdf"), plot = p_out)
 ```
 
+```{r}
+ggplot(gapminder, aes(gdpPercap, lifeExp)) + 
+  geom_smooth(method = "loess") +
+  geom_point(aes(color = continent)) +
+  scale_x_log10()
+
+ggplot(gapminder, aes(lifeExp, pop, color = continent, fill = continent)) + 
+  geom_point(alpha = 0.5) +
+  geom_smooth(se=F) +
+  scale_y_log10()
+
+ggplot(gapminder, aes(lifeExp, pop, color = year)) + 
+  geom_point(alpha = 0.5) +
+  geom_smooth(se=F) +
+  scale_y_log10()
+
+ggplot(gapminder, aes(lifeExp, pop, color = factor(year))) + 
+  geom_point(alpha = 0.5) +
+  geom_smooth(se=F) +
+  scale_y_log10()
+```
+
 
 ## Show the Right Numbers
 
