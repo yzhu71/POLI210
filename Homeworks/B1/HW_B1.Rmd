@@ -213,7 +213,7 @@ m_exp2_lis_indep <- sum(songs2$listen_soc) / 1446
 print(round(m_exp2_lis_indep, 2))
 ```
 
-```{r q2_music_1}
+```{r q2_music_2}
 # I am not sure, because this method cannot repeat the `listens`.
 
 # exp1
