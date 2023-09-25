@@ -267,5 +267,96 @@ abline(h=mean(dis1$leave), lty="dashed")
 cor(dis1$high_education, dis1$leave)
 ```
 
+# 4. Predicting Outcomes Using Linear Regression
+
+```{r}
+co <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/countries.csv")
+
+head(co)
+
+dim(co)
+```
+
+```{r}
+ggplot(co, aes(prior_gdp, gdp)) +
+  geom_point()
+```
+
+```{r}
+cor(co$prior_gdp, co$gdp)
+```
+
+```{r}
+plot(co$prior_gdp, co$gdp)
+
+lm(co$gdp ~ co$prior_gdp)
+
+fit <- lm(gdp ~ prior_gdp, co)
+
+abline(fit)
+```
+
+```{r}
+co <- co %>% 
+  mutate(
+    log_gdp = log(gdp),
+    log_prior_gdp = log(prior_gdp))
+
+hist(co$gdp)
+
+hist(co$log_gdp)
+
+hist(co$prior_gdp)
+
+hist(co$log_prior_gdp)
+```
+
+```{r}
+ggplot(co, aes(prior_gdp, gdp)) +
+  geom_point()
+
+ggplot(co, aes(log_prior_gdp, log_gdp)) +
+  geom_point()
+
+cor(co$log_prior_gdp, co$log_gdp)
+```
+```{r}
+lm(log_gdp ~ log_prior_gdp, co)
+```
+
+```{r}
+co <- co %>% 
+  mutate(
+    gdp_change = ((gdp - prior_gdp) / prior_gdp) * 100,
+    light_change = ((light - prior_light) / prior_light) * 100)
+```
+
+```{r}
+hist(co$gdp_change)
+
+hist(co$light_change)
+```
+
+```{r}
+ggplot(co, aes(light_change, gdp_change)) +
+  geom_point()
+```
+
+```{r}
+cor(co$gdp_change, co$light_change)
+```
+
+```{r}
+lm(gdp_change ~ light_change, co)
+```
+
+```{r}
+cor(co$gdp, co$prior_gdp) ^ 2
+
+cor(co$log_gdp, co$log_prior_gdp) ^ 2
+
+cor(co$gdp_chaneg, co$light_change) ^ 2
+```
+
 
 
