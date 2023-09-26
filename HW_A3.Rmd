@@ -1,0 +1,178 @@
+---
+title: "HW_A3"
+author: "Yuhang Zhu"
+date: "2023-09-26"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+getwd()
+
+library(tidyverse)
+```
+
+```{r import, include = FALSE}
+anes <- read.csv("A3/ANES.csv")
+
+head(anes)
+
+dim(anes)
+```
+
+# Estimating the Bias in Self-Reported Turnout Part II: Computing and Interpreting Means
+
+## Question 1
+
+**Create a new variable called VEP_turnout deﬁned as the number of ballots oﬃcially cast in the election divided by the voting eligible population and multiplied by 100. Make sure to store this new variable in the existing dataframe named anes by using the character $. (See page 41 of DSS, to learn how to use the character $ to identify a variable inside a dataframe not just to access it but also to create it.) (5 points)**
+
+```{r part2_q1}
+anes$VEP_turnout = (anes$votes / anes$VEP) *100
+
+# also:
+# anes <- anes %>% 
+# mutate(VEP_turnout = (votes / VEP) * 100)
+```
+
+## Question 2
+
+**Use the function head() to look at the ﬁrst few observations again to ensure that you have created the new variable, VEP_turnout, correctly. Is the ﬁrst value of VEP_turnout what one would expect, given the ﬁrst values of votes and VEP? What is the unit of measurement of VEP_turnout? (5 points)**
+
+VEP_turnout represented that 54.2% voting eligible population voted in 1980. The unit of measurement of VEP_turnout is percentage point.
+
+```{r part2_q2}
+head(anes)
+```
+
+## Question 3
+
+**Now, create a new variable called VAP_turnout deﬁned as the number of ballots oﬃcially cast in the election divided by the voting age population and multiplied by 100. Make sure to store this new variable in the existing dataframe named anes. (5 points)**
+
+```{r part2_q3}
+anes <- anes %>% 
+  mutate(VAP_turnout = (votes / VAP) * 100)
+```
+
+## Question 4
+
+**Use the function head() to look at the ﬁrst few observations again to ensure that you have created the new variable, VAP_turnout, correctly. Is the ﬁrst value of VAP_turnout what one would expect, given the ﬁrst values of votes and VAP? What is the unit of measurement of VAP_turnout? (5 points)**
+
+VAP_turnout represented that 52.6% voting age population voted in 1980. The unit of measurement of VEP_turnout is percentage point.
+
+```{r part2_q4}
+head(anes)
+```
+
+## Question 5
+
+**Looking at the ﬁrst few observations of the two new variables, VEP_turnout and VAP_turnout, shown by the function head() above, can you tell whether one of them always contains higher values than the other? Why do you think that is? Which of the two variables do you think most accurately measures turnout? (5 points)**
+
+VEP_turnout is always contains higher values than VAP_turnout, since the value of VAP is higher than VEP while the value of votes is consistent. VEP_turnout measures turnout more accurate because it exclude those who are not eligible to vote in US.
+
+## Question 6
+
+**Use the function mean(), to compute the average value of VEP_turnout among the 13 federal elections in the dataset. Please provide a full substantive interpretation of what this average means and make sure to provide the unit of measurement. (10 points)**
+
+The average turnout of 13 federal elections is 48.0%, meaning 48.0% voting eligible population voted, on average.
+
+```{r part2_q6}
+m_vep_turnout =  mean(anes$VEP_turnout)
+
+m_vep_turnout
+```
+
+
+## Question 7
+
+**Use the function mean(), to compute the average value of ANES_turnout among the 13 federal elections in the dataset. Please provide a full substantive interpretation of what this average means and make sure to provide the unit of measurement. (10 points)**
+
+The average ANES turnout of 13 federal elections is 64.8%, representing 64.8% ANES respondents reported to vote in the election, on average.
+
+```{r part2_q7}
+m_anes_turnout =  mean(anes$ANES_turnout)
+
+m_anes_turnout
+```
+
+
+## Question 8
+
+**When comparing the average value of ANES_turnout to the average value of VEP_turnout, do you ﬁnd any evidence of people lying about their voting behavior? (5 points)**
+
+If the ANES sample is unbiased and thus representative of the United States, it can be inferred that there are respondents who are untruthful. However, drawing such a conclusion is not feasible if the ANES sample is biased.
+
+```{r part2_q8}
+anes <- anes %>% 
+  mutate(diff = ANES_turnout - VEP_turnout)
+
+m_diff = mean(anes$diff)
+
+m_diff
+```
+
+# Estimating the Bias in Self-Reported Turnout Part III: Subsetting Variables and Creating Histograms
+
+## Question 1
+
+**Create a new variable called turnout_bias deﬁned as the diﬀerence between ANES_turnout and VEP_turnout. Make sure to store this new variable in the existing dataframe named anes by using the $ character. (10 points)**
+
+```{r part3_q1}
+anes$turnout_bias <- anes$ANES_turnout - anes$VEP_turnout
+```
+
+## Question 2
+
+**Use the function head() to look at the ﬁrst few observations again to ensure that you have created the new variable, turnout_bias, correctly. Is the ﬁrst value of turnout_bias what one would expect, given the ﬁrst values of ANES_turnout and VEP_turnout? What is the unit of measurement of turnout_bias? (5 points)**
+
+In the 1980 presidential election, ANES_turnout was 16.8% higher than VEP_turnout.
+
+```{r part3_q2}
+head(anes)
+```
+
+## Question 3
+
+**Create a visualization of the distribution of the variable turnout_bias. Are all the values positive? And, does this variable look normally distributed? (10 points)**
+
+All the values are positive, and the variable looks normally distributed.
+
+```{r part3_q3}
+hist(anes$turnout_bias, 
+     xlim = c(5, 25),
+     main = "Distribution of Turnout Bias", xlab = "Turnout Bias", ylab = "Frequency")
+```
+
+## Question 4
+
+**Let’s investigate whether the bias is larger in presidential elections than in midterm elections.**
+
+*a. For the presidential elections in the dataset, calculate the means of (i) ANES_turnout, (ii) VEP_turnout, and (ii) turnout_bias. Then, provide a substantive interpretation of what each of the averages mean, including the unit of measurement. (10 points)*
+
+In presidential elections, the ANES data shows that, on average, 73.3% of respondents reported voting, while only 55.2% of those voting eligible population actually voted. This results in a discrepancy of 18.1%.
+
+```{r part3_q4_a}
+m_prsdt <- anes %>% 
+  group_by(presidential) %>% 
+  summarise(m_ANES_turnout = mean(ANES_turnout),
+            m_VEP_turnout = mean(VEP_turnout),
+            m_turnout_bias = mean(turnout_bias))
+
+m_prsdt
+```
+
+*b. Now, for the midterm elections in the dataset, calculate the means of (i) ANES_turnout, (ii) VEP_turnout, and (ii) turnout_bias. Then, provide a substantive interpretation of what each of the averages mean, including the unit of measurement. (10 points)*
+
+In midterm elections, the ANES data shows that, on average, 55.0% of respondents reported voting, while only 39.6% of those voting eligible population actually voted. This results in a discrepancy of 15.4%.
+
+```{r part3_q4_b}
+m_mid <- anes %>% 
+  group_by(midterm) %>% 
+  summarise(m_ANES_turnout = mean(ANES_turnout),
+            m_VEP_turnout = mean(VEP_turnout),
+            m_turnout_bias = mean(turnout_bias))
+
+m_mid
+```
+
+*c. What can you conclude by comparing the results from question 4a to those from question 4b. (5 points)*
+
+Firstly, the average turnout for presidential elections is higher than for midterm elections, whether measured by `ANES_turnout` or `VEP_turnout`. Secondly, the average `ANES_turnout` surpasses `VEP_turnout` in both types of elections. Lastly, the turnout bias is even bigger in presidential elections than in midterm elections.
