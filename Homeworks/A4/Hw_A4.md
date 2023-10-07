@@ -229,3 +229,15 @@ odds = 1.6315789
 odds ratio = 6
 
 #### 26
+
+An unemployed person is 2.42 times more likely to vote for the National
+Front in French election as an employed person.
+
+An unemployed person is 142% more likely to vote for the National Front
+in French election as an employed person.
+
+A person with a college degree is 0.38 times as likely to vote for the
+National Front compared to those who did not complete high school.
+
+A person with a college degree is 62% less likely to vote for the
+National Front compared to those who did not complete high school.
