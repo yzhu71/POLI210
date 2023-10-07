@@ -4,6 +4,7 @@ author: "Yuhang Zhu"
 date: "2023-09-06"
 output: github_document
 ---
+
 # 1. Introduction
 
 ```{r install, include=FALSE, warning = F}
@@ -357,6 +358,8 @@ cor(co$log_gdp, co$log_prior_gdp) ^ 2
 
 cor(co$gdp_chaneg, co$light_change) ^ 2
 ```
+
+# 6. Probability
 
 
 
