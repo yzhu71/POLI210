@@ -8,6 +8,7 @@ output:
 ---
 
 ### Chapter 1 Probability and Counting
+
 1. De Morgan's laws:
 * $(A \cup B)^c = A^c \cap B^c$
 * $(A \cap B)^c = A^c \cup B^c$
@@ -74,6 +75,10 @@ $$ P(A \cap B) = P(B)P(A|B) = P(A)P(B|A) $$
 
 3. Bayes’ rule
 $$ P(A|B) = \frac{P(B|A)P(A)}{P(B)} $$
+
+4. Odds form of Beyes' rule
+$$ \frac{P(A|B)}{P(A^c|B)} = \frac{P(B|A)}{P(B|A^c)}\frac{P(A)}{P(A^c)} $$
+
 
 
 
