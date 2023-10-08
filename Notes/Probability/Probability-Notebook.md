@@ -8,6 +8,7 @@ output:
 ---
 
 ### Chapter 1 Probability and Counting
+
 1. De Morgan's laws:
 * $(A \cup B)^c = A^c \cap B^c$
 * $(A \cap B)^c = A^c \cup B^c$
@@ -79,16 +80,87 @@ $$ P(A \cap B) = P(B)P(A|B) = P(A)P(B|A) $$
 
 3. Bayes’ rule
 $$ P(A|B) = \frac{P(B|A)P(A)}{P(B)} $$
+$$ P(A|B) = \frac{P(B|A)P(A)}{P(B|A)P(A) + P(B|\bar{A})P(\bar{A})} $$
+
+$$ P(A|B, E) = \frac{P(B|A, E)P(A|E)}{P(B|E)} $$
+
+4. Odds form of Beyes' rule (likelihood ratio)
+$$ \frac{P(A|B)}{P(A^c|B)} = \frac{P(B|A)}{P(B|A^c)}\frac{P(A)}{P(A^c)} $$
+
+5. Law of total probability (LOTP)
+$$ P(B) = \sum_{i=1}^{n}P(B|A_i)P(A_i) $$
+
+$$ P(B|E) = \sum_{i=1}^{n}P(B|A_i, E)P(A_i|E) $$
+
+6. Independence of two events
+Events A and B are independent if
+$$ P(A \cap B) = P(A)P(B) $$
+If P(A) > 0 and P(B) > 0, then this is equivalent to
+$$ P(A|B) = P(A) $$
+
+7. Independence of many events)
+* For $n$ events $A_1, A_2, \dots, A_n$ to be *independent*, we require any pair to satisfy $P(A_i \cap A_j) = P(A_i)P(A_j)$ (for $i \neq j$), any triplet to satisfy $P(A_i \cap A_j \cap A_k) = P(A_i)P(A_j)P(A_k)$ (for $i, j, k$ distinct), and similarly for all quadruplets, quintuplets, and so on.
+
+8. Conditional independence
+* Events *A* and *B* are said to be conditionally independent given *E* if $P(A \cap B|E) = P(A|E)P(B|E)$.
 
 
+```r
+# Simulating the Monty Hall Problem in R
 
+# Define the number of simulations
+sims <- 100000
 
+# Initialize a vector to store results
+win_without_switch <- numeric(sims)
+win_with_switch <- numeric(sims)
 
+# Simulate the Monty Hall problem
+for (i in 1:sims) {
+  # Step 1: Contestant chooses a door
+  contestant_choice <- sample(1:3, 1)
+  
+  # Step 2: Monty chooses a door
+  # Monty knows where the car is and always chooses a goat
+  # If contestant's initial choice has a car, Monty chooses from the remaining two doors randomly
+  # If contestant's initial choice has a goat, Monty chooses the other goat
+  car_location <- sample(1:3, 1)
+  if (contestant_choice == car_location) {
+    monty_choice <- sample(setdiff(1:3, contestant_choice), 1)
+  } else {
+    monty_choice <- setdiff(1:3, c(contestant_choice, car_location))
+  }
+  
+  # Step 3: Contestant switches door
+  # If the contestant switches, they change to the remaining door that Monty didn't open
+  final_choice_switch <- setdiff(1:3, c(contestant_choice, monty_choice))
+  
+  # Step 4: Determine if the contestant wins
+  # Without switching
+  win_without_switch[i] <- contestant_choice == car_location
+  
+  # With switching
+  win_with_switch[i] <- final_choice_switch == car_location
+}
 
+# Calculate win rates
+win_rate_no_switch <- mean(win_without_switch)
+win_rate_switch <- mean(win_with_switch)
 
+win_rate_no_switch
+```
 
+```
+## [1] 0.33209
+```
 
+```r
+win_rate_switch
+```
 
+```
+## [1] 0.66791
+```
 
 
 

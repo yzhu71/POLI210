@@ -443,8 +443,86 @@ of A given B, denoted by P(A|B), is deﬁned as: <span class="math display">\[ P
 <li><p>For any events A and B with positive probabilities, <span class="math display">\[ P(A \cap B) = P(B)P(A|B) = P(A)P(B|A)
 \]</span></p></li>
 <li><p>Bayes’ rule <span class="math display">\[ P(A|B) =
-\frac{P(B|A)P(A)}{P(B)} \]</span></p></li>
+\frac{P(B|A)P(A)}{P(B)} \]</span> <span class="math display">\[ P(A|B) =
+\frac{P(B|A)P(A)}{P(B|A)P(A) + P(B|\bar{A})P(\bar{A})}
+\]</span></p></li>
 </ol>
+<p><span class="math display">\[ P(A|B, E) = \frac{P(B|A,
+E)P(A|E)}{P(B|E)} \]</span></p>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Odds form of Beyes’ rule (likelihood ratio) <span class="math display">\[ \frac{P(A|B)}{P(A^c|B)} =
+\frac{P(B|A)}{P(B|A^c)}\frac{P(A)}{P(A^c)} \]</span></p></li>
+<li><p>Law of total probability (LOTP) <span class="math display">\[
+P(B) = \sum_{i=1}^{n}P(B|A_i)P(A_i) \]</span></p></li>
+</ol>
+<p><span class="math display">\[ P(B|E) = \sum_{i=1}^{n}P(B|A_i,
+E)P(A_i|E) \]</span></p>
+<ol start="6" style="list-style-type: decimal">
+<li><p>Independence of two events Events A and B are independent if
+<span class="math display">\[ P(A \cap B) = P(A)P(B) \]</span> If P(A)
+&gt; 0 and P(B) &gt; 0, then this is equivalent to <span class="math display">\[ P(A|B) = P(A) \]</span></p></li>
+<li><p>Independence of many events)</p></li>
+</ol>
+<ul>
+<li>For <span class="math inline">\(n\)</span> events <span class="math inline">\(A_1, A_2, \dots, A_n\)</span> to be
+<em>independent</em>, we require any pair to satisfy <span class="math inline">\(P(A_i \cap A_j) = P(A_i)P(A_j)\)</span> (for <span class="math inline">\(i \neq j\)</span>), any triplet to satisfy <span class="math inline">\(P(A_i \cap A_j \cap A_k) =
+P(A_i)P(A_j)P(A_k)\)</span> (for <span class="math inline">\(i, j,
+k\)</span> distinct), and similarly for all quadruplets, quintuplets,
+and so on.</li>
+</ul>
+<ol start="8" style="list-style-type: decimal">
+<li>Conditional independence</li>
+</ol>
+<ul>
+<li>Events <em>A</em> and <em>B</em> are said to be conditionally
+independent given <em>E</em> if <span class="math inline">\(P(A \cap
+B|E) = P(A|E)P(B|E)\)</span>.</li>
+</ul>
+<pre class="r"><code># Simulating the Monty Hall Problem in R
+
+# Define the number of simulations
+sims &lt;- 100000
+
+# Initialize a vector to store results
+win_without_switch &lt;- numeric(sims)
+win_with_switch &lt;- numeric(sims)
+
+# Simulate the Monty Hall problem
+for (i in 1:sims) {
+  # Step 1: Contestant chooses a door
+  contestant_choice &lt;- sample(1:3, 1)
+  
+  # Step 2: Monty chooses a door
+  # Monty knows where the car is and always chooses a goat
+  # If contestant&#39;s initial choice has a car, Monty chooses from the remaining two doors randomly
+  # If contestant&#39;s initial choice has a goat, Monty chooses the other goat
+  car_location &lt;- sample(1:3, 1)
+  if (contestant_choice == car_location) {
+    monty_choice &lt;- sample(setdiff(1:3, contestant_choice), 1)
+  } else {
+    monty_choice &lt;- setdiff(1:3, c(contestant_choice, car_location))
+  }
+  
+  # Step 3: Contestant switches door
+  # If the contestant switches, they change to the remaining door that Monty didn&#39;t open
+  final_choice_switch &lt;- setdiff(1:3, c(contestant_choice, monty_choice))
+  
+  # Step 4: Determine if the contestant wins
+  # Without switching
+  win_without_switch[i] &lt;- contestant_choice == car_location
+  
+  # With switching
+  win_with_switch[i] &lt;- final_choice_switch == car_location
+}
+
+# Calculate win rates
+win_rate_no_switch &lt;- mean(win_without_switch)
+win_rate_switch &lt;- mean(win_with_switch)
+
+win_rate_no_switch</code></pre>
+<pre><code>## [1] 0.33209</code></pre>
+<pre class="r"><code>win_rate_switch</code></pre>
+<pre><code>## [1] 0.66791</code></pre>
 </div>
 
 
