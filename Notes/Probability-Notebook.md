@@ -74,3 +74,8 @@ mean(matches)
     If A and B are events with P(B) \> 0, then the conditional
     probability of A given B, denoted by P(A\|B), is deﬁned as:
     $$ P(A|B) = \frac{P(A \cap B)}{P(B)} $$
+
+2.  For any events A and B with positive probabilities,
+    $$ P(A \cap B) = P(B)P(A|B) = P(A)P(B|A) $$
+
+3.  Bayes’ rule $$ P(A|B) = \frac{P(B|A)P(A)}{P(B)} $$
