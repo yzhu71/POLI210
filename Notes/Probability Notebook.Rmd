@@ -2,7 +2,7 @@
 title: "Probability Notebook"
 author: "Yuhang Zhu"
 date: "2023-10-08"
-output: github_document
+output: html_document
 ---
 
 ### Chapter 1 Probability and Counting
