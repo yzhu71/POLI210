@@ -1,0 +1,69 @@
+---
+title: "B3 Homework"
+author: "POLI210"
+date: "2023-10-11"
+output: md_doc
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# B3 Homework: Probability
+
+For each of the problems in Blitzstein and Hwang, do the problem by hand, and type up your answer as best you can. Then solve the problem via simulation, like we went over in class.
+
+Some questions have answers online, which you can look up [here](https://projects.iq.harvard.edu/sites/projects.iq.harvard.edu/files/stat110/files/selected_solutions_blitzstein_hwang_probability_01.pdf). Try to do the problem without looking up the answer, but you can use the answers to check your simulation results.
+
+## Chapter 1 problems (1.9 exercises)
+
+### Problem 22
+
+### Problem 34
+
+## Chapter 2 problems (2.11 exercises)
+
+### Problem 2
+
+### Problem 32
+
+To answer both parts (a) and (b), simulate the four dice rolls 100,000 times.
+
+For each simulation (itteration of a for-loop), record how often each of the events in part (a) occur. Use this to answer part (a).
+
+For each simulation (itteration of a for-loop), also record how often $A > B$ occurs condition on $B > C$ occuring, and how often $B > C$ occurs conditional on $C > D$ occurring. Use this to answer part (b).
+
+### Problem 38 part (a)
+
+Only part (a) is required. However, kudos/respect if you can also answer part (b). If you want to simulate it, write the simulation as function that takes two arguments, `m` and `n`. Within the function, run a for-loop and then return the results. I've written some skeleton code for you below. See what answers you get for various values of `m` and `n`.
+
+```{r}
+part_b_sim <- function(m, n){
+  # Error messages if m and n are invalid numbers
+  if(n < 3){
+    return("error: n must be the number of doors >= 3")
+  }
+  if(m > n - 2 | m < 1){
+    return("error: m must be a number of goats that is >= 1 and <= n-2")
+  }
+  
+  # setting up values to store simulations
+  sims <- 1e5 # 100000 sims
+  result.switch <- result.noswitch <- rep(NA, sims) # vectors for storing sim results
+  
+  # create doors as in the original example, but with m goats and n-m cars,
+  # rather than 2 goats and 1 car.
+  doors <- c(rep("goat", m), rep("car", n - m))
+  
+  # for loop for simulations
+  for(i in 1:sims){
+    ## YOUR CODE GOES HERE ##
+  }
+  
+  # return a data frame with the two results
+  return(data.frame(no_switch_result = mean(result.noswitch == "car"),
+                    switch_result = mean(result.switch == "car")
+                    )
+  )
+}
+```
