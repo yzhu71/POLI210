@@ -9,9 +9,7 @@ Yuhang Zhu
 
 #### Solution
 
-$$
-\frac{3! \times 3!}{6!} = \frac{1}{20}  \ or \  0.05
-$$
+$\frac{3! \times 3!}{6!} = \frac{1}{20} \ or \  0.05$
 
 #### Simulation
 
@@ -41,9 +39,7 @@ print(round(prob, 2))
 
 #### Solution
 
-$$ 
-\frac{C(30, 5) \times C(25, 5) \times C(20, 5) \times C(15, 5) \times C(10, 5) \times C(5, 5)}{6^{30}} \approx 0.0004
-$$
+$\frac{C(30, 5) \times C(25, 5) \times C(20, 5) \times C(15, 5) \times C(10, 5) \times C(5, 5)}{6^{30}} \approx 0.0004$
 
 #### Simulation
 
@@ -69,7 +65,7 @@ prob <- count / sims
 prob
 ```
 
-    ## [1] 0.000413
+    ## [1] 0.00039
 
 ## Chapter 2 problems (2.11 exercises)
 
@@ -176,7 +172,7 @@ prbs_bc <- count_bc / sims
 print(round(prbs_bc, 2))
 ```
 
-    ## [1] 0.66
+    ## [1] 0.67
 
 ``` r
 prbs_cd <- count_cd / sims
@@ -190,7 +186,7 @@ prbs_da <- count_da / sims
 print(round(prbs_da, 2))
 ```
 
-    ## [1] 0.67
+    ## [1] 0.66
 
 #### (b)
 
@@ -206,8 +202,114 @@ $\therefore B > C \text{ is not independent of the event } C > D$
 
 ##### Simulation
 
+``` r
+sims <- 100000
+
+dice_a <- c(4, 4, 4, 4, 0, 0)
+dice_b <- c(3, 3, 3, 3, 3, 3)
+dice_c <- c(6, 6, 2, 2, 2, 2)
+dice_d <- c(5, 5, 5, 1, 1, 1)
+
+count_abc <- 0
+count_bcd <- 0
+
+for (i in 1:sims) {
+  outcome_a <- sample(dice_a, size = 1, replace = T)
+  outcome_b <- sample(dice_b, size = 1, replace = T)
+  outcome_c <- sample(dice_c, size = 1, replace = T)
+  outcome_d <- sample(dice_d, size = 1, replace = T)
+
+  if(outcome_a > outcome_b & outcome_b > outcome_c) {
+    count_abc <- count_abc + 1
+  }
+  
+  if(outcome_b > outcome_c & outcome_c > outcome_d) {
+    count_bcd <- count_bcd + 1
+  }
+}
+
+prbs_abc <- count_abc / sims
+print(round(prbs_abc, 2))
+```
+
+    ## [1] 0.44
+
+``` r
+prbs_bcd <- count_bcd / sims
+print(round(prbs_bcd, 2))
+```
+
+    ## [1] 0.33
+
 ### Problem 38 part (a)
 
 #### Solution
 
+Without loss of generality, we can assume the contestant picked door 1.
+Let $C_i$ be the event that the car is behind door $i$, for
+$i = 1, 2, 3, 4, 5, 6, 7$. By the law of total probability,
+
+$$
+P(get \ car) = P(get \ car | C_1) \times \frac{1}{7} + P(get \ car | C_2) \times \frac{1}{7} + \ldots + P(get \ car | C_7) \times \frac{1}{7}
+$$
+
+Suppose the contestant employs the switching strategy.
+
+- If the car is behind door 1, then switching will fail, so
+  $P(get \ car | C_1) = 0$.
+
+- If the car is behind door 2 to 7, then because Monty always reveals a
+  goat, the remaining 3 unopened door contain the car, so the
+  probability of winning by switching is $\frac{1}{3}$. Thus,
+
+$$
+P(get \ car) = 0 \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} = \frac{2}{7}
+$$ Suppose the contestant employs the non-switching strategy.
+
+- If the car is behind door 1, then non-switching will success, so
+  $P(get \ car | C_1) = \frac{1}{7}$.
+
+- If the car is behind door 2 to 7, then non-switching will always lose.
+
+Thus, you should employs the switching strategy.
+
+*Questions for Brad: how to imput number into this formula?*
+
+$$
+P(car|switch, win) = 
+  \frac{P(win|car, switch)P(car|switch)}{P(win|switch)} =
+  \frac{P(switch|win, car)P(win|car)}{P(switch|win)}
+$$
+
 #### Simulation
+
+``` r
+sims <- 100000
+doors <- c("goat", "goat", "goat", "goat", "goat", "goat", "car")
+result.switch <- result.noswitch <- rep(NA, sims)
+
+for (i in 1:sims) {
+  first <- sample(1:7, size = 1)
+  
+  result.noswitch[i] <- doors[first]
+  
+  remain <- doors[-first]
+
+  if (doors[first] == "car") 
+    monty <- sample(1:6, size=3)
+  else
+    monty <- sample((1:6)[remain == "goat"], 3)
+  
+  result.switch[i] <- sample(remain[-monty], 1)
+}
+
+mean(result.noswitch == "car")
+```
+
+    ## [1] 0.14411
+
+``` r
+mean(result.switch == "car")
+```
+
+    ## [1] 0.28888
