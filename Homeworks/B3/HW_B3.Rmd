@@ -319,7 +319,7 @@ $$
 #### Simulation
 ```{r q28b}
 ## Declaration: use ChatGPT to learn new functions, explain codes, and debug.
-## One confusing part is generating the number of cars and goats. From what I understand the question, I think we should create n doors, 1 cars, and n-1 goats;  since m is the number of doors with goats that Monty opens, not the number of all actual doors with goats.
+## One confusing part is generating the number of cars and goats. From what I understand the question, I think we should create n doors, 1 car, and n-1 goats;  since m is the number of doors with goats that Monty opens, not the number of all actual doors with goats.
 ## The most difficult part  for me is the subsetting (removing the first and Monty from the doors), because one is a number sequence(1:n), and another is a character sequence("goat", "car"). By using setdiff(), I finally solved this problem.
 
 part_b_sim <- function(m, n){
