@@ -65,7 +65,7 @@ prob <- count / sims
 prob
 ```
 
-    ## [1] 0.000413
+    ## [1] 0.000376
 
 ## Chapter 2 problems (2.11 exercises)
 
@@ -172,7 +172,7 @@ prbs_bc <- count_bc / sims
 print(round(prbs_bc, 2))
 ```
 
-    ## [1] 0.67
+    ## [1] 0.66
 
 ``` r
 prbs_cd <- count_cd / sims
@@ -186,7 +186,7 @@ prbs_da <- count_da / sims
 print(round(prbs_da, 2))
 ```
 
-    ## [1] 0.66
+    ## [1] 0.67
 
 #### (b)
 
@@ -232,14 +232,14 @@ prbs_abc <- count_abc / sims
 print(round(prbs_abc, 2))
 ```
 
-    ## [1] 0.45
+    ## [1] 0.44
 
 ``` r
 prbs_bcd <- count_bcd / sims
 print(round(prbs_bcd, 2))
 ```
 
-    ## [1] 0.33
+    ## [1] 0.34
 
 ### Problem 38 part (a)
 
@@ -300,13 +300,13 @@ for (i in 1:sims) {
 mean(result.noswitch == "car")
 ```
 
-    ## [1] 0.14365
+    ## [1] 0.14104
 
 ``` r
 mean(result.switch == "car")
 ```
 
-    ## [1] 0.28608
+    ## [1] 0.28723
 
 ### Problem 38 part (b)
 
@@ -348,7 +348,7 @@ $$
 ``` r
 ## Declaration: use ChatGPT to learn new functions, explain codes, and debug.
 ## One confusing part is generating the number of cars and goats. From what I understand the question, I think we should create n doors, 1 car, and n-1 goats;  since m is the number of doors with goats that Monty opens, not the number of all actual doors with goats.
-## The most difficult part  for me is the subsetting (removing the first and Monty from the doors), because one is a number sequence(1:n), and another is a character sequence("goat", "car"). By using setdiff(), I finally solved this problem.
+## The most difficult part for me is the subsetting (removing the first and Monty from the doors), because one is a number sequence(1:n), and another is a character sequence("goat", "car"). By using setdiff(), I finally solved this problem.
 
 part_b_sim <- function(m, n){
   # Error messages if m and n are invalid numbers
@@ -396,4 +396,4 @@ part_b_sim(3, 7)
 ```
 
     ##   no_switch_result switch_result
-    ## 1          0.14283       0.28655
+    ## 1          0.14317       0.28572
