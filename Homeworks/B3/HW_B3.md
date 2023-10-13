@@ -65,7 +65,7 @@ prob <- count / sims
 prob
 ```
 
-    ## [1] 0.000411
+    ## [1] 0.000404
 
 ## Chapter 2 problems (2.11 exercises)
 
@@ -165,7 +165,7 @@ prbs_ab <- count_ab / sims
 print(round(prbs_ab, 2))
 ```
 
-    ## [1] 0.67
+    ## [1] 0.66
 
 ``` r
 prbs_bc <- count_bc / sims
@@ -232,7 +232,7 @@ prbs_abc <- count_abc / sims
 print(round(prbs_abc, 2))
 ```
 
-    ## [1] 0.45
+    ## [1] 0.44
 
 ``` r
 prbs_bcd <- count_bcd / sims
@@ -300,13 +300,13 @@ for (i in 1:sims) {
 mean(result.noswitch == "car")
 ```
 
-    ## [1] 0.14288
+    ## [1] 0.14338
 
 ``` r
 mean(result.switch == "car")
 ```
 
-    ## [1] 0.2847
+    ## [1] 0.2855
 
 ### Problem 38 part (b)
 
@@ -365,7 +365,7 @@ part_b_sim <- function(m, n){
   
   # create doors as in the original example, but with m goats and n-m cars,
   # rather than 2 goats and 1 car.
-  doors <- c(rep("goat", n-1), "car")
+  doors <- c(rep("goat", n-1), "car") # I recreate the doors.
   
   # for loop for simulations
   for(i in 1:sims) {
@@ -396,4 +396,4 @@ part_b_sim(3, 7)
 ```
 
     ##   no_switch_result switch_result
-    ## 1          0.14325       0.28399
+    ## 1          0.14278       0.28725

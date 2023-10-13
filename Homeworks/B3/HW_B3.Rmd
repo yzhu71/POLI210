@@ -337,7 +337,7 @@ part_b_sim <- function(m, n){
   
   # create doors as in the original example, but with m goats and n-m cars,
   # rather than 2 goats and 1 car.
-  doors <- c(rep("goat", n-1), "car")
+  doors <- c(rep("goat", n-1), "car") # I recreate the doors.
   
   # for loop for simulations
   for(i in 1:sims) {
