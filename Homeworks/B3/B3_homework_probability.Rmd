@@ -2,7 +2,7 @@
 title: "B3 Homework"
 author: "POLI210"
 date: "2023-10-11"
-output: md_doc
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
