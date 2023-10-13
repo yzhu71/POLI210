@@ -65,7 +65,7 @@ prob <- count / sims
 prob
 ```
 
-    ## [1] 0.00039
+    ## [1] 0.000405
 
 ## Chapter 2 problems (2.11 exercises)
 
@@ -165,7 +165,7 @@ prbs_ab <- count_ab / sims
 print(round(prbs_ab, 2))
 ```
 
-    ## [1] 0.67
+    ## [1] 0.66
 
 ``` r
 prbs_bc <- count_bc / sims
@@ -186,7 +186,7 @@ prbs_da <- count_da / sims
 print(round(prbs_da, 2))
 ```
 
-    ## [1] 0.66
+    ## [1] 0.67
 
 #### (b)
 
@@ -232,7 +232,7 @@ prbs_abc <- count_abc / sims
 print(round(prbs_abc, 2))
 ```
 
-    ## [1] 0.44
+    ## [1] 0.45
 
 ``` r
 prbs_bcd <- count_bcd / sims
@@ -263,7 +263,7 @@ Suppose the contestant employs the switching strategy.
   probability of winning by switching is $\frac{1}{3}$. Thus,
 
 $$
-P(get \ car) = 0 \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} = \frac{2}{7}
+P(get \ car) = 0 \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} =  \frac{2}{7}
 $$ Suppose the contestant employs the non-switching strategy.
 
 - If the car is behind door 1, then non-switching will success, so
@@ -272,14 +272,6 @@ $$ Suppose the contestant employs the non-switching strategy.
 - If the car is behind door 2 to 7, then non-switching will always lose.
 
 Thus, you should employs the switching strategy.
-
-*Questions for Brad: how to imput number into this formula?*
-
-$$
-P(car|switch, win) = 
-  \frac{P(win|car, switch)P(car|switch)}{P(win|switch)} =
-  \frac{P(switch|win, car)P(win|car)}{P(switch|win)}
-$$
 
 #### Simulation
 
@@ -306,10 +298,78 @@ for (i in 1:sims) {
 mean(result.noswitch == "car")
 ```
 
-    ## [1] 0.14411
+    ## [1] 0.14468
 
 ``` r
 mean(result.switch == "car")
 ```
 
-    ## [1] 0.28888
+    ## [1] 0.28476
+
+### Problem 38 part (b)
+
+#### Solution
+
+Abstracting from 38(a):
+
+Without loss of generality, we can assume the contestant picked door 1.
+Let $C_i$ be the event that the car is behind door $i$, for
+$i = 1, 2, 3, \ldots, n$. By the law of total probability,
+
+$$
+P(get \ car) = \sum_{i=1}^nP(get \ car | C_n)
+$$
+
+Suppose the contestant employs the non-switching strategy.
+
+- If the car is behind door 1, then non-switching will success, so
+  $P(get \ car | C_1) = \frac{1}{n}$.
+
+- If the car is behind door 2 to $n$, then non-switching will always
+  lose. And the probability is $\frac{n-1}{n}$
+
+Suppose the contestant employs the switching strategy.
+
+- If the car is behind door 1, then switching will fail, so
+  $P(get \ car | C_1) = 0$. And the probability if $\frac{1}{n}$.
+
+- If the car is behind door 2 to $n$, then because Monty always reveals
+  a goat, the remaining $n-1-m$ unopened door contain the car, so the
+  probability of winning by switching is $\frac{1}{n-m-1}$. Thus,
+
+$$
+P(get \ car) = 0 \times \frac{1}{n} + \frac{1}{n-m-1} \times \frac{1}{n} \times (n-1) = \frac{n-1}{n(n-m-1)}
+$$
+
+#### Simulation
+
+``` r
+part_b_sim <- function(m, n){
+  # Error messages if m and n are invalid numbers
+  if(n < 3){
+    return("error: n must be the number of doors >= 3")
+  }
+  if(m > n - 2 | m < 1){
+    return("error: m must be a number of goats that is >= 1 and <= n-2")
+  }
+  
+  # setting up values to store simulations
+  sims <- 1e5 # 100000 sims
+  result.switch <- result.noswitch <- rep(NA, sims) # vectors for storing sim results
+  
+  # create doors as in the original example, but with m goats and n-m cars,
+  # rather than 2 goats and 1 car.
+  doors <- c(rep("goat", m), rep("car", n - m))
+  
+  # for loop for simulations
+  for(i in 1:sims){
+    ## YOUR CODE GOES HERE ##
+  }
+  
+  # return a data frame with the two results
+  return(data.frame(no_switch_result = mean(result.noswitch == "car"),
+                    switch_result = mean(result.switch == "car")
+                    )
+  )
+}
+```
