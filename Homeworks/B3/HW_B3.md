@@ -65,7 +65,7 @@ prob <- count / sims
 prob
 ```
 
-    ## [1] 0.000417
+    ## [1] 0.000411
 
 ## Chapter 2 problems (2.11 exercises)
 
@@ -172,7 +172,7 @@ prbs_bc <- count_bc / sims
 print(round(prbs_bc, 2))
 ```
 
-    ## [1] 0.66
+    ## [1] 0.67
 
 ``` r
 prbs_cd <- count_cd / sims
@@ -186,7 +186,7 @@ prbs_da <- count_da / sims
 print(round(prbs_da, 2))
 ```
 
-    ## [1] 0.66
+    ## [1] 0.67
 
 #### (b)
 
@@ -264,7 +264,9 @@ Suppose the contestant employs the switching strategy.
 
 $$
 P(get \ car) = 0 \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} =  \frac{2}{7}
-$$ Suppose the contestant employs the non-switching strategy.
+$$
+
+Suppose the contestant employs the non-switching strategy.
 
 - If the car is behind door 1, then non-switching will success, so
   $P(get \ car | C_1) = \frac{1}{7}$.
@@ -298,13 +300,13 @@ for (i in 1:sims) {
 mean(result.noswitch == "car")
 ```
 
-    ## [1] 0.14184
+    ## [1] 0.14288
 
 ``` r
 mean(result.switch == "car")
 ```
 
-    ## [1] 0.28598
+    ## [1] 0.2847
 
 ### Problem 38 part (b)
 
@@ -344,8 +346,9 @@ $$
 #### Simulation
 
 ``` r
-## Declaration: use ChatGPT to learn new operations, explain code, and debug.
-## The most difficult and confusing part is the subsetting (removing the first and Monty from the doors), because one is a number sequence(1:n), and another is a character sequence("goat", "car"). By using setdiff(), I finally solved this problem.
+## Declaration: use ChatGPT to learn new functions, explain codes, and debug.
+## One confusing part is generating the number of cars and goats. From what I understand the question, I think we should create n doors, 1 cars, and n-1 goats;  since m is the number of doors with goats that Monty opens, not the number of all actual doors with goats.
+## The most difficult part  for me is the subsetting (removing the first and Monty from the doors), because one is a number sequence(1:n), and another is a character sequence("goat", "car"). By using setdiff(), I finally solved this problem.
 
 part_b_sim <- function(m, n){
   # Error messages if m and n are invalid numbers
@@ -388,8 +391,9 @@ part_b_sim <- function(m, n){
   )
 }
 
+## Check
 part_b_sim(3, 7)
 ```
 
     ##   no_switch_result switch_result
-    ## 1           0.1412       0.28529
+    ## 1          0.14325       0.28399
