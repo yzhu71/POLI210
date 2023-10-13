@@ -65,7 +65,7 @@ prob <- count / sims
 prob
 ```
 
-    ## [1] 0.000405
+    ## [1] 0.000417
 
 ## Chapter 2 problems (2.11 exercises)
 
@@ -165,14 +165,14 @@ prbs_ab <- count_ab / sims
 print(round(prbs_ab, 2))
 ```
 
-    ## [1] 0.66
+    ## [1] 0.67
 
 ``` r
 prbs_bc <- count_bc / sims
 print(round(prbs_bc, 2))
 ```
 
-    ## [1] 0.67
+    ## [1] 0.66
 
 ``` r
 prbs_cd <- count_cd / sims
@@ -186,7 +186,7 @@ prbs_da <- count_da / sims
 print(round(prbs_da, 2))
 ```
 
-    ## [1] 0.67
+    ## [1] 0.66
 
 #### (b)
 
@@ -298,13 +298,13 @@ for (i in 1:sims) {
 mean(result.noswitch == "car")
 ```
 
-    ## [1] 0.14468
+    ## [1] 0.14184
 
 ``` r
 mean(result.switch == "car")
 ```
 
-    ## [1] 0.28476
+    ## [1] 0.28598
 
 ### Problem 38 part (b)
 
@@ -331,7 +331,7 @@ Suppose the contestant employs the non-switching strategy.
 Suppose the contestant employs the switching strategy.
 
 - If the car is behind door 1, then switching will fail, so
-  $P(get \ car | C_1) = 0$. And the probability if $\frac{1}{n}$.
+  $P(get \ car | C_1) = 0$. And the probability is $\frac{1}{n}$.
 
 - If the car is behind door 2 to $n$, then because Monty always reveals
   a goat, the remaining $n-1-m$ unopened door contain the car, so the
@@ -344,6 +344,9 @@ $$
 #### Simulation
 
 ``` r
+## Declaration: use ChatGPT to learn new operations, explain code, and debug.
+## The most difficult and confusing part is the subsetting (removing the first and Monty from the doors), because one is a number sequence(1:n), and another is a character sequence("goat", "car"). By using setdiff(), I finally solved this problem.
+
 part_b_sim <- function(m, n){
   # Error messages if m and n are invalid numbers
   if(n < 3){
@@ -359,17 +362,34 @@ part_b_sim <- function(m, n){
   
   # create doors as in the original example, but with m goats and n-m cars,
   # rather than 2 goats and 1 car.
-  doors <- c(rep("goat", m), rep("car", n - m))
+  doors <- c(rep("goat", n-1), "car")
   
   # for loop for simulations
-  for(i in 1:sims){
+  for(i in 1:sims) {
     ## YOUR CODE GOES HERE ##
-  }
+    first <- sample(1:n, size = 1)
+    result.noswitch[i] <- doors[first]
+    
+    if (doors[first] == "car") {
+      monty <- sample(1:n[-first], size=m)
+    } else {
+      monty <- sample(setdiff(1:n, c(first, which(doors == "car"))), size=m)
+    }
   
+    remain <- setdiff(1:n, c(first, monty))
+    
+    result.switch[i] <- doors[sample(remain, 1)]
+  }
+    
   # return a data frame with the two results
   return(data.frame(no_switch_result = mean(result.noswitch == "car"),
                     switch_result = mean(result.switch == "car")
                     )
   )
 }
+
+part_b_sim(3, 7)
 ```
+
+    ##   no_switch_result switch_result
+    ## 1           0.1412       0.28529

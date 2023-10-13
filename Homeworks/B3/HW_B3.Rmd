@@ -4,6 +4,9 @@ author: "Yuhang Zhu"
 date: "2023-10-13"
 output: github_document
 ---
+```{r}
+
+```
 
 ## Chapter 1 problems (1.9 exercises)
 
@@ -314,6 +317,10 @@ $$
 
 #### Simulation
 ```{r q28b}
+## Declaration: use ChatGPT to learn new functions, explain codes, and debug.
+## One confusing part is generating the number of cars and goats. From what I understand the question, I think we should create n doors, 1 cars, and n-1 goats;  since m is the number of doors with goats that Monty opens, not the number of all actual doors with goats.
+## The most difficult part  for me is the subsetting (removing the first and Monty from the doors), because one is a number sequence(1:n), and another is a character sequence("goat", "car"). By using setdiff(), I finally solved this problem.
+
 part_b_sim <- function(m, n){
   # Error messages if m and n are invalid numbers
   if(n < 3){
@@ -329,17 +336,32 @@ part_b_sim <- function(m, n){
   
   # create doors as in the original example, but with m goats and n-m cars,
   # rather than 2 goats and 1 car.
-  doors <- c(rep("goat", m), rep("car", n - m))
+  doors <- c(rep("goat", n-1), "car")
   
   # for loop for simulations
-  for(i in 1:sims){
+  for(i in 1:sims) {
     ## YOUR CODE GOES HERE ##
-  }
+    first <- sample(1:n, size = 1)
+    result.noswitch[i] <- doors[first]
+    
+    if (doors[first] == "car") {
+      monty <- sample(1:n[-first], size=m)
+    } else {
+      monty <- sample(setdiff(1:n, c(first, which(doors == "car"))), size=m)
+    }
   
+    remain <- setdiff(1:n, c(first, monty))
+    
+    result.switch[i] <- doors[sample(remain, 1)]
+  }
+    
   # return a data frame with the two results
   return(data.frame(no_switch_result = mean(result.noswitch == "car"),
                     switch_result = mean(result.switch == "car")
                     )
   )
 }
+
+## Check
+part_b_sim(3, 7)
 ```
