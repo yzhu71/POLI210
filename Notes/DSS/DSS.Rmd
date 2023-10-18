@@ -360,6 +360,3 @@ cor(co$gdp_chaneg, co$light_change) ^ 2
 ```
 
 # 6. Probability
-
-
-
