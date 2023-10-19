@@ -384,3 +384,17 @@ mean(support_sample_2)
 mean(support_sample_3)
 ```
 
+```{r}
+sd_sample_means <- c()
+
+for (i in 1:10000){
+  support_sample <- sample(c(1, 0),
+                           size = 1000,
+                           replace = T,
+                           prob = c(0.6, 0.4))
+  sd_sample_means[i] <- (mean(support_sample) - 0.6) / sqrt(0.24 / 1000)
+}
+
+hist(sd_sample_means, freq= F)
+```
+
