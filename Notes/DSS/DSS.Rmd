@@ -360,3 +360,27 @@ cor(co$gdp_chaneg, co$light_change) ^ 2
 ```
 
 # 6. Probability
+
+```{r}
+support_sample_1 <- sample(c(1, 0),
+                           size = 10,
+                           replace = T,
+                           prob = c(0.6, 0.4))
+
+support_sample_2 <- sample(c(1, 0),
+                           size = 1000,
+                           replace = T,
+                           prob = c(0.6, 0.4))
+
+support_sample_3 <- sample(c(1, 0),
+                           size = 1000000,
+                           replace = T,
+                           prob = c(0.6, 0.4))
+
+mean(support_sample_1)
+
+mean(support_sample_2)
+
+mean(support_sample_3)
+```
+

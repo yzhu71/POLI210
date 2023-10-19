@@ -4,3 +4,9 @@ author: "Yuhang Zhu"
 date: "2023-10-18"
 output: github_document
 ---
+
+### 10.9 EXERCISES
+
+#### Q1
+Write down a research question that interests you. Try to state some assumptions, and then deduce one or more hypotheses from your assumptions. Write them down and bring them all to class.
+
