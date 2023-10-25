@@ -1,0 +1,203 @@
+HW_A5
+================
+Yuhang Zhu
+2023-10-18
+
+### 10.9 EXERCISES
+
+#### Q1
+
+Why some voters vote for radical right parties in Europe? The
+assumptions here are: 1. voters prefer whose policy positions more
+closer to them; 2.voters not only care about economic issues, but also
+about cultural issues. The assumptions yield this hypothesis: Voters who
+opposite immigration prefer to vote for radical right parties in Europe,
+all else equal.
+
+#### Q2
+
+Frequency distribution counts how many members have a specific value for
+a variable, whereas relative frequency distribution divides that count
+by the total number of cases to give a proportion.
+
+#### Q3
+
+The probability density function (PDF) applies to continuous variables,
+while the relative frequency distribution is used for discrete
+variables.
+
+#### Q4
+
+The PMF is a function that speciﬁes the probabilities of drawing
+discrete values, while the CDF describes the function that covers a
+range of values below a speciﬁc value and is deﬁned for both discrete
+and continuous random variables.
+
+#### Q5
+
+It would be useful for examining the joint distribution of
+`whether having a college degree` and `whether voting`.
+
+#### Q6
+
+1.  Each legislator either votes in favor of a bill or against it. This
+    follows a Bernoulli distribution. When considering the entire
+    legislators and counting the number of legislators who vote in
+    favor, the outcome follows a binomial distribution.
+2.  Given that terrorist attacks are relatively rare and they occur
+    independently, the number of terrorist attack in a country over a
+    year may follow the Poisson distribution.
+
+#### Q7
+
+1.  Bernoulli distributions: I run the experiment when n = 10 and p =
+    0.5 at first time, and the result is 4 heads, 6 tails. Then I adjust
+    p to 0.8. The result shows that just 1 tails.
+2.  Binomial distributions: When I adjust the n (how many coins) from 10
+    to 50, the center of x axis changes from 5 to 25. When I adjust p
+    from 0.5 to 0.8, the distribution becomes left skewed.
+3.  Poisson distributions: When I adjust the r from 1 to 10 and hold the
+    t = 1, the distribution change from right skewed to bell-shaped.
+    Adjusting t from 1 to 10 shows the same change.
+4.  Negative binomial: When I adjust the k from 1 to 5, the distribution
+    is still left skewed and has a long right tail. When I adjust the p
+    from 0.5 to 0.1, the right tail is becoming longer and longer.
+
+#### Q8
+
+I explore the batabase “Political Polarization in US Congress”, also
+known as DW-NOMINATE. I notice that the distribution of the variable
+“Chamber Mean - Second Dimension” really looks like a normal
+distribution, suggesting legislators didn’t polarized on this dimension.
+However, the variable “Chamber Mean - First Dimension” exhibits
+polarizations in the Congress because its distribution looks like a
+bimodal shape.
+
+Exploring the relashionship berween year and “Difference in Party
+Means - First Dimension”, we will have some interesting patterns.
+Starting in 1880, the degree of polarization in Congress decreased from
+its initial high levels, bottoming out after World War II. However, from
+1970 onwards, polarization has surged, reaching unprecedented levels
+today. Furthermore, the House has a higher degree of polarization
+compared to the Senate most of the time.
+
+#### Q9
+
+The number of war should follow the Poisson distribution. Now, we know
+$y = 3$, $\mu = 4$, and uses the formula in p.224, we can calculate the
+$Pr(Y = 4 | 3) = 0.168$
+
+#### Q10
+
+1.  EU(Bach) = 13, EU(Stravinsky) = 8. Hence, it is better to go to
+    Bach.
+2.  EU(Bach) = 11, EU(Stravinsky) = 10. Thus, it is stil better to go to
+    Bach.
+
+#### Q11
+
+1.  Baisyan updating: $P(strong \ | \ manuevers)$ =
+    $\frac{0.6 \times 0.4}{0.6\times0.4 + 0.3\times0.6}$ = 0.57
+2.  EU(war) = $0.57 \times (-1) + (1-0.57) \times 1$ = -0.14. Therefore,
+    A should not start a war.
+
+### 11.4 EXERCISES
+
+#### Q1
+
+The probability density function (PDF) applies to continuous variables,
+while the relative frequency distribution is used for discrete
+variables.
+
+#### Q2
+
+PMF is used for discrete random variables, while PDF is used for
+continuous random variables. Unlike a PMF, the PDF function is not
+limited to taking values no greater than 1, since it does not directly
+describe probability, only relative likelihood.
+
+#### Q3
+
+The PDF is a function that allows one to sum a series of probability
+weights to produce the likelihood of drawing a value less than some
+value; the CDF gives this likelihood for all points.
+
+#### Q4
+
+A scatter plot would be useful for examining the joint distribution of
+`household income` and `political contributions`.
+
+#### Q5
+
+We cannot use our eye to catch the subtle deviation.
+
+#### Q6
+
+Relative frequency distributuion is based on exsiting data
+(i.e. sample), while the PDF provides a theoretical model of how data is
+distributed in the entire population.
+
+#### Q7
+
+This is because the probability of the variable’s being in the range
+\[a, b\] is given by the deﬁnite integral of the PDF from a to b. As
+with the PMF, f(x) ≥ 0 for all PDFs, so this deﬁnite integral is the
+area under the PDF curve between a and b.
+
+#### Q8
+
+$Var(X) = E(X^2 - 2X\mu + \mu^2) = E(X^2) - E(2X\mu) + E(\mu^2) = E(X^2) - 2\mu E(x) + \mu^2 = E(X^2) - 2 \mu^2 + \mu^2 = E(X^2) -\mu^2$
+
+#### Q9
+
+$P(X > 10) = 15 \times \frac{1}{25}$ = 0.6
+
+#### Q10
+
+An average of -100 million suggests that the country’s annual budget
+runs a deficit of 100 million. A standard deviation of 300 million
+reflects the fluctuation of the annual budget from this average deficit,
+indicating significant variability in the country’s yearly finances, as
+the budget deficit are likely (95%) to be within 2 sds of -700 million
+to 500 million.
+
+#### Q11
+
+1.  Voter turnout rates in U.S. presidential elections follow the norm
+    distribution according to Central Limit Theorem.
+2.  The likelihood of voters to vote might follow the logistic
+    distribution.
+3.  The duration of authoritarian regimes might foloow the weibull
+    distribution.
+
+#### Q12
+
+1.  Normal: When I adjust $\mu$, the mean changes. When I adjust
+    $\sigma$, the min and max change, suggesting the sd changes.
+2.  Log-normal: The shape does not change after I adjust the $\mu$. Then
+    I adjust $\sigma$ from 1 to 0.1, finding that the shape gradually
+    becomes bell-shaped.
+3.  Logistic: The distribution is bell-shaped. The min and max change
+    after adjusting a, while the mean remains around 0. The same result
+    as I adjust b.
+4.  Beta: When I adjust a, the mean are close to 1, and the shape looks
+    like norm distribution, but right skewed. Then I adjust b. As b
+    becomes larger, the mean is close to 0, and the shape still looks
+    like bell-shap, and might be not skewed.
+5.  Gamma: When I adjust n, the mean moves rightward, and looks like
+    bell shape. When I adjust r, the max changes, the location and shape
+    remain.
+6.  Pareto: When I adjust a, the shape doese change a lot, while the
+    distribution seems to be more concentrate. But adjusting b just
+    change the max.
+7.  Weibull: When I adjust k, the shape, location and max change
+    concurrently. It move rightward and it’s max decrease. Its shape
+    becomes like left skewed. Adjusting b also only change max.
+
+#### Q13
+
+Use nomal distribution as an example. From my perspective, the empirical
+density is inevitably “biased” becasue it is hard to reach the
+theoretical distribution after running the experiment. However, the
+distribution’s shape are more like the true density as the simulation
+times increase.
