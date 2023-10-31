@@ -398,3 +398,90 @@ for (i in 1:10000){
 hist(sd_sample_means, freq= F)
 ```
 
+# 7. Quantifying Uncertainty
+
+```{r}
+bes <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/BES.csv")
+
+bes1 <- na.omit(bes)
+
+dim(bes1)
+
+head(bes1)
+```
+
+```{r}
+mean(bes1$leave)
+
+n <- nrow(bes1)
+
+mean(bes1$leave) - 1.96 * sqrt(var(bes1$leave) / n)
+
+mean(bes1$leave) + 1.96 * sqrt(var(bes1$leave) / n)
+```
+
+```{r}
+star <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/STAR.csv")
+
+dim(star)
+
+star$small <- ifelse(star$classtype == "small", 1, 0)
+
+mean(star$reading[star$small == 1]) - mean(star$reading[star$small == 0]) 
+```
+
+```{r}
+treatment <- star[star$small == 1, ]
+control <- star[star$small == 0, ]
+
+n_t <- nrow(treatment)
+n_c <- nrow(control)
+
+mean(treatment$reading) - mean(control$reading) - 1.96 * sqrt(var(treatment$reading) / n_t + var(control$reading) / n_c)
+
+mean(treatment$reading) - mean(control$reading) + 1.96 * sqrt(var(treatment$reading) / n_t + var(control$reading) / n_c)
+```
+
+```{r}
+co <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/countries.csv")
+
+dim(co)
+
+head(co)
+```
+
+```{r}
+co$gdp_change <- ((co$gdp - co$prior_gdp) / co$prior_gdp) * 100
+
+co$light_change <- ((co$light - co$prior_light) / co$prior_light) * 100
+
+fit <- lm(gdp_change ~ light_change, data = co)
+
+fit
+
+predict(fit,
+        newdata = data.frame(light_change = 20),
+        interval = "confidence")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
