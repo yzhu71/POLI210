@@ -1,0 +1,203 @@
+---
+title: "B4_homework"
+output: html_document
+date: "2023-10-25"
+output: md_doc
+---
+
+
+1. Below is code for simulating a coin flip. Try to understand what it does by running it, and then running the command `coin_flip()` in the console 10 times.
+```{r}
+set.seed(36850) # set random seed so that you get the same output everytime even though it's "random"
+
+sample_space_coin <- c("H", "T")
+event_probs_coin <- c(0.5, 0.5)
+
+
+coin_flip <- function(){
+  sample(
+    size = 1,
+    x = sample_space_coin,
+    prob = event_probs_coin,
+    replace = TRUE
+  )
+}
+```
+
+Copy and past the output from running `coin_flip()` 10 times in the console here:
+
+2. Write a function `X_coin()` that takes the result of `coin_flip()` as an argument (a string, "H" or "T"), and returns it into a 1 for "H" and 0 for "T". I've already started the code for you.
+```{r}
+set.seed(36850)
+flip1 <- coin_flip()
+flip2 <- coin_flip()
+flip3 <- coin_flip()
+flip4 <- coin_flip()
+
+# Example flips, they will always be the same because I set a random seed.
+flip1 # H
+flip2 # T
+flip3 # T
+flip4 # H
+
+# Function that acts like a random variable.
+# returns 1 if flip == "H" and 0 otherwise.
+X_coin <- function(flip){
+  # fill in the code here
+  # ifelse() is probably helpful
+}
+
+# The code below should return a 1 for flip1 and flip4 and 0 for flip2 and flip3
+X_coin(flip1)
+X_coin(flip2)
+X_coin(flip3)
+X_coin(flip4)
+```
+
+Treating `X_coin()` like a random variable describe it:
+  a. What is the probability of 1?
+  b. What is the probability of 0?
+  c. What is the expectation of `X_coin()`?
+  d. What is the variance of `X_coin()`?
+  
+4. Define a new function `biased_coin_flip()` that acts like `coin_flip()` except it returns "H" 70 percent of the time.
+```{r}
+set.seed(36850)
+
+biased_coin_flip <- function(){
+  sample(
+    size = 1,
+    x = sample_space_coin,
+    prob = #INSERT CODE HERE#,
+    replace = TRUE
+  )
+}
+```
+
+5. Define a new random variable `X_biased_coin()` that returns a 1 if flip is "H" and returns 0 if flip is "T"
+```{r}
+set.seed(36850)
+flip1 <- biased_coin_flip()
+flip2 <- biased_coin_flip()
+flip3 <- biased_coin_flip()
+flip4 <- biased_coin_flip()
+
+# Example flips, they will always be the same because I set a random seed.
+flip1 
+flip2 
+flip3 
+flip4 
+
+X_biased_coin <- function(flip){
+  # fill in the code here
+  ifelse(flip == "H", 1, 0) # ifelse is helpful
+}
+
+# Use this to test out your code.
+X_biased_coin(flip1)
+X_biased_coin(flip2)
+X_biased_coin(flip3)
+X_biased_coin(flip4)
+```
+
+Treating `X_biased_coin()` like a random variable describe it:
+  a. What is the probability of 1? .7
+  b. What is the probability of 0? .3
+
+5. Using math, calculate:
+  a. The expectation of `X_coin()`
+  b. The expectation of `X_biased_coin()`
+  c. The expectation of `X_coin()` + `X_biased_coin()`
+  
+6. Use simulation to estimate:
+  a. The expectation of `X_coin()`
+  b. The expectation of `X_biased_coin()`
+  c. The expectation of `X_coin()` + `X_biased_coin()`
+  
+I've filled in some code for your below
+```{r}
+set.seed(36850)
+
+nsims <- 100000
+
+# vectors where you can store the results of simulation for a, b, and c
+X_coin_sims <- vector(mode = 'numeric', length = nsims)
+X_biased_coin_sims <- vector(mode = 'numeric', length = nsims)
+unbiased_plus_biased_coin_sims <- vector(mode = 'numeric', length = nsims)
+
+# Code for part a: simulate X_coin
+for(i in 1:nsims){
+  sim_flip_i <- coin_flip()
+  X_coin_sims[i] <- X_coin(sim_flip_i)
+  
+  sim__biasedflip_i <- #INSERT CODE#
+  X_biased_coin_sims[i] <- #INSERT CODE#
+  
+  unbiased_plus_biased_coin_sims[i] <- #INSERT CODE#
+  
+}
+
+# use head to see the first part of the result of the simulations
+head(X_coin_sims)
+
+# calculate the expectation of the simulations using mean()
+mean(X_coin_sims)
+
+# Now do the same thing for parts b and c
+
+## INSERT CODE HERE ###
+
+```
+
+Compare your simulated results to the result you got via math in question 5. They should be very similar. If they're not, try to figure out why and fix it.
+
+7. Imagine an experiment similar to the one we discussed. Students can use a drug, Getana. We are interested in studying the effect of Getana on student's GPA. In the code below, I've defined:
+  a. A student index 1-6, it just assignes each student a number.
+  b. A potential outcome for each student under treatement, Y1, and control, Y0. Note that the potential outcomes are the same, indicating that there is 0 effect
+  
+```{r}
+student_index <- 1:6
+Y1 <- c(4, 4, 3, 2, 1,1)
+Y0 <- Y1
+```
+
+Now, simulate what happens if we randomly sample 1 student to be in the Treatment group (so we see their GPA under Y1), and we sample a different student to be in Control (so we see their GPA under Y0). What will the average difference in GPA's be between the Treatment subject and Control subject? Compare the results to what you get if you simply subtract the mean of Y0 from the mean of Y1.
+```{r}
+set.seed(36850)
+
+nsims <- 100000
+
+gpa_treat_minus_control_sims <- vector(mode = "numeric",
+                                       length = nsims)
+
+for(i in 1:nsims){
+  treated_subj_index <- sample(student_index, 
+                               size = 1)
+  control_subj_index <- sample(student_index[-treated_subj_index], 
+                               size = 1)
+  observed_treatement_GPA <- # fill in code, use treated_subj_index and Y1
+  observed_control_GPA <-   # fill in code, use control_subj_index and Y0
+    
+  gpa_treat_minus_control_sims[i] <- observed_treatement_GPA - observed_control_GPA # What is the observed difference in gpas between treatment and control subjects?
+}
+
+# Calculate the average of gpa_treat_minus_control_sims
+mean(gpa_treat_minus_control_sims)
+mean(Y1 - Y0)
+```
+
+
+7. Create a histogram of `gpa_treat_minus_control_sims` using ggplot. Make it look as good as you can, with proper axis labels.
+
+```{r}
+
+```
+
+
+8. Repeat questions 7 and 7 above for the new potential outcomes defined below. Compare the results to what you get if you simply subtract the mean of Y0 from the mean of Y1.
+```{r}
+set.seed(36850)
+student_index <- 1:6
+Y1 <- c(4, 4, 3, 3, 4, 1)
+Y0 <- c(2, 1, 4, 2, 1, 1)
+```
