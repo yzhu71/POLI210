@@ -289,7 +289,7 @@ print(round(m_exp2_lis_indep, 2))
     ## [1] 1.7
 
 ``` r
-# I am not sure, because this method cannot repeat the `listens`.
+# I am not sure which downloads, because this method cannot repeat the `listens`.
 
 # exp1
 m_exp1_down <- users1 %>% 

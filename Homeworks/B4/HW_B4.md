@@ -30,9 +30,7 @@ coin_flip_10
     ##  [1] "H" "T" "T" "H" "T" "H" "T" "T" "T" "T"
 
 Copy and past the output from running `coin_flip()` 10 times in the
-console here:
-
-“H” “T” “T” “H” “T” “H” “T” “T” “T” “T”
+console here: “H” “T” “T” “H” “T” “H” “T” “T” “T” “T”
 
 2.  Write a function `X_coin()` that takes the result of `coin_flip()`
     as an argument (a string, “H” or “T”), and returns it into a 1 for
@@ -75,32 +73,155 @@ flip4 # H
 X_coin <- function(flip){
   # fill in the code here
   # ifelse() is probably helpful
+  ifelse(flip == "H", 1, 0)
 }
 
 # The code below should return a 1 for flip1 and flip4 and 0 for flip2 and flip3
 X_coin(flip1)
 ```
 
-    ## NULL
+    ## [1] 1
 
 ``` r
 X_coin(flip2)
 ```
 
-    ## NULL
+    ## [1] 0
 
 ``` r
 X_coin(flip3)
 ```
 
-    ## NULL
+    ## [1] 0
 
 ``` r
 X_coin(flip4)
 ```
 
-    ## NULL
+    ## [1] 1
 
-Treating `X_coin()` like a random variable describe it: a. What is the
-probability of 1? b. What is the probability of 0? c. What is the
-expectation of `X_coin()`? d. What is the variance of `X_coin()`?
+Treating `X_coin()` like a random variable describe it:
+
+1.  What is the probability of 1?
+
+The `X_coin()` function operates as a Bernoulli trial, meaning it should
+adhere to the Bernoulli distribution. Therefore, the probability of 1 is
+0.5, since the formula for this distribution is
+$f_X(x) = p^x(1-p)^{1-x} = p$ if $x=1$, and in this case, $p$ is equal
+to 0.5.
+
+2.  What is the probability of 0?
+
+Based on the formula $f_X(x) = p^x(1-p)^{1-x} = 1-p$ when $x = 0$, the
+probability of 0 is 0.5
+
+3.  What is the expectation of `X_coin()`?
+
+According to the formula $E[X] = \sum_{i=0}^{1}x_if_X(x) = 0 + p = p$,
+the expectation of `X_coin()` is 0.5.
+
+4.  What is the variance of `X_coin()`?
+
+According to the formula
+$Var[X] = \sum_{i=0}^{1}(x_i - E[X])^2f_X(x) = (0-p)^2(1-p) + (1-p)^2p = p(1-p)$,
+the variance of `X_coin()` is 0.25.
+
+3.  Define a new function `biased_coin_flip()` that acts like
+    `coin_flip()` except it returns “H” 70 percent of the time.
+
+``` r
+set.seed(36850)
+
+sample_space_coin <- c("H", "T")
+event_probs_biased_coin <- c(0.7, 0.3)
+
+biased_coin_flip <- function(){
+  sample(
+    size = 1,
+    x = sample_space_coin,
+    prob = event_probs_biased_coin,
+    replace = TRUE
+  )
+}
+```
+
+4.  Define a new random variable `X_biased_coin()` that returns a 1 if
+    flip is “H” and returns 0 if flip is “T”
+
+``` r
+set.seed(36850)
+flip1 <- biased_coin_flip()
+flip2 <- biased_coin_flip()
+flip3 <- biased_coin_flip()
+flip4 <- biased_coin_flip()
+
+# Example flips, they will always be the same because I set a random seed.
+flip1 
+```
+
+    ## [1] "H"
+
+``` r
+flip2 
+```
+
+    ## [1] "H"
+
+``` r
+flip3 
+```
+
+    ## [1] "H"
+
+``` r
+flip4 
+```
+
+    ## [1] "T"
+
+``` r
+X_biased_coin <- function(flip){
+  # fill in the code here
+  ifelse(flip == "H", 1, 0) # ifelse is helpful
+}
+
+# Use this to test out your code.
+X_biased_coin(flip1)
+```
+
+    ## [1] 1
+
+``` r
+X_biased_coin(flip2)
+```
+
+    ## [1] 1
+
+``` r
+X_biased_coin(flip3)
+```
+
+    ## [1] 1
+
+``` r
+X_biased_coin(flip4)
+```
+
+    ## [1] 0
+
+Treating `X_biased_coin()` like a random variable describe it: a. What
+is the probability of 1?
+
+The probability of 1 is 0.7.
+
+2.  What is the probability of 0?
+
+The probability of 1 is 0.3.
+
+5.  Using math, calculate:
+
+<!-- -->
+
+1.  The expectation of `X_coin()`
+2.  The expectation of `X_biased_coin()`
+3.  The expectation of `X_coin()` + `X_biased_coin()`
