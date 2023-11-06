@@ -126,7 +126,7 @@ According to the formula
 $Var[X] = \sum_{i=0}^{1}(x_i - E[X])^2f_X(x) = (0-p)^2(1-p) + (1-p)^2p = p(1-p)$,
 the variance of `X_coin()` is 0.25.
 
-3.  Define a new function `biased_coin_flip()` that acts like
+4.  Define a new function `biased_coin_flip()` that acts like
     `coin_flip()` except it returns “H” 70 percent of the time.
 
 ``` r
@@ -145,7 +145,7 @@ biased_coin_flip <- function(){
 }
 ```
 
-4.  Define a new random variable `X_biased_coin()` that returns a 1 if
+5.  Define a new random variable `X_biased_coin()` that returns a 1 if
     flip is “H” and returns 0 if flip is “T”
 
 ``` r
@@ -223,5 +223,229 @@ The probability of 1 is 0.3.
 <!-- -->
 
 1.  The expectation of `X_coin()`
+
+The expectation of `X_coin()` is
+$E[X] = \sum_{i=0}^{1}x_if_X(x) = 0 + p = p = 0.5$.
+
+2.  The expectation of `X_biased_coin()`
+
+The expectation of `X_biased_coin()` is
+$E[X] = \sum_{i=0}^{1}x_if_X(x) = 0 + p = p = 0.7$.
+
+3.  The expectation of `X_coin()` + `X_biased_coin()`
+
+Because `X_coin()` and `X_biased_coin()` are independent, the
+expectation of `X_coin()` + `X_biased_coin()` is $0.5 + 0.7 = 1.2$.
+
+6.  Use simulation to estimate:
+
+<!-- -->
+
+1.  The expectation of `X_coin()`
 2.  The expectation of `X_biased_coin()`
 3.  The expectation of `X_coin()` + `X_biased_coin()`
+
+I’ve filled in some code for your below
+
+``` r
+set.seed(36850)
+
+nsims <- 100000
+
+# vectors where you can store the results of simulation for a, b, and c
+X_coin_sims <- vector(mode = 'numeric', length = nsims)
+X_biased_coin_sims <- vector(mode = 'numeric', length = nsims)
+unbiased_plus_biased_coin_sims <- vector(mode = 'numeric', length = nsims)
+
+# Code for part a: simulate X_coin
+for(i in 1:nsims){
+  sim_flip_i <- coin_flip()
+  X_coin_sims[i] <- X_coin(sim_flip_i)
+  
+  sim__biasedflip_i <- biased_coin_flip() #INSERT CODE#
+  X_biased_coin_sims[i] <- X_biased_coin(sim__biasedflip_i) #INSERT CODE#
+  
+  unbiased_plus_biased_coin_sims[i] <- X_coin(sim_flip_i) + X_biased_coin(sim__biasedflip_i) #INSERT CODE#
+}
+
+# use head to see the first part of the result of the simulations
+head(X_coin_sims)
+```
+
+    ## [1] 1 0 0 0 0 1
+
+``` r
+# calculate the expectation of the simulations using mean()
+mean(X_coin_sims)
+```
+
+    ## [1] 0.50161
+
+``` r
+# Now do the same thing for parts b and c
+
+## INSERT CODE HERE ###
+head(X_biased_coin_sims)
+```
+
+    ## [1] 1 0 0 1 1 1
+
+``` r
+mean(X_biased_coin_sims)
+```
+
+    ## [1] 0.70098
+
+``` r
+head(unbiased_plus_biased_coin_sims)
+```
+
+    ## [1] 2 0 0 1 1 2
+
+``` r
+mean(unbiased_plus_biased_coin_sims)
+```
+
+    ## [1] 1.20259
+
+Compare your simulated results to the result you got via math in
+question 5. They should be very similar. If they’re not, try to figure
+out why and fix it.
+
+7.  Imagine an experiment similar to the one we discussed. Students can
+    use a drug, Getana. We are interested in studying the effect of
+    Getana on student’s GPA. In the code below, I’ve defined:
+
+<!-- -->
+
+1.  A student index 1-6, it just assigns each student a number.
+2.  A potential outcome for each student under treatment, Y1, and
+    control, Y0. Note that the potential outcomes are the same,
+    indicating that there is 0 effect
+
+``` r
+student_index <- 1:6
+Y1 <- c(4, 4, 3, 2, 1, 1)
+Y0 <- Y1
+```
+
+Now, simulate what happens if we randomly sample 1 student to be in the
+Treatment group (so we see their GPA under Y1), and we sample a
+different student to be in Control (so we see their GPA under Y0). What
+will the average difference in GPA’s be between the Treatment subject
+and Control subject? Compare the results to what you get if you simply
+subtract the mean of Y0 from the mean of Y1.
+
+``` r
+set.seed(36850)
+
+nsims <- 100000
+
+gpa_treat_minus_control_sims <- vector(mode = "numeric",
+                                       length = nsims)
+
+for(i in 1:nsims){
+  treated_subj_index <- sample(student_index, 
+                               size = 1)
+  control_subj_index <- sample(student_index[-treated_subj_index], 
+                               size = 1)
+  observed_treatement_GPA <- Y1[treated_subj_index] # fill in code, use treated_subj_index and Y1
+  observed_control_GPA <- Y0[control_subj_index] # fill in code, use control_subj_index and Y0
+    
+  gpa_treat_minus_control_sims[i] <- observed_treatement_GPA - observed_control_GPA # What is the observed difference in gpas between treatment and control subjects?
+}
+
+# Calculate the average of gpa_treat_minus_control_sims
+mean(gpa_treat_minus_control_sims)
+```
+
+    ## [1] 0.0145
+
+``` r
+mean(Y1 - Y0)
+```
+
+    ## [1] 0
+
+The simulation results indicate that with an increasing number of
+simulations, the difference in average GPA between the treatment and
+control groups converges 0.0145, closely approximating the true effect
+of $Y_1 - Y_0 = 0$.
+
+7.  Create a histogram of `gpa_treat_minus_control_sims` using ggplot.
+    Make it look as good as you can, with proper axis labels.
+
+``` r
+library(ggplot2)
+
+gpa_diff <- as.data.frame(gpa_treat_minus_control_sims)
+head(gpa_diff)
+```
+
+    ##   gpa_treat_minus_control_sims
+    ## 1                            3
+    ## 2                            1
+    ## 3                           -2
+    ## 4                           -3
+    ## 5                            1
+    ## 6                           -1
+
+``` r
+ggplot(gpa_diff, aes(gpa_treat_minus_control_sims)) + 
+  geom_histogram(binwidth = 0.5) +
+  scale_x_continuous(breaks = seq(-3, 3, by = 1)) + 
+  scale_y_continuous(breaks = seq(0, 20000, by = 2500)) + 
+  labs(x = "The Average Difference in GPA between the Treatment Subject and Control Subject",
+       y = "Frequency") +
+  theme(axis.title.x = element_text(vjust = -1),
+        axis.title.y = element_text(vjust = 2))
+```
+
+![](HW_B4_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+8.  Repeat questions 7 and 7 above for the new potential outcomes
+    defined below. Compare the results to what you get if you simply
+    subtract the mean of Y0 from the mean of Y1.
+
+``` r
+set.seed(36850)
+student_index <- 1:6
+Y1 <- c(4, 4, 3, 3, 4, 1)
+Y0 <- c(2, 1, 4, 2, 1, 1)
+```
+
+``` r
+set.seed(36850)
+
+nsims <- 100000
+
+gpa_treat_minus_control_sims <- vector(mode = "numeric",
+                                       length = nsims)
+
+for(i in 1:nsims){
+  treated_subj_index <- sample(student_index, 
+                               size = 1)
+  control_subj_index <- sample(student_index[-treated_subj_index], 
+                               size = 1)
+  observed_treatement_GPA <- Y1[treated_subj_index] # fill in code, use treated_subj_index and Y1
+  observed_control_GPA <- Y0[control_subj_index] # fill in code, use control_subj_index and Y0
+    
+  gpa_treat_minus_control_sims[i] <- observed_treatement_GPA - observed_control_GPA # What is the observed difference in gpas between treatment and control subjects?
+}
+
+# Calculate the average of gpa_treat_minus_control_sims
+mean(gpa_treat_minus_control_sims)
+```
+
+    ## [1] 1.33482
+
+``` r
+mean(Y1 - Y0)
+```
+
+    ## [1] 1.333333
+
+The simulation results indicate that with an increasing number of
+simulations, the difference in average GPA between the treatment and
+control groups converges 1.335, closely approximating the true effect of
+$Y_1 - Y_0 = 1.333$.
