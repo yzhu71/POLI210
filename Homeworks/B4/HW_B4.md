@@ -401,7 +401,7 @@ ggplot(gpa_diff, aes(gpa_treat_minus_control_sims)) +
         axis.title.y = element_text(vjust = 2))
 ```
 
-![](HW_B4_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](HW_B4_files/figure-gfm/q7.3-1.png)<!-- -->
 
 8.  Repeat questions 7 and 7 above for the new potential outcomes
     defined below. Compare the results to what you get if you simply
