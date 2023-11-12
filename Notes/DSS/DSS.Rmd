@@ -464,6 +464,11 @@ predict(fit,
         interval = "confidence")
 ```
 
+```{r}
+z_obs <- (mean(treatment$reading) - mean(control$reading)) / sqrt(var(treatment$reading) / n_t + var(control$reading) / n_c)
+
+2 * pnorm(- abs(z_obs))
+```
 
 
 
