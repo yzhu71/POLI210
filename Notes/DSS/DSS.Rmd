@@ -359,6 +359,55 @@ cor(co$log_gdp, co$log_prior_gdp) ^ 2
 cor(co$gdp_chaneg, co$light_change) ^ 2
 ```
 
+# 5. Estimating Causal Effects with Observable Data
+
+```{r}
+uas <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/UA_survey.csv")
+
+head(uas)
+
+dim(uas)
+```
+
+```{r}
+mean(uas$pro_russian_vote[uas$russian_tv == 1]) -
+  mean(uas$pro_russian_vote[uas$russian_tv == 0])
+
+lm(pro_russian_vote ~ russian_tv, data = uas)
+```
+
+```{r}
+cor(uas$within_25km, uas$russian_tv)
+
+table(uas$within_25km, uas$russian_tv)
+```
+
+```{r}
+lm(pro_russian_vote ~ russian_tv + within_25km, data = uas)
+```
+
+```{r}
+uap <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/UA_precincts.csv")
+
+head(uap)
+
+dim(uap)
+```
+
+```{r}
+uap$pro_russian_change <- uap$pro_russian - uap$prior_pro_russian
+
+hist(uap$pro_russian_change)
+```
+
+```{r}
+lm(pro_russian_change ~ russian_tv, uap)
+
+cor(uap$within_25km, uap$russian_tv)
+
+lm(pro_russian_change ~ russian_tv + within_25km, uap)
+```
+
 # 6. Probability
 
 ```{r}
@@ -468,6 +517,10 @@ predict(fit,
 z_obs <- (mean(treatment$reading) - mean(control$reading)) / sqrt(var(treatment$reading) / n_t + var(control$reading) / n_c)
 
 2 * pnorm(- abs(z_obs))
+```
+
+```{r}
+
 ```
 
 
