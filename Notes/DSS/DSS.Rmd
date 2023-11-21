@@ -520,6 +520,10 @@ z_obs <- (mean(treatment$reading) - mean(control$reading)) / sqrt(var(treatment$
 ```
 
 ```{r}
+uas <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/UA_survey.csv")
+
+lm(pro_russian_vote ~ russian_tv + within_25km, data = uas)
+
 
 ```
 
