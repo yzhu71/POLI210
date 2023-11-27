@@ -18,6 +18,11 @@ table(jcr$fire)
     ##   0   1 
     ## 159 159
 
+***Comment Q1: Incorrect because each row isn’t a unique village. It’s
+an event where the Russian’s fired, and the `fire` variable indicates
+whether the village actually got hit by fire. The homework did not
+explain this well however. So, I did not take off points.***
+
 ## Question 2
 
 Yes.
@@ -44,6 +49,8 @@ deaths_groznyy
     ##     <dbl>       <dbl>         <dbl>
     ## 1       0        1.57             0
     ## 2       1        3.71             3
+
+***Comment: Good***
 
 ## Question 3
 
@@ -87,6 +94,9 @@ diff_postattack
 
     ## [1] -0.5534591
 
+***Comment: Good. Different from the answer key, but still valid as an
+answer***
+
 ## Question 4
 
 The difference in the average number is -0.04, indicating that villages
@@ -104,6 +114,8 @@ diff_preattack
 
     ## [1] -0.03773585
 
+***Comment: Good!***
+
 ## Question 5
 
 The number of insurgent attacks actually decreased, rather than
@@ -120,6 +132,8 @@ diff_attack_fire
 ```
 
     ## [1] -0.6163522
+
+***Comment: Good. Different from answer key but still valid***
 
 ## Question 6
 
@@ -157,6 +171,8 @@ did
 
     ## [1] -0.5157233
 
+***Comment: Good. Nice table***
+
 # Inequality of Success in Online Music Markets
 
 ## Question 1
@@ -188,6 +204,8 @@ print(round(p_exp2, 2))
     ## 
     ##    1    9 
     ## 0.32 0.68
+
+***Comment: Good***
 
 ## Question 2
 
@@ -288,6 +306,8 @@ print(round(m_exp2_lis_indep, 2))
 
     ## [1] 1.7
 
+***Comment: Good! Only student to get this fully correct so far***
+
 ``` r
 # I am not sure which downloads, because this method cannot repeat the `listens`.
 
@@ -321,6 +341,9 @@ m_exp2_down
     ##      <dbl>     <dbl>
     ## 1        1      301.
     ## 2        9      124.
+
+***Comment: Yes, the extra downloads variable in there is confusing. You
+got it right the first time. See answer key for more details***
 
 ## Question 3
 
@@ -402,6 +425,8 @@ print(round(ineq_exp2_indep_lis, 2))
 
     ## [1] 0.09
 
+***Comment: Good***
+
 ## Question 4
 
 According to the table, the pre-treatment characteristics are balanced
@@ -446,6 +471,8 @@ user2_charct
     ## 1        1     4.51       1.96          4.51
     ## 2        9     4.47       1.91          4.47
 
+***Comment: Good!***
+
 ## Question 5
 
 The difference implies that if the songs were ordered according to the
@@ -478,3 +505,5 @@ diff_exp_lis
 ```
 
     ## [1] -0.2826119
+
+***Comment:Good!***

@@ -1,0 +1,451 @@
+HW_B4
+================
+Yuhang Zhu
+2023-11-03
+
+1.  Below is code for simulating a coin flip. Try to understand what it
+    does by running it, and then running the command `coin_flip()` in
+    the console 10 times.
+
+``` r
+set.seed(36850) # set random seed so that you get the same output everytime even though it's "random"
+
+sample_space_coin <- c("H", "T")
+event_probs_coin <- c(0.5, 0.5)
+
+coin_flip <- function(){
+  sample(
+    size = 1,
+    x = sample_space_coin,
+    prob = event_probs_coin,
+    replace = TRUE
+  )
+}
+
+# running `coin_flip()` 10 times
+coin_flip_10 <- replicate(10, coin_flip())
+coin_flip_10
+```
+
+    ##  [1] "H" "T" "T" "H" "T" "H" "T" "T" "T" "T"
+
+Copy and past the output from running `coin_flip()` 10 times in the
+console here: “H” “T” “T” “H” “T” “H” “T” “T” “T” “T”
+
+2.  Write a function `X_coin()` that takes the result of `coin_flip()`
+    as an argument (a string, “H” or “T”), and returns it into a 1 for
+    “H” and 0 for “T”. I’ve already started the code for you.
+
+``` r
+set.seed(36850)
+flip1 <- coin_flip()
+flip2 <- coin_flip()
+flip3 <- coin_flip()
+flip4 <- coin_flip()
+
+# Example flips, they will always be the same because I set a random seed.
+flip1 # H
+```
+
+    ## [1] "H"
+
+``` r
+flip2 # T
+```
+
+    ## [1] "T"
+
+``` r
+flip3 # T
+```
+
+    ## [1] "T"
+
+``` r
+flip4 # H
+```
+
+    ## [1] "H"
+
+``` r
+# Function that acts like a random variable.
+# returns 1 if flip == "H" and 0 otherwise.
+X_coin <- function(flip){
+  # fill in the code here
+  # ifelse() is probably helpful
+  ifelse(flip == "H", 1, 0)
+}
+
+# The code below should return a 1 for flip1 and flip4 and 0 for flip2 and flip3
+X_coin(flip1)
+```
+
+    ## [1] 1
+
+``` r
+X_coin(flip2)
+```
+
+    ## [1] 0
+
+``` r
+X_coin(flip3)
+```
+
+    ## [1] 0
+
+``` r
+X_coin(flip4)
+```
+
+    ## [1] 1
+
+Treating `X_coin()` like a random variable describe it:
+
+1.  What is the probability of 1?
+
+The `X_coin()` function operates as a Bernoulli trial, meaning it should
+adhere to the Bernoulli distribution. Therefore, the probability of 1 is
+0.5, since the formula for this distribution is
+$f_X(x) = p^x(1-p)^{1-x} = p$ if $x=1$, and in this case, $p$ is equal
+to 0.5.
+
+2.  What is the probability of 0?
+
+Based on the formula $f_X(x) = p^x(1-p)^{1-x} = 1-p$ when $x = 0$, the
+probability of 0 is 0.5
+
+3.  What is the expectation of `X_coin()`?
+
+According to the formula $E[X] = \sum_{i=0}^{1}x_if_X(x) = 0 + p = p$,
+the expectation of `X_coin()` is 0.5.
+
+4.  What is the variance of `X_coin()`?
+
+According to the formula
+$Var[X] = \sum_{i=0}^{1}(x_i - E[X])^2f_X(x) = (0-p)^2(1-p) + (1-p)^2p = p(1-p)$,
+the variance of `X_coin()` is 0.25.
+
+4.  Define a new function `biased_coin_flip()` that acts like
+    `coin_flip()` except it returns “H” 70 percent of the time.
+
+``` r
+set.seed(36850)
+
+sample_space_coin <- c("H", "T")
+event_probs_biased_coin <- c(0.7, 0.3)
+
+biased_coin_flip <- function(){
+  sample(
+    size = 1,
+    x = sample_space_coin,
+    prob = event_probs_biased_coin,
+    replace = TRUE
+  )
+}
+```
+
+5.  Define a new random variable `X_biased_coin()` that returns a 1 if
+    flip is “H” and returns 0 if flip is “T”
+
+``` r
+set.seed(36850)
+flip1 <- biased_coin_flip()
+flip2 <- biased_coin_flip()
+flip3 <- biased_coin_flip()
+flip4 <- biased_coin_flip()
+
+# Example flips, they will always be the same because I set a random seed.
+flip1 
+```
+
+    ## [1] "H"
+
+``` r
+flip2 
+```
+
+    ## [1] "H"
+
+``` r
+flip3 
+```
+
+    ## [1] "H"
+
+``` r
+flip4 
+```
+
+    ## [1] "T"
+
+``` r
+X_biased_coin <- function(flip){
+  # fill in the code here
+  ifelse(flip == "H", 1, 0) # ifelse is helpful
+}
+
+# Use this to test out your code.
+X_biased_coin(flip1)
+```
+
+    ## [1] 1
+
+``` r
+X_biased_coin(flip2)
+```
+
+    ## [1] 1
+
+``` r
+X_biased_coin(flip3)
+```
+
+    ## [1] 1
+
+``` r
+X_biased_coin(flip4)
+```
+
+    ## [1] 0
+
+Treating `X_biased_coin()` like a random variable describe it: a. What
+is the probability of 1?
+
+The probability of 1 is 0.7.
+
+2.  What is the probability of 0?
+
+The probability of 1 is 0.3.
+
+5.  Using math, calculate:
+
+<!-- -->
+
+1.  The expectation of `X_coin()`
+
+The expectation of `X_coin()` is
+$E[X] = \sum_{i=0}^{1}x_if_X(x) = 0 + p = p = 0.5$.
+
+2.  The expectation of `X_biased_coin()`
+
+The expectation of `X_biased_coin()` is
+$E[X] = \sum_{i=0}^{1}x_if_X(x) = 0 + p = p = 0.7$.
+
+3.  The expectation of `X_coin()` + `X_biased_coin()`
+
+Because `X_coin()` and `X_biased_coin()` are independent, the
+expectation of `X_coin()` + `X_biased_coin()` is $0.5 + 0.7 = 1.2$.
+
+6.  Use simulation to estimate:
+
+<!-- -->
+
+1.  The expectation of `X_coin()`
+2.  The expectation of `X_biased_coin()`
+3.  The expectation of `X_coin()` + `X_biased_coin()`
+
+I’ve filled in some code for your below
+
+``` r
+set.seed(36850)
+
+nsims <- 100000
+
+# vectors where you can store the results of simulation for a, b, and c
+X_coin_sims <- vector(mode = 'numeric', length = nsims)
+X_biased_coin_sims <- vector(mode = 'numeric', length = nsims)
+unbiased_plus_biased_coin_sims <- vector(mode = 'numeric', length = nsims)
+
+# Code for part a: simulate X_coin
+for(i in 1:nsims){
+  sim_flip_i <- coin_flip()
+  X_coin_sims[i] <- X_coin(sim_flip_i)
+  
+  sim__biasedflip_i <- biased_coin_flip() #INSERT CODE#
+  X_biased_coin_sims[i] <- X_biased_coin(sim__biasedflip_i) #INSERT CODE#
+  
+  unbiased_plus_biased_coin_sims[i] <- X_coin(sim_flip_i) + X_biased_coin(sim__biasedflip_i) #INSERT CODE#
+}
+
+# use head to see the first part of the result of the simulations
+head(X_coin_sims)
+```
+
+    ## [1] 1 0 0 0 0 1
+
+``` r
+# calculate the expectation of the simulations using mean()
+mean(X_coin_sims)
+```
+
+    ## [1] 0.50161
+
+``` r
+# Now do the same thing for parts b and c
+
+## INSERT CODE HERE ###
+head(X_biased_coin_sims)
+```
+
+    ## [1] 1 0 0 1 1 1
+
+``` r
+mean(X_biased_coin_sims)
+```
+
+    ## [1] 0.70098
+
+``` r
+head(unbiased_plus_biased_coin_sims)
+```
+
+    ## [1] 2 0 0 1 1 2
+
+``` r
+mean(unbiased_plus_biased_coin_sims)
+```
+
+    ## [1] 1.20259
+
+Compare your simulated results to the result you got via math in
+question 5. They should be very similar. If they’re not, try to figure
+out why and fix it.
+
+7.  Imagine an experiment similar to the one we discussed. Students can
+    use a drug, Getana. We are interested in studying the effect of
+    Getana on student’s GPA. In the code below, I’ve defined:
+
+<!-- -->
+
+1.  A student index 1-6, it just assigns each student a number.
+2.  A potential outcome for each student under treatment, Y1, and
+    control, Y0. Note that the potential outcomes are the same,
+    indicating that there is 0 effect
+
+``` r
+student_index <- 1:6
+Y1 <- c(4, 4, 3, 2, 1, 1)
+Y0 <- Y1
+```
+
+Now, simulate what happens if we randomly sample 1 student to be in the
+Treatment group (so we see their GPA under Y1), and we sample a
+different student to be in Control (so we see their GPA under Y0). What
+will the average difference in GPA’s be between the Treatment subject
+and Control subject? Compare the results to what you get if you simply
+subtract the mean of Y0 from the mean of Y1.
+
+``` r
+set.seed(36850)
+
+nsims <- 100000
+
+gpa_treat_minus_control_sims <- vector(mode = "numeric",
+                                       length = nsims)
+
+for(i in 1:nsims){
+  treated_subj_index <- sample(student_index, 
+                               size = 1)
+  control_subj_index <- sample(student_index[-treated_subj_index], 
+                               size = 1)
+  observed_treatement_GPA <- Y1[treated_subj_index] # fill in code, use treated_subj_index and Y1
+  observed_control_GPA <- Y0[control_subj_index] # fill in code, use control_subj_index and Y0
+    
+  gpa_treat_minus_control_sims[i] <- observed_treatement_GPA - observed_control_GPA # What is the observed difference in gpas between treatment and control subjects?
+}
+
+# Calculate the average of gpa_treat_minus_control_sims
+mean(gpa_treat_minus_control_sims)
+```
+
+    ## [1] 0.0145
+
+``` r
+mean(Y1 - Y0)
+```
+
+    ## [1] 0
+
+The simulation results indicate that with an increasing number of
+simulations, the difference in average GPA between the treatment and
+control groups converges 0.0145, closely approximating the true effect
+of $Y_1 - Y_0 = 0$.
+
+7.  Create a histogram of `gpa_treat_minus_control_sims` using ggplot.
+    Make it look as good as you can, with proper axis labels.
+
+``` r
+library(ggplot2)
+
+gpa_diff <- as.data.frame(gpa_treat_minus_control_sims)
+head(gpa_diff)
+```
+
+    ##   gpa_treat_minus_control_sims
+    ## 1                            3
+    ## 2                            1
+    ## 3                           -2
+    ## 4                           -3
+    ## 5                            1
+    ## 6                           -1
+
+``` r
+ggplot(gpa_diff, aes(gpa_treat_minus_control_sims)) + 
+  geom_histogram(binwidth = 0.5) +
+  scale_x_continuous(breaks = seq(-3, 3, by = 1)) + 
+  scale_y_continuous(breaks = seq(0, 20000, by = 2500)) + 
+  labs(x = "The Average Difference in GPA between the Treatment Subject and Control Subject",
+       y = "Frequency") +
+  theme(axis.title.x = element_text(vjust = -1),
+        axis.title.y = element_text(vjust = 2))
+```
+
+![](HW_B4_files/figure-gfm/q7.3-1.png)<!-- -->
+
+8.  Repeat questions 7 and 7 above for the new potential outcomes
+    defined below. Compare the results to what you get if you simply
+    subtract the mean of Y0 from the mean of Y1.
+
+``` r
+set.seed(36850)
+student_index <- 1:6
+Y1 <- c(4, 4, 3, 3, 4, 1)
+Y0 <- c(2, 1, 4, 2, 1, 1)
+```
+
+``` r
+set.seed(36850)
+
+nsims <- 100000
+
+gpa_treat_minus_control_sims <- vector(mode = "numeric",
+                                       length = nsims)
+
+for(i in 1:nsims){
+  treated_subj_index <- sample(student_index, 
+                               size = 1)
+  control_subj_index <- sample(student_index[-treated_subj_index], 
+                               size = 1)
+  observed_treatement_GPA <- Y1[treated_subj_index] # fill in code, use treated_subj_index and Y1
+  observed_control_GPA <- Y0[control_subj_index] # fill in code, use control_subj_index and Y0
+    
+  gpa_treat_minus_control_sims[i] <- observed_treatement_GPA - observed_control_GPA # What is the observed difference in gpas between treatment and control subjects?
+}
+
+# Calculate the average of gpa_treat_minus_control_sims
+mean(gpa_treat_minus_control_sims)
+```
+
+    ## [1] 1.33482
+
+``` r
+mean(Y1 - Y0)
+```
+
+    ## [1] 1.333333
+
+The simulation results indicate that with an increasing number of
+simulations, the difference in average GPA between the treatment and
+control groups converges 1.335, closely approximating the true effect of
+$Y_1 - Y_0 = 1.333$.

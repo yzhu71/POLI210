@@ -4,6 +4,7 @@ author: "Yuhang Zhu"
 date: "2023-09-06"
 output: github_document
 ---
+
 # 1. Introduction
 
 ```{r install, include=FALSE, warning = F}
@@ -357,6 +358,192 @@ cor(co$log_gdp, co$log_prior_gdp) ^ 2
 
 cor(co$gdp_chaneg, co$light_change) ^ 2
 ```
+
+# 5. Estimating Causal Effects with Observable Data
+
+```{r}
+uas <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/UA_survey.csv")
+
+head(uas)
+
+dim(uas)
+```
+
+```{r}
+mean(uas$pro_russian_vote[uas$russian_tv == 1]) -
+  mean(uas$pro_russian_vote[uas$russian_tv == 0])
+
+lm(pro_russian_vote ~ russian_tv, data = uas)
+```
+
+```{r}
+cor(uas$within_25km, uas$russian_tv)
+
+table(uas$within_25km, uas$russian_tv)
+```
+
+```{r}
+lm(pro_russian_vote ~ russian_tv + within_25km, data = uas)
+```
+
+```{r}
+uap <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/UA_precincts.csv")
+
+head(uap)
+
+dim(uap)
+```
+
+```{r}
+uap$pro_russian_change <- uap$pro_russian - uap$prior_pro_russian
+
+hist(uap$pro_russian_change)
+```
+
+```{r}
+lm(pro_russian_change ~ russian_tv, uap)
+
+cor(uap$within_25km, uap$russian_tv)
+
+lm(pro_russian_change ~ russian_tv + within_25km, uap)
+```
+
+# 6. Probability
+
+```{r}
+support_sample_1 <- sample(c(1, 0),
+                           size = 10,
+                           replace = T,
+                           prob = c(0.6, 0.4))
+
+support_sample_2 <- sample(c(1, 0),
+                           size = 1000,
+                           replace = T,
+                           prob = c(0.6, 0.4))
+
+support_sample_3 <- sample(c(1, 0),
+                           size = 1000000,
+                           replace = T,
+                           prob = c(0.6, 0.4))
+
+mean(support_sample_1)
+
+mean(support_sample_2)
+
+mean(support_sample_3)
+```
+
+```{r}
+sd_sample_means <- c()
+
+for (i in 1:10000){
+  support_sample <- sample(c(1, 0),
+                           size = 1000,
+                           replace = T,
+                           prob = c(0.6, 0.4))
+  sd_sample_means[i] <- (mean(support_sample) - 0.6) / sqrt(0.24 / 1000)
+}
+
+hist(sd_sample_means, freq= F)
+```
+
+# 7. Quantifying Uncertainty
+
+```{r}
+bes <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/BES.csv")
+
+bes1 <- na.omit(bes)
+
+dim(bes1)
+
+head(bes1)
+```
+
+```{r}
+mean(bes1$leave)
+
+n <- nrow(bes1)
+
+mean(bes1$leave) - 1.96 * sqrt(var(bes1$leave) / n)
+
+mean(bes1$leave) + 1.96 * sqrt(var(bes1$leave) / n)
+```
+
+```{r}
+star <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/STAR.csv")
+
+dim(star)
+
+star$small <- ifelse(star$classtype == "small", 1, 0)
+
+mean(star$reading[star$small == 1]) - mean(star$reading[star$small == 0]) 
+```
+
+```{r}
+treatment <- star[star$small == 1, ]
+control <- star[star$small == 0, ]
+
+n_t <- nrow(treatment)
+n_c <- nrow(control)
+
+mean(treatment$reading) - mean(control$reading) - 1.96 * sqrt(var(treatment$reading) / n_t + var(control$reading) / n_c)
+
+mean(treatment$reading) - mean(control$reading) + 1.96 * sqrt(var(treatment$reading) / n_t + var(control$reading) / n_c)
+```
+
+```{r}
+co <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/countries.csv")
+
+dim(co)
+
+head(co)
+```
+
+```{r}
+co$gdp_change <- ((co$gdp - co$prior_gdp) / co$prior_gdp) * 100
+
+co$light_change <- ((co$light - co$prior_light) / co$prior_light) * 100
+
+fit <- lm(gdp_change ~ light_change, data = co)
+
+fit
+
+predict(fit,
+        newdata = data.frame(light_change = 20),
+        interval = "confidence")
+```
+
+```{r}
+z_obs <- (mean(treatment$reading) - mean(control$reading)) / sqrt(var(treatment$reading) / n_t + var(control$reading) / n_c)
+
+2 * pnorm(- abs(z_obs))
+```
+
+```{r}
+uas <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Notes/DSS/DSS_data/UA_survey.csv")
+
+fit <- lm(pro_russian_vote ~ russian_tv + within_25km, data = uas)
+
+summary(fit)$coef
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,399 @@
+HW_B3
+================
+Yuhang Zhu
+2023-10-13
+
+## Chapter 1 problems (1.9 exercises)
+
+### Problem 22
+
+#### Solution
+
+$\frac{3! \times 3!}{6!} = \frac{1}{20} \ or \  0.05$
+
+#### Simulation
+
+``` r
+sims <- 100000
+
+sex <- c("boy", "boy", "boy", "girl", "girl", "girl")
+
+count <- 0
+
+for(i in 1:sims) {
+  ## random order
+  order <- sample(sex)
+  ## from 1st to 3rd are girls
+  if(order[1] == "girl" & order[2] == "girl" & order[3] == "girl") {
+    count <- count + 1}
+}
+
+prob <- count / sims
+
+print(round(prob, 2))
+```
+
+    ## [1] 0.05
+
+### Problem 34
+
+#### Solution
+
+$\frac{C(30, 5) \times C(25, 5) \times C(20, 5) \times C(15, 5) \times C(10, 5) \times C(5, 5)}{6^{30}} \approx 0.0004$
+
+#### Simulation
+
+``` r
+sims <- 1000000
+
+count <- 0
+
+for(i in 1:sims) {
+  outcome <- sample(1:6, 30, replace = T)
+  if(sum(outcome == 1) == 5 & 
+     sum(outcome == 2) == 5 & 
+     sum(outcome == 3) == 5 & 
+     sum(outcome == 4) == 5 & 
+     sum(outcome == 5) == 5 & 
+     sum(outcome == 6) == 5) {
+    count <- count + 1
+  }
+}
+
+prob <- count / sims
+
+prob
+```
+
+    ## [1] 0.000376
+
+## Chapter 2 problems (2.11 exercises)
+
+### Problem 2
+
+#### Solution
+
+$$
+P(identical | boys) = 
+  \frac{P(identical \cap boys)}{P(boys)} = 
+  \frac{P(boys | identical)P(identical)}{P(boys | identical)P(identical) + P(boys | fraternal)P(fraternal)} =
+  \frac{1}{2}
+$$
+
+#### Simulation
+
+``` r
+sims <- 100000
+
+says_boys <- says_identical_boys <- rep(NA, sims)
+
+for(i in 1:sims) {
+   is_identical <- sample(c("identical", "fraternal"), size = 1, prob = c(1/3, 2/3))
+   
+   if(is_identical == "identical") {
+     says <- sample(c("boys", "not_boys"), size = 1, prob = c(1/2, 1/2))
+   }
+   else{
+     says <- sample(c("boys", "not_boys"), size = 1, prob = c(1/4, 3/4))
+   }
+   
+   ifelse(says == "boys", says_boys[i] <- 1, says_boys[i] <- 0)
+   ifelse(says == "boys" && is_identical == "identical", says_identical_boys[i] <- 1, says_identical_boys[i] <- 0)
+}
+
+invisible(mean(says_boys))
+invisible(mean(says_identical_boys))
+
+print(round(mean(says_identical_boys) / mean(says_boys), 2))
+```
+
+    ## [1] 0.5
+
+### Problem 32
+
+#### (a)
+
+##### Solution
+
+$P(A > B)$ = $\frac{4}{6}$ = $\frac{2}{3}$
+
+$P(B > C)$ = $\frac{4}{6}$ = $\frac{2}{3}$
+
+$P(C > D)$ = $P(C = 6) + P(C=2 \cap D=1)$ = $\frac{2}{3}$ = 0.67
+
+$P(D > A)$ = $P(D = 5) + P(D=1 \cap A=0)$ = $\frac{2}{3}$ = 0.67
+
+##### Simulation
+
+``` r
+sims <- 100000
+
+dice_a <- c(4, 4, 4, 4, 0, 0)
+dice_b <- c(3, 3, 3, 3, 3, 3)
+dice_c <- c(6, 6, 2, 2, 2, 2)
+dice_d <- c(5, 5, 5, 1, 1, 1)
+
+count_ab <- 0
+count_bc <- 0
+count_cd <- 0
+count_da <- 0
+
+for (i in 1:sims) {
+  outcome_a <- sample(dice_a, size = 1, replace = T)
+  outcome_b <- sample(dice_b, size = 1, replace = T)
+  outcome_c <- sample(dice_c, size = 1, replace = T)
+  outcome_d <- sample(dice_d, size = 1, replace = T)
+  
+  if(outcome_a > outcome_b) {
+    count_ab <- count_ab + 1
+  }
+  
+  if(outcome_b > outcome_c) {
+    count_bc <- count_bc + 1
+  }
+  
+  if(outcome_c > outcome_d) {
+    count_cd <- count_cd + 1
+  }
+  
+  if(outcome_d > outcome_a) {
+    count_da <- count_da + 1
+  }
+}
+
+prbs_ab <- count_ab / sims
+print(round(prbs_ab, 2))
+```
+
+    ## [1] 0.67
+
+``` r
+prbs_bc <- count_bc / sims
+print(round(prbs_bc, 2))
+```
+
+    ## [1] 0.66
+
+``` r
+prbs_cd <- count_cd / sims
+print(round(prbs_cd, 2))
+```
+
+    ## [1] 0.67
+
+``` r
+prbs_da <- count_da / sims
+print(round(prbs_da, 2))
+```
+
+    ## [1] 0.67
+
+#### (b)
+
+##### Solution
+
+$\because P(A>B>C) = \frac{4}{6} \times \frac{4}{6} = P(A > B) \times P(B > C) = \frac{4}{6} \times \frac{4}{6}$
+
+$\therefore A > B \text{ is independent of the event } B > C$
+
+$\because P(B>C>D) = \frac{4}{6} \times \frac{3}{6} \ne P(B > C) \times P(C > D) = \frac{4}{6} \times \frac{4}{6}$
+
+$\therefore B > C \text{ is not independent of the event } C > D$
+
+##### Simulation
+
+``` r
+sims <- 100000
+
+dice_a <- c(4, 4, 4, 4, 0, 0)
+dice_b <- c(3, 3, 3, 3, 3, 3)
+dice_c <- c(6, 6, 2, 2, 2, 2)
+dice_d <- c(5, 5, 5, 1, 1, 1)
+
+count_abc <- 0
+count_bcd <- 0
+
+for (i in 1:sims) {
+  outcome_a <- sample(dice_a, size = 1, replace = T)
+  outcome_b <- sample(dice_b, size = 1, replace = T)
+  outcome_c <- sample(dice_c, size = 1, replace = T)
+  outcome_d <- sample(dice_d, size = 1, replace = T)
+
+  if(outcome_a > outcome_b & outcome_b > outcome_c) {
+    count_abc <- count_abc + 1
+  }
+  
+  if(outcome_b > outcome_c & outcome_c > outcome_d) {
+    count_bcd <- count_bcd + 1
+  }
+}
+
+prbs_abc <- count_abc / sims
+print(round(prbs_abc, 2))
+```
+
+    ## [1] 0.44
+
+``` r
+prbs_bcd <- count_bcd / sims
+print(round(prbs_bcd, 2))
+```
+
+    ## [1] 0.34
+
+### Problem 38 part (a)
+
+#### Solution
+
+Without loss of generality, we can assume the contestant picked door 1.
+Let $C_i$ be the event that the car is behind door $i$, for
+$i = 1, 2, 3, 4, 5, 6, 7$. By the law of total probability,
+
+$$
+P(get \ car) = P(get \ car | C_1) \times \frac{1}{7} + P(get \ car | C_2) \times \frac{1}{7} + \ldots + P(get \ car | C_7) \times \frac{1}{7}
+$$
+
+Suppose the contestant employs the switching strategy.
+
+- If the car is behind door 1, then switching will fail, so
+  $P(get \ car | C_1) = 0$.
+
+- If the car is behind door 2 to 7, then because Monty always reveals a
+  goat, the remaining 3 unopened door contain the car, so the
+  probability of winning by switching is $\frac{1}{3}$. Thus,
+
+$$
+P(get \ car) = 0 \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} + \frac{1}{3} \times \frac{1}{7} =  \frac{2}{7}
+$$
+
+Suppose the contestant employs the non-switching strategy.
+
+- If the car is behind door 1, then non-switching will success, so
+  $P(get \ car | C_1) = \frac{1}{7}$.
+
+- If the car is behind door 2 to 7, then non-switching will always lose.
+
+Thus, you should employs the switching strategy.
+
+#### Simulation
+
+``` r
+sims <- 100000
+doors <- c("goat", "goat", "goat", "goat", "goat", "goat", "car")
+result.switch <- result.noswitch <- rep(NA, sims)
+
+for (i in 1:sims) {
+  first <- sample(1:7, size = 1)
+  
+  result.noswitch[i] <- doors[first]
+  
+  remain <- doors[-first]
+
+  if (doors[first] == "car") 
+    monty <- sample(1:6, size=3)
+  else
+    monty <- sample((1:6)[remain == "goat"], 3)
+  
+  result.switch[i] <- sample(remain[-monty], 1)
+}
+
+mean(result.noswitch == "car")
+```
+
+    ## [1] 0.14104
+
+``` r
+mean(result.switch == "car")
+```
+
+    ## [1] 0.28723
+
+### Problem 38 part (b)
+
+#### Solution
+
+Abstracting from 38(a):
+
+Without loss of generality, we can assume the contestant picked door 1.
+Let $C_i$ be the event that the car is behind door $i$, for
+$i = 1, 2, 3, \ldots, n$. By the law of total probability,
+
+$$
+P(get \ car) = \sum_{i=1}^nP(get \ car | C_n)
+$$
+
+Suppose the contestant employs the non-switching strategy.
+
+- If the car is behind door 1, then non-switching will success, so
+  $P(get \ car | C_1) = \frac{1}{n}$.
+
+- If the car is behind door 2 to $n$, then non-switching will always
+  lose. And the probability is $\frac{n-1}{n}$
+
+Suppose the contestant employs the switching strategy.
+
+- If the car is behind door 1, then switching will fail, so
+  $P(get \ car | C_1) = 0$. And the probability is $\frac{1}{n}$.
+
+- If the car is behind door 2 to $n$, then because Monty always reveals
+  a goat, the remaining $n-1-m$ unopened door contain the car, so the
+  probability of winning by switching is $\frac{1}{n-m-1}$. Thus,
+
+$$
+P(get \ car) = 0 \times \frac{1}{n} + \frac{1}{n-m-1} \times \frac{1}{n} \times (n-1) = \frac{n-1}{n(n-m-1)}
+$$
+
+#### Simulation
+
+``` r
+## Declaration: use ChatGPT to learn new functions, explain codes, and debug.
+## One confusing part is generating the number of cars and goats. From what I understand the question, I think we should create n doors, 1 car, and n-1 goats;  since m is the number of doors with goats that Monty opens, not the number of all actual doors with goats.
+## The most difficult part for me is the subsetting (removing the first and Monty from the doors), because one is a number sequence(1:n), and another is a character sequence("goat", "car"). By using setdiff(), I finally solved this problem.
+
+part_b_sim <- function(m, n){
+  # Error messages if m and n are invalid numbers
+  if(n < 3){
+    return("error: n must be the number of doors >= 3")
+  }
+  if(m > n - 2 | m < 1){
+    return("error: m must be a number of goats that is >= 1 and <= n-2")
+  }
+  
+  # setting up values to store simulations
+  sims <- 1e5 # 100000 sims
+  result.switch <- result.noswitch <- rep(NA, sims) # vectors for storing sim results
+  
+  # create doors as in the original example, but with m goats and n-m cars,
+  # rather than 2 goats and 1 car.
+  doors <- c(rep("goat", n-1), "car") # I recreate the doors.
+  
+  # for loop for simulations
+  for(i in 1:sims) {
+    ## YOUR CODE GOES HERE ##
+    first <- sample(1:n, size = 1)
+    result.noswitch[i] <- doors[first]
+    
+    if (doors[first] == "car") {
+      monty <- sample(1:n[-first], size=m)
+    } else {
+      monty <- sample(setdiff(1:n, c(first, which(doors == "car"))), size=m)
+    }
+  
+    remain <- setdiff(1:n, c(first, monty))
+    
+    result.switch[i] <- doors[sample(remain, 1)]
+  }
+    
+  # return a data frame with the two results
+  return(data.frame(no_switch_result = mean(result.noswitch == "car"),
+                    switch_result = mean(result.switch == "car")
+                    )
+  )
+}
+
+## Check
+part_b_sim(3, 7)
+```
+
+    ##   no_switch_result switch_result
+    ## 1          0.14317       0.28572

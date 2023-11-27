@@ -216,6 +216,6 @@ cor(gay$feel1[gay$treatment=="No Contact"], gay$feel4[gay$treatment=="No Contact
 
 ## Question 6
 
-Yes.
+Yes. According to question 1 to 5, it is likely that the gay marriage experiment data was fabricated.
 
 
