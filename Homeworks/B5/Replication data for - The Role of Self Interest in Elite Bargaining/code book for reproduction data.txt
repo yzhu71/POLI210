@@ -1,0 +1,31 @@
+Code Book.
+There are 3 files:
+1. elite.ug.lk.patience.dists.csv - Data used to make comparisons between elites and undergrads on level-k reasoning and patience. This includes the 132 undergrads used to compare ultimatum bargaining behavior in elite and undergrad subjects, as well as an additional 509 undergrads from a similar study who completed the same games/tasks. See beginning of SI Appendix for more details.
+
+variables:
+levelk - subject's measured level-k reasoning from 0 to 2
+patience - subject's measured patience from 0 to 20
+elite - 1 if elite subject 0 if undergraduate
+L0 - 1 if measured as level-0 reasoner
+L1 - 1 if measured as level-1 reasoner
+l2- 2 if measured as level-2 reasoner
+
+2. elite.ug.csv - Main data used to compare elite's and undergraduates on the ultimatum game, as well as for regress Table's 3-8 in the SI Appendix.
+
+variables
+ult.min - minimum amount subject would accept in the ultimatum game. This is their "demand"
+ult.propose - what the subject offered in the ultimatum game.
+levelk - subject's measured level-k reasoning from 0 to 2
+patience - subject's measured patience from 0 to 20
+elite - 1 if elite subject 0 if undergraduate
+age - subject's age in years
+experience - subjects experience in years. This variable is only available for elite subjects.
+
+pnas.elite.turk.data.csv - data used to compare elite to our mTurk sample.
+
+demand - minimum amount subject would accept in the ultimatum game. This is their "demand"
+propose - what the subject offered in the ultimatum game.
+elite - 1 if elite subject 0 if undergraduate
+age - subject's age in years
+levelk - subject's measured level-k reasoning from 0 to 2
+patience - subject's measured patience from 0 to 20
