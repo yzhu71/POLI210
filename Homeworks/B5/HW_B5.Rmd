@@ -299,6 +299,39 @@ p_value_L2
 t.test(elite_ug_lk$L2[elite_ug_lk$elite == 1], elite_ug_lk$L2[elite_ug_lk$elite == 0], alternative = "two.sided")
 ```
 
+```{r eval = FALSE, include = FALSE}
+## This is the part that uses ChatGPT for self-learning loops.
+variables <- c("L0", "L1", "L2")
+
+for (var in variables) {
+  m_college <- mean(elite_ug_lk[[var]][elite_ug_lk$elite == 0], na.rm = TRUE)
+  sem_college <- sem(elite_ug_lk[[var]][elite_ug_lk$elite == 0])
+
+  m_elite <- mean(elite_ug_lk[[var]][elite_ug_lk$elite == 1], na.rm = TRUE)
+  sem_elite <- sem(elite_ug_lk[[var]][elite_ug_lk$elite == 1])
+
+  D_hat <- m_elite - m_college
+  se_D_hat <- sqrt(var(elite_ug_lk[[var]][elite_ug_lk$elite == 1], na.rm = TRUE) / 
+                   sum(!is.na(elite_ug_lk[[var]][elite_ug_lk$elite == 1])) + 
+                   var(elite_ug_lk[[var]][elite_ug_lk$elite == 0], na.rm = TRUE) / 
+                   sum(!is.na(elite_ug_lk[[var]][elite_ug_lk$elite == 0])))
+
+  test_statistic <- D_hat / se_D_hat
+  p_value <- 2 * pnorm(-abs(test_statistic))
+
+  cat("Results for", var, "\n")
+  cat("Mean College:", m_college, "SEM College:", sem_college, "\n")
+  cat("Mean Elite:", m_elite, "SEM Elite:", sem_elite, "\n")
+  cat("D_hat:", D_hat, "SE D_hat:", se_D_hat, "\n")
+  cat("Test Statistic:", test_statistic, "P-value:", p_value, "\n\n")
+
+  t_test_result <- t.test(elite_ug_lk[[var]][elite_ug_lk$elite == 1], 
+                          elite_ug_lk[[var]][elite_ug_lk$elite == 0], 
+                          alternative = "two.sided")
+  print(t_test_result)
+}
+```
+
 ```{r panel_c_graph, fig.width = 6, fig.height = 5}
 panel_c_data <- data.frame(
   subject = c(0, 1, 0, 1, 0, 1), # 0 = undergraduate, 1 = elite
