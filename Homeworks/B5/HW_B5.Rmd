@@ -170,7 +170,8 @@ p_value_patience <- 2 * pnorm(- abs(test_statistic_patience))
 p_value_patience
 
 ### (4) Double-check
-t.test(elite_ug_lk$patience[elite_ug_lk$elite == 1], elite_ug_lk$patience[elite_ug_lk$elite == 0], alternative = "two.sided") # The t-values are the same, but the p-values are different. Why? Maybe because DF is calculated differently?
+t.test(elite_ug_lk$patience[elite_ug_lk$elite == 1], elite_ug_lk$patience[elite_ug_lk$elite == 0], alternative = "two.sided") 
+# The t-values are the same, but the p-values are different. Why? Maybe because DF is calculated differently?
 ```
 
 ```{r panel_b_graph, fig.width = 3, fig.height = 5}

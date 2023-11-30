@@ -181,10 +181,11 @@ panel_a <- ggplot(panel_a_data, aes(factor(behavior), m_behavior, fill = factor(
   scale_x_discrete(labels = c("0" = "Propose", "1" = "Demand")) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 50)) +
   scale_fill_discrete(labels = c("0" = "Undergraduate", "1" = "Elite")) +
-  labs(x = "Ultimatum Bargaining Behavior", y = "Mean", fill = "Subject Type") +
+  labs(title = "A", x = "Ultimatum Bargaining Behavior", y = "Mean", fill = "Subject Type") +
   theme(panel.background = element_rect(fill = "transparent", colour = NA),
         panel.border = element_blank(),
         panel.grid = element_blank(),
+        plot.title = element_text(size = 24, hjust = -.14, vjust = -2.5),
         axis.line = element_line(colour = "black"),
         axis.text.x = element_text(size = 12, face = "bold", colour = "grey60"),
         axis.text.y = element_text(size = 12, face = "bold", colour = "grey60", angle = 90),
@@ -275,7 +276,7 @@ p_value_patience
 
 ``` r
 ### (4) Double-check
-t.test(elite_ug_lk$patience[elite_ug_lk$elite == 1], elite_ug_lk$patience[elite_ug_lk$elite == 0], alternative = "two.sided") # The t-values are the same, but the p-values are different. Why? Maybe because DF is calculated differently?
+t.test(elite_ug_lk$patience[elite_ug_lk$elite == 1], elite_ug_lk$patience[elite_ug_lk$elite == 0], alternative = "two.sided") 
 ```
 
     ## 
@@ -291,6 +292,10 @@ t.test(elite_ug_lk$patience[elite_ug_lk$elite == 1], elite_ug_lk$patience[elite_
     ## 10.305263  6.881435
 
 ``` r
+# The t-values are the same, but the p-values are different. Why? Maybe because DF is calculated differently?
+```
+
+``` r
 panel_b_data <- data.frame(
   subject = c(0, 1), # 0 = undergraduate, 1 = elite
   m_patience = c(m_college_patience, m_elite_patience),
@@ -302,10 +307,11 @@ panel_b <- ggplot(panel_b_data, aes(factor(subject), m_patience)) +
   geom_errorbar(aes(ymin = m_patience - se, ymax = m_patience + se), width = .1, position=position_dodge(.9)) + 
   scale_x_discrete(labels = c("0" = "Undergraduate", "1" = "Elite")) +
   scale_y_continuous(expand = c(0.0, 0.0), limits = c(0.0, 11.0, 2.5)) +
-  labs(x = "Subject Type", y = "Mean # of Patient Choices") +
+  labs(title = "B", x = "Subject Type", y = "Mean # of Patient Choices") +
   theme(panel.background = element_rect(fill = "transparent", colour = NA),
         panel.border = element_blank(),
         panel.grid = element_blank(),
+        plot.title = element_text(size = 24, hjust = -.27, vjust = -2.5),
         axis.line = element_line(colour = "black"),
         axis.text.x = element_text(size = 12, face = "bold", colour = "grey60"),
         axis.text.y = element_text(size = 12, face = "bold", colour = "grey60", angle = 90, hjust = .5),
@@ -541,12 +547,13 @@ panel_c <- ggplot(panel_c_data, aes(factor(level), m_level, fill = factor(subjec
   scale_x_discrete(labels = c("0" = "K=0", "1" = "K=1", "2" = "K=2")) +
   scale_y_continuous(labels = scales::percent, expand = c(0, 0), limits = c(.0, .8), breaks = seq(.2, .6, .2)) +
   scale_fill_discrete(labels = c("0" = "Undergraduate", "1" = "Elite")) +
-  labs(x = "Estimated Level of Strategic Reasoning", y = "Propotion of Population", fill = "Subject Type") +
+  labs(title = "C", x = "Estimated Level of Strategic Reasoning", y = "Propotion of Population", fill = "Subject Type") +
   theme(panel.background = element_rect(fill = "transparent", colour = NA),
         panel.border = element_blank(),
         panel.grid = element_blank(),
+        plot.title = element_text(size = 24, face = "bold", hjust = -.11, vjust = -2.5),
         axis.line = element_line(colour = "black"),
-        axis.text.x = element_text(size = 12, face = "bold", colour = "grey60"),
+        axis.text.x = element_text(size = 12, colour = "grey60"),
         axis.text.y = element_text(size = 12, face = "bold", colour = "grey60", angle = 90, hjust = .5),
         axis.title.x = element_text(margin = margin(t = 9), face = "bold", size = 15),
         axis.title.y = element_text(margin = margin(r = 9), face = "bold", size = 15),
@@ -563,4 +570,10 @@ panel_c
 ## Note: The dataset used to generate panel c is panel_c_data, which is based on elite.ug.lk.patience.dists.csv.
 ```
 
-### 
+## 4. Combination
+
+``` r
+grid.arrange(panel_a, panel_b, panel_c, ncol = 3, widths = c (1.5, 1, 2))
+```
+
+![](HW_B5_files/figure-gfm/combination-1.png)<!-- -->
