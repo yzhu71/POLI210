@@ -5,21 +5,19 @@ output: html_notebook
 
 Your assignment is to replicate, as best you can, each panel of Figure 1 (A, B, and, C) from the article:
 
-LeVeck, B. L., Hughes, D. A., Fowler, J. H., Hafner-Burton, E. & Victor, D. G. The role of self-interest in elite bargaining. Proceedings of the National Academy of Sciences of the United States of America 111, 18536–18541 (2014).
+LeVeck, B. L., Hughes, D. A., Fowler, J. H., Hafner-Burton, E. & Victor, D. G. The role of self-interest in elite bargaining. Proceedings of the National Academy of Sciences of the United States of America 111, 18536--18541 (2014).
 
 For each panel (A, B, and C), make a graph that is as close as possible to the graph shown in the paper.
 
 After each graph, display the dataset used by the graph.
 
-You can find a copy of the article at:
-http://faculty.ucmerced.edu/bleveck/assets/pdfs/role_of_self_interest_in_elite_bargaining.pdf
+You can find a copy of the article at: <http://faculty.ucmerced.edu/bleveck/assets/pdfs/role_of_self_interest_in_elite_bargaining.pdf>
 
-You can find a copy of the datasets at:
-https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/27894
+You can find a copy of the datasets at: <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/27894>
 
 The core part of this assignment will be to calculate the standard errors, which are plotted as whiskers on top of the bar graphs (whiskers are 1 standard error of the mean in each direction). You can calculate the standard errors under the assumption that both elite and non-elite subject pools are random samples from their respective populations. To do this create a function called `sem`, which takes a variable and calculates the standard error of the mean, under the assumption that each observation is randomly, independently sampled from a broader population. I've started the code for you below.
 
-Note, some of the standard errors in the actual paper are calculated using an estimation technique called the non-parametic bootstrap. We'll discuss this in a future class, but for now just know that your estimates may differ from the paper's by a little bit. 
+Note, some of the standard errors in the actual paper are calculated using an estimation technique called the non-parametic bootstrap. We'll discuss this in a future class, but for now just know that your estimates may differ from the paper's by a little bit.
 
 ```{r}
 # takes a numeric vector and returns a standard error of the mean
@@ -35,7 +33,7 @@ sem <- function(x){
 }
 ```
 
-Next, create a test statistic as described in lecture and the notes. Test the null hypothesis that that the difference between elite and undergraduate MA0's is 0. Use an alpha 0.05. 
+Next, create a test statistic as described in lecture and the notes. Test the null hypothesis that that the difference between elite and undergraduate MA0's is 0. Use an alpha 0.05.
 
 ```{r}
 D_hat <- ## insert difference in means estimator
@@ -44,4 +42,3 @@ test_statistic <- (D_hat - 0)/se_D_hat
 
 pnorm() # use pnorm to analyze the test statistic under the null hypothesis as shown in the lecture slides
 ```
-  

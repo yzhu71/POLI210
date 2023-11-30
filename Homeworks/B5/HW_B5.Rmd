@@ -1,0 +1,338 @@
+---
+title: "HW_B5"
+author: "Yuhang Zhu"
+date: "2023-11-29"
+output: github_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(ggplot2)
+library(gridExtra)
+```
+
+## 1. Figure 1, Panel A
+
+```{r panel_a_import}
+elite_ug <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Homeworks/B5/Replication data for - The Role of Self Interest in Elite Bargaining/elite.ug_1.csv")
+
+head(elite_ug)
+
+dim(elite_ug)
+```
+
+```{r panel_a_prepare}
+## 1. Function of SEM
+sem <- function(x){
+  if(!is.numeric(x)){
+    "Error: x needs to be a numeric variable"
+  }
+  x_complete <- na.omit(x)
+  n <- length(x_complete)
+  sd_hat <- sd(x_complete)
+  sem <- sd_hat/sqrt(n)
+  return(sem)   
+}
+
+## 2. Propose
+### (1) College students
+m_college_propose <- mean(elite_ug$ult.propose[elite_ug$elite == 0], na.rm = T)
+m_college_propose
+
+sem_college_propose <- sem(elite_ug$ult.propose[elite_ug$elite == 0])
+sem_college_propose
+
+### (2) Elite
+m_elite_propose <- mean(elite_ug$ult.propose[elite_ug$elite == 1], na.rm = T)
+m_elite_propose
+
+sem_elite_propose <- sem(elite_ug$ult.propose[elite_ug$elite == 1])
+sem_elite_propose
+
+### (3) T-test_propose
+D_hat_propose <- m_elite_propose - m_college_propose
+
+se_D_hat_propose <- sqrt(var(elite_ug$ult.propose[elite_ug$elite == 1], na.rm = T) / 
+                           sum(!is.na((elite_ug$ult.propose[elite_ug$elite == 1]))) + 
+                           var(elite_ug$ult.propose[elite_ug$elite == 0], na.rm = T) /
+                           (sum(!is.na((elite_ug$ult.propose[elite_ug$elite == 0])))))
+
+test_statistic_propose <- (D_hat_propose - 0) / se_D_hat_propose
+
+p_value_propose <- 2 * pnorm(- abs(test_statistic_propose))
+p_value_propose
+  
+### (4) Double-check
+t.test(elite_ug$ult.propose[elite_ug$elite == 1], elite_ug$ult.propose[elite_ug$elite == 0], alternative = "two.sided")
+
+## 3. Demand
+### (1) College students
+m_college_demand <- mean(elite_ug$ult.min[elite_ug$elite == 0], na.rm = T)
+m_college_demand
+
+sem_college_demand <- sem(elite_ug$ult.min[elite_ug$elite == 0])
+sem_college_demand
+
+### (2) Elite
+m_elite_demand <- mean(elite_ug$ult.min[elite_ug$elite == 1], na.rm = T)
+m_elite_demand
+
+sem_elite_demand <- sem(elite_ug$ult.min[elite_ug$elite == 1])
+sem_elite_demand
+
+### (3) T-test_propose
+D_hat_demand <- m_elite_demand - m_college_demand
+
+se_D_hat_demand <- sqrt(var(elite_ug$ult.min[elite_ug$elite == 1], na.rm = T) / 
+                          sum(!is.na((elite_ug$ult.min[elite_ug$elite == 1]))) + 
+                          var(elite_ug$ult.min[elite_ug$elite == 0], na.rm = T) / 
+                          (sum(!is.na((elite_ug$ult.min[elite_ug$elite == 0])))))
+
+test_statistic_demand <- (D_hat_demand - 0) / se_D_hat_demand
+
+p_value_demand <- 2 * pnorm(- abs(test_statistic_demand))
+p_value_demand
+
+### (4) Double-check
+t.test(elite_ug$ult.min[elite_ug$elite == 1], elite_ug$ult.min[elite_ug$elite == 0], alternative = "two.sided")
+```
+
+```{r panel_a_graph, fig.width = 5, fig.height = 5}
+panel_a_data <- data.frame(
+  subject = c(0, 1, 0, 1), # 0 = undergraduate, 1 = elite
+  behavior = c(0, 0, 1, 1), # 0 = propose, 1 = demand
+  m_behavior = c(m_college_propose, m_elite_propose, m_college_demand, m_elite_demand),
+  se = c(sem_college_propose, sem_elite_propose, sem_college_demand, sem_elite_demand)
+)
+
+panel_a <- ggplot(panel_a_data, aes(factor(behavior), m_behavior, fill = factor(subject))) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_errorbar(aes(ymin = m_behavior - se, ymax = m_behavior + se), width = .1, position=position_dodge(.9)) + 
+  scale_x_discrete(labels = c("0" = "Propose", "1" = "Demand")) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 50)) +
+  scale_fill_discrete(labels = c("0" = "Undergraduate", "1" = "Elite")) +
+  labs(title = "A", x = "Ultimatum Bargaining Behavior", y = "Mean", fill = "Subject Type") +
+  theme(panel.background = element_rect(fill = "transparent", colour = NA),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        plot.title = element_text(size = 24, hjust = -.14, vjust = -2.5),
+        axis.line = element_line(colour = "black"),
+        axis.text.x = element_text(size = 12, face = "bold", colour = "grey60"),
+        axis.text.y = element_text(size = 12, face = "bold", colour = "grey60", angle = 90),
+        axis.title.x = element_text(margin = margin(t = 9), face = "bold", size = 15),
+        axis.title.y = element_text(margin = margin(r = 9), face = "bold", size = 15),
+        legend.text = element_text(face = "bold", size = 12),
+        legend.title = element_text(face = "bold", size = 13),
+        legend.position = c(.71, .76),
+        legend.box.background = element_rect(fill = "transparent", color = NA))
+panel_a
+
+## Note: The dataset used to generate panel a is panel_a_data, which is based on elite.ug_1.csv.
+```
+
+## 2. Figure 1, Panel B
+
+```{r panel_b_import}
+elite_ug_lk <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Homeworks/B5/Replication data for - The Role of Self Interest in Elite Bargaining/elite.ug.lk.patience.dists.csv")
+
+head(elite_ug_lk)
+
+dim(elite_ug_lk)
+```
+
+```{r panel_b_prepare}
+## 1. Patience
+### (1) College students
+m_college_patience <- mean(elite_ug_lk$patience[elite_ug_lk$elite == 0], na.rm = T)
+m_college_patience
+
+sem_college_patience <- sem(elite_ug_lk$patience[elite_ug_lk$elite == 0])
+sem_college_patience
+
+### (2) Elite
+m_elite_patience <- mean(elite_ug_lk$patience[elite_ug_lk$elite == 1], na.rm = T)
+m_elite_patience
+
+sem_elite_patience <- sem(elite_ug_lk$patience[elite_ug_lk$elite == 1])
+sem_elite_patience
+
+### (3) T-test_propose
+D_hat_patience <- m_elite_patience - m_college_patience
+
+se_D_hat_patience <- sqrt(var(elite_ug_lk$patience[elite_ug_lk$elite == 1], na.rm = T) / 
+                          sum(!is.na((elite_ug_lk$patience[elite_ug_lk$elite == 1]))) + 
+                          var(elite_ug_lk$patience[elite_ug_lk$elite == 0], na.rm = T) / 
+                          (sum(!is.na((elite_ug_lk$patience[elite_ug_lk$elite == 0])))))
+
+test_statistic_patience <- (D_hat_patience - 0) / se_D_hat_patience
+
+p_value_patience <- 2 * pnorm(- abs(test_statistic_patience))
+p_value_patience
+
+### (4) Double-check
+t.test(elite_ug_lk$patience[elite_ug_lk$elite == 1], elite_ug_lk$patience[elite_ug_lk$elite == 0], alternative = "two.sided") # The t-values are the same, but the p-values are different. Why? Maybe because DF is calculated differently?
+```
+
+```{r panel_b_graph, fig.width = 3, fig.height = 5}
+panel_b_data <- data.frame(
+  subject = c(0, 1), # 0 = undergraduate, 1 = elite
+  m_patience = c(m_college_patience, m_elite_patience),
+  se = c(sem_college_patience, sem_elite_patience)
+)
+
+panel_b <- ggplot(panel_b_data, aes(factor(subject), m_patience)) +
+  geom_bar(aes(fill = factor(subject)), stat = "identity", position = position_dodge()) +
+  geom_errorbar(aes(ymin = m_patience - se, ymax = m_patience + se), width = .1, position=position_dodge(.9)) + 
+  scale_x_discrete(labels = c("0" = "Undergraduate", "1" = "Elite")) +
+  scale_y_continuous(expand = c(0.0, 0.0), limits = c(0.0, 11.0, 2.5)) +
+  labs(title = "B", x = "Subject Type", y = "Mean # of Patient Choices") +
+  theme(panel.background = element_rect(fill = "transparent", colour = NA),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        plot.title = element_text(size = 24, hjust = -.27, vjust = -2.5),
+        axis.line = element_line(colour = "black"),
+        axis.text.x = element_text(size = 12, face = "bold", colour = "grey60"),
+        axis.text.y = element_text(size = 12, face = "bold", colour = "grey60", angle = 90, hjust = .5),
+        axis.title.x = element_text(margin = margin(t = 9), face = "bold", size = 15),
+        axis.title.y = element_text(margin = margin(r = 9), face = "bold", size = 15)) + 
+  guides(fill = FALSE)
+panel_b
+
+## Note: The dataset used to generate panel b is panel_b_data, which is based on elite.ug.lk.patience.dists.csv.
+```
+
+## 3. Figure 1, Panel C
+
+```{r panel_c_prepare}
+## 1. L0
+### (1) College students
+m_college_L0 <- mean(elite_ug_lk$L0[elite_ug_lk$elite == 0], na.rm = T)
+m_college_L0
+
+sem_college_L0 <- sem(elite_ug_lk$L0[elite_ug_lk$elite == 0])
+sem_college_L0
+
+### (2) Elite
+m_elite_L0 <- mean(elite_ug_lk$L0[elite_ug_lk$elite == 1], na.rm = T)
+m_elite_L0
+
+sem_elite_L0 <- sem(elite_ug_lk$L0[elite_ug_lk$elite == 1])
+sem_elite_L0
+
+### (3) T-test_propose
+D_hat_L0 <- m_elite_L0 - m_college_L0
+
+se_D_hat_L0 <- sqrt(var(elite_ug_lk$L0[elite_ug_lk$elite == 1], na.rm = T) / 
+                          sum(!is.na((elite_ug_lk$L0[elite_ug_lk$elite == 1]))) + 
+                          var(elite_ug_lk$L0[elite_ug_lk$elite == 0], na.rm = T) / 
+                          (sum(!is.na((elite_ug_lk$L0[elite_ug_lk$elite == 0])))))
+
+test_statistic_L0 <- (D_hat_L0 - 0) / se_D_hat_L0
+
+p_value_L0 <- 2 * pnorm(- abs(test_statistic_L0))
+p_value_L0
+
+### (4) Double-check
+t.test(elite_ug_lk$L0[elite_ug_lk$elite == 1], elite_ug_lk$L0[elite_ug_lk$elite == 0], alternative = "two.sided")
+
+## 2. L1
+### (1) College students
+m_college_L1 <- mean(elite_ug_lk$L1[elite_ug_lk$elite == 0], na.rm = T)
+m_college_L1
+
+sem_college_L1 <- sem(elite_ug_lk$L1[elite_ug_lk$elite == 0])
+sem_college_L1
+
+### (2) Elite
+m_elite_L1 <- mean(elite_ug_lk$L1[elite_ug_lk$elite == 1], na.rm = T)
+m_elite_L1
+
+sem_elite_L1 <- sem(elite_ug_lk$L1[elite_ug_lk$elite == 1])
+sem_elite_L1
+
+### (3) T-test_propose
+D_hat_L1 <- m_elite_L1 - m_college_L1
+
+se_D_hat_L1 <- sqrt(var(elite_ug_lk$L1[elite_ug_lk$elite == 1], na.rm = T) / 
+                          sum(!is.na((elite_ug_lk$L1[elite_ug_lk$elite == 1]))) + 
+                          var(elite_ug_lk$L1[elite_ug_lk$elite == 0], na.rm = T) / 
+                          (sum(!is.na((elite_ug_lk$L1[elite_ug_lk$elite == 0])))))
+
+test_statistic_L1 <- (D_hat_L1 - 0) / se_D_hat_L1
+
+p_value_L1 <- 2 * pnorm(- abs(test_statistic_L1))
+p_value_L1
+
+### (4) Double-check
+t.test(elite_ug_lk$L1[elite_ug_lk$elite == 1], elite_ug_lk$L1[elite_ug_lk$elite == 0], alternative = "two.sided")
+
+## 3. L2
+### (1) College students
+m_college_L2 <- mean(elite_ug_lk$L2[elite_ug_lk$elite == 0], na.rm = T)
+m_college_L2
+
+sem_college_L2 <- sem(elite_ug_lk$L2[elite_ug_lk$elite == 0])
+sem_college_L2
+
+### (2) Elite
+m_elite_L2 <- mean(elite_ug_lk$L2[elite_ug_lk$elite == 1], na.rm = T)
+m_elite_L2
+
+sem_elite_L2 <- sem(elite_ug_lk$L2[elite_ug_lk$elite == 1])
+sem_elite_L2
+
+### (3) T-test_propose
+D_hat_L2 <- m_elite_L2 - m_college_L2
+
+se_D_hat_L2 <- sqrt(var(elite_ug_lk$L2[elite_ug_lk$elite == 1], na.rm = T) / 
+                          sum(!is.na((elite_ug_lk$L2[elite_ug_lk$elite == 1]))) + 
+                          var(elite_ug_lk$L2[elite_ug_lk$elite == 0], na.rm = T) / 
+                          (sum(!is.na((elite_ug_lk$L2[elite_ug_lk$elite == 0])))))
+
+test_statistic_L2 <- (D_hat_L2 - 0) / se_D_hat_L2
+
+p_value_L2 <- 2 * pnorm(- abs(test_statistic_L2))
+p_value_L2
+
+### (4) Double-check
+t.test(elite_ug_lk$L2[elite_ug_lk$elite == 1], elite_ug_lk$L2[elite_ug_lk$elite == 0], alternative = "two.sided")
+```
+
+```{r panel_c_graph, fig.width = 6, fig.height = 5}
+panel_c_data <- data.frame(
+  subject = c(0, 1, 0, 1, 0, 1), # 0 = undergraduate, 1 = elite
+  level = c(0, 0, 1, 1, 2, 2), # 0 = L0, 1 = L1, 2 = L2
+  m_level = c(m_college_L0, m_elite_L0, m_college_L1, m_elite_L1, m_college_L2, m_elite_L2),
+  se = c(sem_college_L0, sem_elite_L0, sem_college_L1, sem_elite_L1, sem_college_L2, sem_elite_L2)
+)
+
+panel_c <- ggplot(panel_c_data, aes(factor(level), m_level, fill = factor(subject))) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_errorbar(aes(ymin = m_level - se, ymax = m_level + se), width = .1, position=position_dodge(.9)) + 
+  scale_x_discrete(labels = c("0" = "K=0", "1" = "K=1", "2" = "K=2")) +
+  scale_y_continuous(labels = scales::percent, expand = c(0, 0), limits = c(.0, .8), breaks = seq(.2, .6, .2)) +
+  scale_fill_discrete(labels = c("0" = "Undergraduate", "1" = "Elite")) +
+  labs(title = "C", x = "Estimated Level of Strategic Reasoning", y = "Propotion of Population", fill = "Subject Type") +
+  theme(panel.background = element_rect(fill = "transparent", colour = NA),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        plot.title = element_text(size = 24, face = "bold", hjust = -.11, vjust = -2.5),
+        axis.line = element_line(colour = "black"),
+        axis.text.x = element_text(size = 12, colour = "grey60"),
+        axis.text.y = element_text(size = 12, face = "bold", colour = "grey60", angle = 90, hjust = .5),
+        axis.title.x = element_text(margin = margin(t = 9), face = "bold", size = 15),
+        axis.title.y = element_text(margin = margin(r = 9), face = "bold", size = 15),
+        legend.text = element_text(face = "bold", size = 12),
+        legend.title = element_text(face = "bold", size = 13),
+        legend.position = c(.83, .65),
+        legend.box.background = element_rect(fill = "transparent", color = NA))
+panel_c
+
+## Note: The dataset used to generate panel c is panel_c_data, which is based on elite.ug.lk.patience.dists.csv.
+```
+
+## 4. Combination
+
+```{r combination, fig.width = 15, fig.height = 5}
+grid.arrange(panel_a, panel_b, panel_c, ncol = 3, widths = c (1.5, 1, 2))
+```
