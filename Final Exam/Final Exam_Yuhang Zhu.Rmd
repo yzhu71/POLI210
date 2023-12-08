@@ -1,0 +1,209 @@
+---
+title: "Final Exam"
+author: "Yuhang Zhu"
+date: "2023-12-08"
+output: github_document
+---
+
+# POLI 210
+
+## Quantitative Analysis I
+
+## Final Examination
+
+### Part I:
+
+Open the R script part_one_replication_script.R. Fill in the code as needed. The code is broken up into 7 tasks (noted in the code's comments). I should be able to run your R file and get the correct answers.
+
+Do not look up the answer by googling the paper on which this replication file is based. I have included a copy of th e paper without the replication file in this repo.
+
+```{r setup, include = FALSE}
+library(dplyr)
+library(ggplot2)
+library(grDevices)
+library(grid)
+library(tidyr) 
+library(broom)
+
+rm(list=ls())
+```
+
+```{r data}
+cq_data <- read.csv("cq_data.csv")
+
+head(cq_data)
+
+dim(cq_data)
+```
+#### 1
+```{r nationalization}
+# 1 Write a function called nationalization that takes two vectors called "dv" and "dvp, and returns a single number that corresponds to the measure "nationalization" in the paper by LeVeck and Nail. Make sure to handle NA's. You don't have to worry about the fact that the measure is computed for a specific year, that's handled later. You can just assume all dv and dvp observations come from one year.
+nationalization <- function(dv, dvp){
+  vote_swing = dv - dvp
+  sd_vote_swing = sd(vote_swing, na.rm = T) 
+  nationalization <- -1 * sd_vote_swing
+  return(nationalization)   
+}
+```
+    
+#### 2 
+```{r nationalization_by_year}
+# 2 Calculate nationalization measure by year
+swing_variance <- cq_data %>%
+  filter(inc3 != 0) %>%
+  group_by(year) %>%
+  summarise(nationalization = nationalization(dv, dvp)) %>%
+  ungroup()
+```
+
+```{r measure_comparison}
+# Calculate correlation between Gary J' measure and our measure of nationalization
+
+# load gary j's data 
+gary_j_data <- read.csv("gary_j_data.csv")
+
+# Make a dataset with both our measure and gary J's measure of nationalization for every year.
+measure_comparison <- gary_j_data %>%
+  filter(year>=1954) %>%
+  group_by(year) %>%
+  summarise(nationalization1 = nationalization(dv, dvp), # our measure
+            nationalization2 = cor(dv,dpres, use = "pairwise.complete.obs") # garyj's measure
+            )
+
+cor(measure_comparison$nationalization1, measure_comparison$nationalization2)
+```
+
+#### 3 
+```{r cor_comparasion}
+# 3 compare the pearson correlation between our measure and gary j's nationalization measure
+cor.test(measure_comparison$nationalization1, measure_comparison$nationalization2, method = "pearson")
+```
+
+```{r incumbency_advantage}
+b_incumbency_adv <- cq_data %>%
+  group_by(year) %>% 
+  do(., tidy(lm(dv ~ dvp + ptynow + inc3, data = . ))) %>% 
+  filter(term == "inc3") %>%
+  ungroup() %>% 
+  left_join(., swing_variance, by="year") %>% # join to nationalization measure
+  mutate(post_1952 = as.numeric(year > 1952)) # dummy for whether the year is after
+# 1952
+
+# Add in markers for 1950 and 1954
+# This will be used in figure 1c
+b_incumbency_adv$marker_break <- NA
+b_incumbency_adv$marker_break[b_incumbency_adv$year==1950] <- 1950
+b_incumbency_adv$marker_break[b_incumbency_adv$year==1954] <- 1954
+```
+
+#### 4
+```{r nationalization_year_plot}
+# plot nationalization over time 
+# this is all done for you, but you can try to learn about making graphics from this code might be useful in the future?
+nationalization_year_plot <- ggplot(data = swing_variance, 
+                                    aes(x= year, 
+                                        y= nationalization)) +
+  geom_line() +
+  geom_point() +
+  theme_bw() + ylab("Nationalization") + xlab("Year")
+
+# 4 run the line below to make sure that you get a similar graph to 1a
+# it won't have standard error bars like the main paper. 5pts extra credit if you can get those by bootstrapping your nationalization measure in every year
+nationalization_year_plot
+```
+#### 5
+```{r incumbency_adv_year_plot}
+# plot incumbency advantage over time
+incumbency_adv_year_plot <- ggplot(data=b_incumbency_adv, 
+                                   aes(x=year, y=estimate)) +
+  geom_line() +
+  geom_point() +
+  theme_bw() + ylab("Incumbency Advantage") + xlab("Year")
+
+# 5 run the line below to make sure that you get a similar graph to 1b
+incumbency_adv_year_plot
+```
+
+#### 6
+```{r correlation}
+# 6a Find the pearson correlation between nationalization and the incumbency advantage by era (pre 1952 and post 1952) using the b_incumbency_adv data
+pre1952_cor <- cor.test(b_incumbency_adv$nationalization[b_incumbency_adv$post_1952==0], b_incumbency_adv$estimate[b_incumbency_adv$post_1952==0], method = "pearson")
+pre1952_cor$estimate
+
+post1952_cor <- cor.test(b_incumbency_adv$nationalization[b_incumbency_adv$post_1952==1], b_incumbency_adv$estimate[b_incumbency_adv$post_1952==1], method = "pearson")
+post1952_cor$estimate
+
+# 6b Find the spearman correlation between nationalization and the incumbency advantage by era (pre 1952 and post 1952) using the b_incumbency_adv data
+pre1952_cor <- cor.test(b_incumbency_adv$nationalization[b_incumbency_adv$post_1952==0], b_incumbency_adv$estimate[b_incumbency_adv$post_1952==0], method = "spearman")
+pre1952_cor$estimate
+
+post1952_cor <- cor.test(b_incumbency_adv$nationalization[b_incumbency_adv$post_1952==1], b_incumbency_adv$estimate[b_incumbency_adv$post_1952==1], method = "spearman")
+post1952_cor$estimate
+```
+#### 7
+```{r nationalization_incumbency_path_plot}
+# Plot relationship between nationalization and the incumbency advantage
+nationalization_incumbency_path_plot <- ggplot(data = b_incumbency_adv, 
+                                               aes(x = nationalization, 
+                                                   y = estimate)) + 
+  geom_point(aes(colour = year)) +
+  geom_path(aes(color = year)) +
+  geom_text(size = 4.5, aes(color = year, label = marker_break, hjust = -.3, vjust = .2)) +
+  geom_text(label = "Post 1952:",
+            x=-11, y=10.7, size=4.5, fontface="bold") +
+  geom_text(label= "Pre 1952:",
+            x=-11.5, y=4.8, size=4.5,fontface="bold") +
+  theme_classic() + 
+  xlab("Nationalization") + 
+  ylab("Incumbency Advantage") +
+  scale_color_continuous(name = "Year") +
+  xlim(c(-13.5,-2.5)) +
+  theme(legend.key.height = unit(1.5, "cm"),
+        legend.title.align = 0)
+
+# 7 run the line below to make sure you get a similar plot to panel 1c
+# This will look slightly different than plot 1c, which is a scatter plot
+# This is a path diagram, which connects points in temporal order
+nationalization_incumbency_path_plot
+```
+
+```{r nationalization_incumbency_point_plot, fig.width = 5, fig.height = 5}
+nationalization_incumbency_point_plot <- ggplot(data = b_incumbency_adv, 
+                                               aes(x = nationalization, 
+                                                   y = estimate)) + 
+  geom_point(aes(colour = factor(post_1952))) +
+  geom_smooth(aes(colour = factor(post_1952)), method = "lm", se=FALSE, formula = y ~ x) +
+  scale_color_discrete(labels = c("pre 1952", "post 1952")) +
+  scale_x_continuous(limits = c(-14, -3), breaks = seq(-10, -5, 5)) +
+  labs(color = "Era") +
+  xlab("Nationalization") + 
+  ylab("Incumbency Advantage") +
+  theme(
+    panel.background = element_rect(fill = "transparent", colour = NA),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = "transparent"),
+    legend.text = element_text(face = "bold", size = 12),
+    legend.title = element_text(face = "bold", size = 13),
+    legend.position = c(.2, .7))
+
+nationalization_incumbency_point_plot
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
