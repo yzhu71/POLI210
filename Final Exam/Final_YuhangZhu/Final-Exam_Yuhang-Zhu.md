@@ -21,7 +21,7 @@ replication file is based. I have included a copy of th e paper without
 the replication file in this repo.
 
 ``` r
-cq_data <- read.csv("cq_data.csv")
+cq_data <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Final Exam/cq_data.csv")
 
 head(cq_data)
 ```
@@ -67,7 +67,7 @@ swing_variance <- cq_data %>%
 # Calculate correlation between Gary J' measure and our measure of nationalization
 
 # load gary j's data 
-gary_j_data <- read.csv("gary_j_data.csv")
+gary_j_data <- read.csv("/Users/zhuyuhang/Desktop/Git/POLI210/Final Exam/gary_j_data.csv")
 
 # Make a dataset with both our measure and gary J's measure of nationalization for every year.
 measure_comparison <- gary_j_data %>%
