@@ -135,14 +135,23 @@ nationalization_year_plot <- ggplot(data = swing_variance,
 
 # 4 run the line below to make sure that you get a similar graph to 1a
 # it won't have standard error bars like the main paper. 5pts extra credit if you can get those by bootstrapping your nationalization measure in every year
-
-
-
 nationalization_year_plot
 ```
 
 ![](Final-Exam_Yuhang-Zhu_files/figure-gfm/nationalization_year_plot-1.png)<!-- -->
-\#### 5
+
+``` r
+# it won't have standard error bars like the main paper. 5pts extra credit if you can get those by bootstrapping your nationalization measure in every year
+
+# I think there are two for-loops, but I fail to achieve it.
+# The first loop is for year[i]. We should subset year[i] and
+# resample the subset, and get subset[j].
+# For each subset[j], we need to calculate the sd(vote_swing), and then
+# aggregate sd(vote_swing) by year[i] to get nationalization[ij]
+# We will get 10000 nationalization[i], and calculate the sd(nationalization[i]) to get the se for each year.
+```
+
+#### 5
 
 ``` r
 # plot incumbency advantage over time
@@ -339,16 +348,14 @@ varincome_1000 /varincome
 
 ``` r
 m_treat_turnout <- 380 / 1000
-
 m_control_turnout <- 302 / 1000
 
 ate <- m_treat_turnout - m_control_turnout
 
 var_treat_turnout <- ((380 * ((1 - m_treat_turnout) ^ 2)) + ((1000 - 380) * ((0 - m_treat_turnout) ^ 2))) / 1000
-
 var_control_turnout <- ((302 * ((1 - m_control_turnout) ^ 2)) + ((1000 - 302) * ((0 - m_control_turnout) ^ 2))) / 1000
 
-sd_ate <- sqrt(var_treat_turnout/1000 + var_control_turnout/1000)
+sd_ate <- sqrt(var_treat_turnout / 1000 + var_control_turnout / 1000)
 
 sd_ate
 ```
@@ -393,7 +400,13 @@ ate + qnorm(1 - 0.05 / 2) * sd_ate
 
     d)  Say we pick an alpha of 0.05, can we reject the null hypothesis that there is no difference in turnout between the two groups?
 
-        **Answer**: Yes. We can reject the null hypothesis which means the difference is significant statistically.
+        **Answer**: Yes. We can reject the null hypothesis (*p* = 3.69 > 1.96) which means the difference is significant statistically.
+
+``` r
+ate / sd_ate
+```
+
+    ## [1] 3.691768
 
 3)  According to the Pew Research Center for the People and the Press,
     in 2003, the contact rate for surveyors was 76%. That is 76% of the
@@ -455,14 +468,12 @@ set.seed(1234)
 nsims <- 100000
 
 contact_sims_1 <- vector(mode = 'numeric', length = nsims)
-
 contact_sims_2 <- vector(mode = 'numeric', length = nsims)
 
 count <- 0
 
 for(i in 1:nsims){
   contact_sims_1[i] <- contact()
-  
   contact_sims_2[i] <- contact()
   
   if(contact_sims_1[i] == 1 & contact_sims_2[i] == 1) {
@@ -471,7 +482,6 @@ for(i in 1:nsims){
 }
 
 prob <- count / nsims
-
 prob
 ```
 
@@ -494,26 +504,18 @@ set.seed(1234)
 nsims <- 100000
 
 contact_sims_1 <- vector(mode = 'numeric', length = nsims)
-
 contact_sims_2 <- vector(mode = 'numeric', length = nsims)
-
 contact_sims_3 <- vector(mode = 'numeric', length = nsims)
-
 contact_sims_4 <- vector(mode = 'numeric', length = nsims)
-
 contact_sims_5 <- vector(mode = 'numeric', length = nsims)
 
 count <- 0
 
 for(i in 1:nsims){
   contact_sims_1[i] <- contact()
-  
   contact_sims_2[i] <- contact()
-  
   contact_sims_3[i] <- contact()
-    
   contact_sims_4[i] <- contact()
-      
   contact_sims_5[i] <- contact()
   
   if(contact_sims_1[i] == 0 & 
@@ -527,7 +529,6 @@ for(i in 1:nsims){
 }
 
 prob <- 1- count / nsims
-
 prob
 ```
 
@@ -558,8 +559,8 @@ prob
 
 2)  Run an appropriate test in R and paste your results.
 
-    **Answer**: I run a two-tailed t-test to test the hypothsis. The
-    result is as follows:
+    **Answer**: I run a t-test to test the hypothsis. The result is as
+    follows:
 
 ``` r
 Welch Two Sample t-test
